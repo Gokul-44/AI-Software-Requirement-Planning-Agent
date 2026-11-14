@@ -16,6 +16,7 @@
   "scripts": {
     "dev": "tsc -b --watch --preserveWatchOutput",
     "build": "tsc -b tsconfig.build.json",
+    "fixture": "tsc -b tsconfig.build.json && node scripts/build-fixture.ts",
     "test": "vitest run",
     "typecheck": "tsc -b tsconfig.json",
     "lint": "eslint . && prettier --check .",

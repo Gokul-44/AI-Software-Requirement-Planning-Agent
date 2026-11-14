@@ -1,2 +1,4 @@
 * text=auto eol=lf
 *.pdf binary
+# Jira CSV samples keep RFC 4180 CRLF line endings.
+docs/samples/*.csv -text

@@ -1,0 +1,201 @@
+// Vitest Snapshot v1, https://vitest.dev/guide/snapshot.html
+
+exports[`toJiraCsv on the food-delivery fixture > matches the snapshot 1`] = `
+"Issue Id,Parent Id,Issue Type,Summary,Description,Priority,Story Points,Labels,Labels,Labels,Labels,Labels,Blocked By
+1,,Epic,E-001 Customer Ordering,"Everything a customer does before paying: finding a restaurant, building a cart, placing an order and keeping an account.",High,,R-001,R-002,R-003,R-011,R-012,
+2,,Epic,E-002 Payments and Live Tracking,"Taking the payment securely, moving the order through its states and keeping the customer informed until delivery.",High,,R-004,R-005,R-006,R-012,R-013,
+3,,Epic,E-003 Restaurant and Courier Operations,The tools restaurant staff and couriers use to run their side of an order.,High,,R-003,R-007,R-008,R-009,,
+4,,Epic,E-004 Platform and Reliability,"Build pipeline, monitoring, performance and end-to-end verification so the service can launch and stay up.",High,,R-011,R-013,,,,
+5,1,Story,"S-001 Search and browse nearby restaurants by cuisine, name or dish","As a hungry customer, I want to search and browse nearby restaurants by cuisine, name or dish, so that I can quickly find something I want to eat.
+
+Acceptance criteria:
+- The restaurant list shows only restaurants that deliver to the customer's location, sorted by distance by default.
+- Customers can filter by cuisine and search by restaurant or dish name.
+- A menu shows each item with a photo, price and description; unavailable items are greyed out and cannot be added.
+- Search and menu pages respond in under 2 seconds at the 95th percentile.",High,16,R-001,R-011,sprint-1,sprint-3,,
+6,1,Story,S-002 Add dishes to a cart and place an order for my delivery address,"As a customer, I want to add dishes to a cart and place an order for my delivery address, so that the food is prepared and brought to my door.
+
+Acceptance criteria:
+- A cart holds items from one restaurant only; adding an item from another restaurant asks the customer to start a new cart.
+- The cart shows item totals, the delivery fee and the order total, and updates them as quantities change.
+- Checkout requires a delivery address and accepts an optional note to the restaurant.
+- If an item becomes unavailable or its price changes, the customer is told before the order is placed.",High,13,R-002,sprint-1,sprint-2,,,
+7,1,Story,S-003 Register and sign in with my email and password,"As a new user, I want to register and sign in with my email and password, so that my addresses and order history are saved.
+
+Acceptance criteria:
+- A user can register with an email address and a password of at least 10 characters.
+- Passwords are stored only as salted hashes and sessions expire after 30 days of inactivity.
+- Signed-in customers can save, edit and delete delivery addresses and view past orders.
+- Restaurant staff and couriers sign in through the same service and only see their own tools.",High,10,R-003,R-012,sprint-1,sprint-2,,
+8,2,Story,S-004 Pay for my order by card or digital wallet,"As a customer, I want to pay for my order by card or digital wallet, so that my order is confirmed without handling cash.
+
+Acceptance criteria:
+- Card details are entered in the payment provider's hosted fields and never reach our servers.
+- An order is sent to the restaurant only after the provider confirms the payment.
+- A declined payment shows a clear message and keeps the cart so the customer can retry.
+- A payment confirmation is shown on screen and sent by email, and duplicate webhooks never charge or confirm twice.",High,16,R-004,R-012,sprint-1,sprint-2,,
+9,2,Story,S-005 Watch my order progress and see the courier on a map,"As a customer, I want to watch my order progress and see the courier on a map, so that I know when to expect my food.
+
+Acceptance criteria:
+- The order page shows the current status: placed, accepted, preparing, picked up, delivered or cancelled.
+- While the order is on the way, the courier's position on the map refreshes at least every 10 seconds.
+- The page updates without a manual refresh and recovers after a dropped connection.
+- An accepted order and its status history are stored durably and survive a service restart.",High,15,R-005,R-013,sprint-1,sprint-2,,
+10,2,Story,S-006 Be notified when my order changes status,"As a customer, I want to be notified when my order changes status, so that I do not have to keep the app open.
+
+Acceptance criteria:
+- A notification is sent when the order is accepted, picked up and delivered.
+- Customers can choose push, SMS or email, and can switch notifications off.
+- A failed notification is retried and never blocks the order from moving forward.",Medium,3,R-006,sprint-2,,,,
+11,3,Story,"S-007 Edit my menu, prices and item availability","As a restaurant manager, I want to edit my menu, prices and item availability, so that customers always see what I can really serve.
+
+Acceptance criteria:
+- A manager can add, edit and delete menu items with name, description, photo and price.
+- An item can be switched to unavailable with one action and is immediately greyed out for customers.
+- Menu changes are visible to customers within one minute.
+- Only staff of that restaurant can change its menu.",High,8,R-003,R-007,sprint-2,sprint-3,,
+12,3,Story,S-008 See new orders and accept or reject them with a preparation time,"As a restaurant staff member, I want to see new orders and accept or reject them with a preparation time, so that I stay in control of the kitchen's workload.
+
+Acceptance criteria:
+- A new paid order appears in the inbox within 5 seconds and plays a sound until it is answered.
+- Staff can accept an order with a preparation time, or reject it with a reason.
+- An order that is not answered within 3 minutes is cancelled and the customer is refunded.",High,5,R-008,sprint-2,,,,
+13,3,Story,"S-009 Receive delivery offers, accept one and update its status","As a courier, I want to receive delivery offers, accept one and update its status, so that I can pick up and deliver orders efficiently.
+
+Acceptance criteria:
+- When an order is accepted, nearby available couriers receive an offer showing pickup, drop-off and earnings.
+- The first courier to accept gets the job; the others see it disappear.
+- The courier marks the order picked up and delivered, and the app shares the courier's position while the job is active.
+- If no courier accepts within 5 minutes, operations staff are alerted.",High,13,R-009,sprint-3,,,,
+14,4,Story,"S-010 Automated deployment, monitoring and load testing","As a platform operator, I want automated deployment, monitoring and load testing, so that ordering stays fast and available as traffic grows.
+
+Acceptance criteria:
+- Every merge to the main branch is built, tested and deployed to a staging environment automatically.
+- Error rate, latency and queue depth are visible on a dashboard, and an alert fires when ordering fails for 5 minutes.
+- A load test of search and checkout confirms the 2-second p95 target before release.
+- An end-to-end test covers the full order journey from sign-in to delivery.",High,18,R-011,R-013,sprint-2,sprint-3,sprint-4,
+15,5,Sub-task,T-001 Wireframes and design system for the ordering flow,"Wireframes for search, menu, cart, checkout and tracking, plus a small component library (buttons, cards, form fields) shared by all web screens.
+
+Layer: design",High,3,R-001,sprint-1,,,,
+16,5,Sub-task,T-002 Restaurant and menu database schema,"Tables for restaurants, delivery zones, menus, menu items and availability, with a geospatial index for nearby search.
+
+Layer: database",High,3,R-001,sprint-1,,,,
+17,5,Sub-task,T-003 Restaurant search and menu API,"Endpoints to list restaurants near a point, filter by cuisine, full-text search on restaurant and dish names, and return a menu. Paginated and cached.
+
+Layer: backend
+
+Blocked by: T-002",High,5,R-001,R-011,sprint-1,,,T-002
+18,5,Sub-task,T-004 Restaurant list and menu screens,"Responsive list with filters and search box, and a menu page with item cards and greyed-out unavailable items.
+
+Layer: frontend
+
+Blocked by: T-001, T-003",High,5,R-001,sprint-3,,,,"T-001, T-003"
+19,6,Sub-task,T-005 Order and order-item schema,"Orders, order items with price snapshots, delivery address, status history and a payment reference.
+
+Layer: database
+
+Blocked by: T-002",High,3,R-002,sprint-1,,,,T-002
+20,6,Sub-task,T-006 Cart and order placement API,"Cart endpoints with single-restaurant validation, price and availability re-check at checkout, fee calculation and order creation in the pending-payment state.
+
+Layer: backend
+
+Blocked by: T-003, T-005, T-009",High,5,R-002,sprint-1,,,,"T-003, T-005, T-009"
+21,6,Sub-task,T-007 Cart and checkout screens,"Cart drawer, quantity editing, address picker with saved addresses, note field and order summary.
+
+Layer: frontend
+
+Blocked by: T-001, T-006",High,5,R-002,sprint-2,,,,"T-001, T-006"
+22,7,Sub-task,"T-008 User, role and address schema","Users with roles (customer, restaurant staff, courier, operations), credentials and saved addresses.
+
+Layer: database",High,2,R-003,sprint-1,,,,
+23,7,Sub-task,T-009 Authentication and session API,"Register, sign in and sign out with salted password hashing, session expiry, role checks and rate limiting on sign-in.
+
+Layer: backend
+
+Blocked by: T-008",High,5,R-003,R-012,sprint-1,,,T-008
+24,7,Sub-task,"T-010 Sign-up, sign-in and address book screens","Registration and sign-in forms with validation, plus saved-address management and order history list.
+
+Layer: frontend
+
+Blocked by: T-009",High,3,R-003,sprint-2,,,,T-009
+25,8,Sub-task,T-011 Integrate payment provider (hosted fields and webhooks),"Set up the provider account and test mode, create payment intents, verify webhook signatures, handle retries and idempotency keys.
+
+Layer: integration",High,8,R-004,R-012,sprint-1,,,
+26,8,Sub-task,T-012 Payment and order confirmation flow,"Attach a payment intent to a pending order, move the order to paid on a confirmed webhook, handle declines, and refund on cancellation.
+
+Layer: backend
+
+Blocked by: T-006, T-011",High,5,R-004,R-012,sprint-2,,,"T-006, T-011"
+27,8,Sub-task,T-013 Payment form and confirmation screen,"Embed the provider's hosted card fields in checkout, show decline messages and the confirmation page.
+
+Layer: frontend
+
+Blocked by: T-007, T-012",High,3,R-004,R-012,sprint-2,,,"T-007, T-012"
+28,9,Sub-task,T-014 Order status state machine and live update stream,"Allowed transitions from placed to delivered or cancelled, an audit trail, and a server-sent event stream the customer page subscribes to.
+
+Layer: backend
+
+Blocked by: T-012",High,5,R-005,R-013,sprint-2,,,T-012
+29,9,Sub-task,T-015 Map tiles and courier location ingestion,"Choose a map SDK, accept courier position updates and expose the latest position per active order.
+
+Layer: integration",High,5,R-005,sprint-1,,,,
+30,9,Sub-task,T-016 Live order tracking page with map,"Status timeline, estimated arrival, and a map with the courier marker updating from the event stream.
+
+Layer: frontend
+
+Blocked by: T-014, T-015",High,5,R-005,sprint-2,,,,"T-014, T-015"
+31,10,Sub-task,"T-017 Notification gateway for push, SMS and email","Connect push, SMS and email providers behind one interface, with templates, user preferences and retry on failure.
+
+Layer: integration
+
+Blocked by: T-014",Medium,3,R-006,sprint-2,,,,T-014
+32,11,Sub-task,T-018 Restaurant menu management API,"Create, update and delete items, toggle availability, and enforce that staff can only touch their own restaurant.
+
+Layer: backend
+
+Blocked by: T-002, T-009",High,3,R-003,R-007,sprint-2,,,"T-002, T-009"
+33,11,Sub-task,T-019 Restaurant dashboard: menu editor,"Menu editor with image upload, price editing and a one-tap availability switch.
+
+Layer: frontend
+
+Blocked by: T-018",High,5,R-007,sprint-3,,,,T-018
+34,12,Sub-task,T-020 Restaurant order inbox with accept and reject,"Live inbox with an audible alert, accept with preparation time, reject with reason, and the 3-minute timeout countdown.
+
+Layer: frontend
+
+Blocked by: T-014",High,5,R-008,sprint-2,,,,T-014
+35,13,Sub-task,T-021 Courier matching and dispatch service,"Find available couriers near the restaurant, send offers, award the job to the first acceptance, and escalate when nobody accepts.
+
+Layer: backend
+
+Blocked by: T-014",High,8,R-009,sprint-3,,,,T-014
+36,13,Sub-task,"T-022 Courier web app: offers, jobs and status updates","Mobile web app showing offers, the active job, pickup and drop-off actions, and sending the courier's position.
+
+Layer: frontend
+
+Blocked by: T-015, T-021",High,5,R-009,sprint-3,,,,"T-015, T-021"
+37,14,Sub-task,T-023 CI/CD pipeline and staging environment,"Build and test on every merge, deploy to staging, and manage secrets and database migrations.
+
+Layer: devops",High,5,R-013,sprint-3,,,,
+38,14,Sub-task,"T-024 Monitoring, logging and alerting","Structured logs, a metrics dashboard for errors, latency and queue depth, and alert rules for failed ordering.
+
+Layer: devops
+
+Blocked by: T-023",High,3,R-013,sprint-3,,,,T-023
+39,14,Sub-task,T-025 End-to-end order journey tests,"Automated browser tests from sign-in through payment (test mode), restaurant acceptance, courier delivery and customer tracking.
+
+Layer: testing
+
+Blocked by: T-013, T-016, T-020, T-022, T-023",High,5,R-013,sprint-4,,,,"T-013, T-016, T-020, T-022, T-023"
+40,14,Sub-task,T-026 Load test of search and checkout,"Scripted load against search and checkout with 5,000 restaurants of seed data, reporting the p95 latency.
+
+Layer: testing
+
+Blocked by: T-003, T-006",High,3,R-011,sprint-2,,,,"T-003, T-006"
+41,14,Sub-task,T-027 Production release and rollback runbook,"Promote the release to production, verify with a smoke test and document the rollback steps.
+
+Layer: devops
+
+Blocked by: T-024, T-025, T-026",High,2,R-013,sprint-4,,,,"T-024, T-025, T-026"
+"
+`;

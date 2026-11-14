@@ -1,0 +1,746 @@
+{
+  "idea_text": "An online food delivery app where customers order from nearby restaurants, pay online and follow the courier live, while restaurants run their menus and orders and couriers deliver.",
+  "assumptions": [
+    "Single-city launch with about 200 restaurants and 50 couriers.",
+    "Card and wallet payments go through a hosted payment provider; the platform never stores card numbers.",
+    "Couriers use a mobile web app in v1; there are no native iOS or Android apps.",
+    "Restaurants are onboarded by operations staff; there is no self-service restaurant sign-up in v1.",
+    "Delivery fees are flat per restaurant; promotions, coupons and surge pricing are out of scope.",
+    "One language (English) and one currency.",
+    "The team is four full-stack developers working in 10-day sprints."
+  ],
+  "requirements": [
+    {
+      "key": "browse",
+      "type": "functional",
+      "category": null,
+      "priority": "must",
+      "text": "Customers can find restaurants near their location and browse menus, filtering by cuisine and searching by name or dish."
+    },
+    {
+      "key": "order",
+      "type": "functional",
+      "category": null,
+      "priority": "must",
+      "text": "Customers can add dishes to a cart and place an order for a chosen delivery address, with optional notes for the restaurant."
+    },
+    {
+      "key": "accounts",
+      "type": "functional",
+      "category": null,
+      "priority": "must",
+      "text": "Customers, restaurant staff and couriers can register and sign in; customers keep saved addresses and their order history."
+    },
+    {
+      "key": "pay",
+      "type": "functional",
+      "category": null,
+      "priority": "must",
+      "text": "Customers can pay online by card or digital wallet; an order reaches the restaurant only after the payment is confirmed."
+    },
+    {
+      "key": "track",
+      "type": "functional",
+      "category": null,
+      "priority": "must",
+      "text": "Customers can follow an order from accepted to delivered and see the courier's position on a map while it is on the way."
+    },
+    {
+      "key": "notify",
+      "type": "functional",
+      "category": null,
+      "priority": "should",
+      "text": "Customers receive a push, SMS or email notification when the order status changes."
+    },
+    {
+      "key": "menu-admin",
+      "type": "functional",
+      "category": null,
+      "priority": "must",
+      "text": "Restaurant staff can edit menu items, prices and availability, and changes appear to customers within one minute."
+    },
+    {
+      "key": "restaurant-orders",
+      "type": "functional",
+      "category": null,
+      "priority": "must",
+      "text": "Restaurant staff see new orders as they arrive and can accept or reject each one, stating a preparation time."
+    },
+    {
+      "key": "courier",
+      "type": "functional",
+      "category": null,
+      "priority": "must",
+      "text": "Couriers receive delivery offers, accept one, and update its status from pickup to hand-over."
+    },
+    {
+      "key": "reviews",
+      "type": "functional",
+      "category": null,
+      "priority": "could",
+      "text": "Customers can rate the restaurant and the courier after delivery and leave a short review."
+    },
+    {
+      "key": "perf",
+      "type": "non_functional",
+      "category": "performance",
+      "priority": "must",
+      "text": "Restaurant search and menu pages respond in under 2 seconds at the 95th percentile on a 4G connection, with 5,000 restaurants in the catalogue."
+    },
+    {
+      "key": "security",
+      "type": "non_functional",
+      "category": "security",
+      "priority": "must",
+      "text": "Card data never reaches the platform's servers; passwords are stored only as salted hashes; all traffic uses HTTPS."
+    },
+    {
+      "key": "availability",
+      "type": "non_functional",
+      "category": "reliability",
+      "priority": "must",
+      "text": "Ordering is available 99.5% of each month, and an accepted order is never lost when a service restarts."
+    }
+  ],
+  "epics": [
+    {
+      "key": "ordering",
+      "title": "Customer Ordering",
+      "description": "Everything a customer does before paying: finding a restaurant, building a cart, placing an order and keeping an account."
+    },
+    {
+      "key": "payments-tracking",
+      "title": "Payments and Live Tracking",
+      "description": "Taking the payment securely, moving the order through its states and keeping the customer informed until delivery."
+    },
+    {
+      "key": "operations",
+      "title": "Restaurant and Courier Operations",
+      "description": "The tools restaurant staff and couriers use to run their side of an order."
+    },
+    {
+      "key": "platform",
+      "title": "Platform and Reliability",
+      "description": "Build pipeline, monitoring, performance and end-to-end verification so the service can launch and stay up."
+    }
+  ],
+  "stories": [
+    {
+      "key": "browse",
+      "epic": "ordering",
+      "priority": "must",
+      "as_a": "hungry customer",
+      "i_want": "to search and browse nearby restaurants by cuisine, name or dish",
+      "so_that": "I can quickly find something I want to eat",
+      "acceptance_criteria": [
+        "The restaurant list shows only restaurants that deliver to the customer's location, sorted by distance by default.",
+        "Customers can filter by cuisine and search by restaurant or dish name.",
+        "A menu shows each item with a photo, price and description; unavailable items are greyed out and cannot be added.",
+        "Search and menu pages respond in under 2 seconds at the 95th percentile."
+      ],
+      "requirements": ["browse", "perf"]
+    },
+    {
+      "key": "cart",
+      "epic": "ordering",
+      "priority": "must",
+      "as_a": "customer",
+      "i_want": "to add dishes to a cart and place an order for my delivery address",
+      "so_that": "the food is prepared and brought to my door",
+      "acceptance_criteria": [
+        "A cart holds items from one restaurant only; adding an item from another restaurant asks the customer to start a new cart.",
+        "The cart shows item totals, the delivery fee and the order total, and updates them as quantities change.",
+        "Checkout requires a delivery address and accepts an optional note to the restaurant.",
+        "If an item becomes unavailable or its price changes, the customer is told before the order is placed."
+      ],
+      "requirements": ["order"]
+    },
+    {
+      "key": "accounts",
+      "epic": "ordering",
+      "priority": "must",
+      "as_a": "new user",
+      "i_want": "to register and sign in with my email and password",
+      "so_that": "my addresses and order history are saved",
+      "acceptance_criteria": [
+        "A user can register with an email address and a password of at least 10 characters.",
+        "Passwords are stored only as salted hashes and sessions expire after 30 days of inactivity.",
+        "Signed-in customers can save, edit and delete delivery addresses and view past orders.",
+        "Restaurant staff and couriers sign in through the same service and only see their own tools."
+      ],
+      "requirements": ["accounts", "security"]
+    },
+    {
+      "key": "pay",
+      "epic": "payments-tracking",
+      "priority": "must",
+      "as_a": "customer",
+      "i_want": "to pay for my order by card or digital wallet",
+      "so_that": "my order is confirmed without handling cash",
+      "acceptance_criteria": [
+        "Card details are entered in the payment provider's hosted fields and never reach our servers.",
+        "An order is sent to the restaurant only after the provider confirms the payment.",
+        "A declined payment shows a clear message and keeps the cart so the customer can retry.",
+        "A payment confirmation is shown on screen and sent by email, and duplicate webhooks never charge or confirm twice."
+      ],
+      "requirements": ["pay", "security"]
+    },
+    {
+      "key": "track",
+      "epic": "payments-tracking",
+      "priority": "must",
+      "as_a": "customer",
+      "i_want": "to watch my order progress and see the courier on a map",
+      "so_that": "I know when to expect my food",
+      "acceptance_criteria": [
+        "The order page shows the current status: placed, accepted, preparing, picked up, delivered or cancelled.",
+        "While the order is on the way, the courier's position on the map refreshes at least every 10 seconds.",
+        "The page updates without a manual refresh and recovers after a dropped connection.",
+        "An accepted order and its status history are stored durably and survive a service restart."
+      ],
+      "requirements": ["track", "availability"]
+    },
+    {
+      "key": "notify",
+      "epic": "payments-tracking",
+      "priority": "should",
+      "as_a": "customer",
+      "i_want": "to be notified when my order changes status",
+      "so_that": "I do not have to keep the app open",
+      "acceptance_criteria": [
+        "A notification is sent when the order is accepted, picked up and delivered.",
+        "Customers can choose push, SMS or email, and can switch notifications off.",
+        "A failed notification is retried and never blocks the order from moving forward."
+      ],
+      "requirements": ["notify"]
+    },
+    {
+      "key": "menu-admin",
+      "epic": "operations",
+      "priority": "must",
+      "as_a": "restaurant manager",
+      "i_want": "to edit my menu, prices and item availability",
+      "so_that": "customers always see what I can really serve",
+      "acceptance_criteria": [
+        "A manager can add, edit and delete menu items with name, description, photo and price.",
+        "An item can be switched to unavailable with one action and is immediately greyed out for customers.",
+        "Menu changes are visible to customers within one minute.",
+        "Only staff of that restaurant can change its menu."
+      ],
+      "requirements": ["menu-admin", "accounts"]
+    },
+    {
+      "key": "restaurant-orders",
+      "epic": "operations",
+      "priority": "must",
+      "as_a": "restaurant staff member",
+      "i_want": "to see new orders and accept or reject them with a preparation time",
+      "so_that": "I stay in control of the kitchen's workload",
+      "acceptance_criteria": [
+        "A new paid order appears in the inbox within 5 seconds and plays a sound until it is answered.",
+        "Staff can accept an order with a preparation time, or reject it with a reason.",
+        "An order that is not answered within 3 minutes is cancelled and the customer is refunded."
+      ],
+      "requirements": ["restaurant-orders"]
+    },
+    {
+      "key": "courier",
+      "epic": "operations",
+      "priority": "must",
+      "as_a": "courier",
+      "i_want": "to receive delivery offers, accept one and update its status",
+      "so_that": "I can pick up and deliver orders efficiently",
+      "acceptance_criteria": [
+        "When an order is accepted, nearby available couriers receive an offer showing pickup, drop-off and earnings.",
+        "The first courier to accept gets the job; the others see it disappear.",
+        "The courier marks the order picked up and delivered, and the app shares the courier's position while the job is active.",
+        "If no courier accepts within 5 minutes, operations staff are alerted."
+      ],
+      "requirements": ["courier"]
+    },
+    {
+      "key": "platform",
+      "epic": "platform",
+      "priority": "must",
+      "as_a": "platform operator",
+      "i_want": "automated deployment, monitoring and load testing",
+      "so_that": "ordering stays fast and available as traffic grows",
+      "acceptance_criteria": [
+        "Every merge to the main branch is built, tested and deployed to a staging environment automatically.",
+        "Error rate, latency and queue depth are visible on a dashboard, and an alert fires when ordering fails for 5 minutes.",
+        "A load test of search and checkout confirms the 2-second p95 target before release.",
+        "An end-to-end test covers the full order journey from sign-in to delivery."
+      ],
+      "requirements": ["perf", "availability"]
+    }
+  ],
+  "tasks": [
+    {
+      "key": "wireframes",
+      "story": "browse",
+      "layer": "design",
+      "points": 3,
+      "title": "Wireframes and design system for the ordering flow",
+      "description": "Wireframes for search, menu, cart, checkout and tracking, plus a small component library (buttons, cards, form fields) shared by all web screens.",
+      "rationale": "Five screens at low fidelity and one shared component set; no user research.",
+      "requirements": ["browse"]
+    },
+    {
+      "key": "menu-schema",
+      "story": "browse",
+      "layer": "database",
+      "points": 3,
+      "title": "Restaurant and menu database schema",
+      "description": "Tables for restaurants, delivery zones, menus, menu items and availability, with a geospatial index for nearby search.",
+      "rationale": "Standard relational model; the geo index and delivery zones add the uncertainty.",
+      "requirements": ["browse"]
+    },
+    {
+      "key": "search-api",
+      "story": "browse",
+      "layer": "backend",
+      "points": 5,
+      "title": "Restaurant search and menu API",
+      "description": "Endpoints to list restaurants near a point, filter by cuisine, full-text search on restaurant and dish names, and return a menu. Paginated and cached.",
+      "rationale": "Geo query plus text search plus caching to meet the 2-second target.",
+      "requirements": ["browse", "perf"]
+    },
+    {
+      "key": "browse-ui",
+      "story": "browse",
+      "layer": "frontend",
+      "points": 5,
+      "title": "Restaurant list and menu screens",
+      "description": "Responsive list with filters and search box, and a menu page with item cards and greyed-out unavailable items.",
+      "rationale": "Two screens with filters, loading and empty states.",
+      "requirements": ["browse"]
+    },
+    {
+      "key": "order-schema",
+      "story": "cart",
+      "layer": "database",
+      "points": 3,
+      "title": "Order and order-item schema",
+      "description": "Orders, order items with price snapshots, delivery address, status history and a payment reference.",
+      "rationale": "Price snapshots and status history add two tables beyond the basics.",
+      "requirements": ["order"]
+    },
+    {
+      "key": "order-api",
+      "story": "cart",
+      "layer": "backend",
+      "points": 5,
+      "title": "Cart and order placement API",
+      "description": "Cart endpoints with single-restaurant validation, price and availability re-check at checkout, fee calculation and order creation in the pending-payment state.",
+      "rationale": "Several validation rules and a transactional order write.",
+      "requirements": ["order"]
+    },
+    {
+      "key": "checkout-ui",
+      "story": "cart",
+      "layer": "frontend",
+      "points": 5,
+      "title": "Cart and checkout screens",
+      "description": "Cart drawer, quantity editing, address picker with saved addresses, note field and order summary.",
+      "rationale": "Stateful cart UI with address handling and error states.",
+      "requirements": ["order"]
+    },
+    {
+      "key": "user-schema",
+      "story": "accounts",
+      "layer": "database",
+      "points": 2,
+      "title": "User, role and address schema",
+      "description": "Users with roles (customer, restaurant staff, courier, operations), credentials and saved addresses.",
+      "rationale": "Three small tables with no unusual constraints.",
+      "requirements": ["accounts"]
+    },
+    {
+      "key": "auth-api",
+      "story": "accounts",
+      "layer": "backend",
+      "points": 5,
+      "title": "Authentication and session API",
+      "description": "Register, sign in and sign out with salted password hashing, session expiry, role checks and rate limiting on sign-in.",
+      "rationale": "Security-sensitive, so extra care and review time.",
+      "requirements": ["accounts", "security"]
+    },
+    {
+      "key": "auth-ui",
+      "story": "accounts",
+      "layer": "frontend",
+      "points": 3,
+      "title": "Sign-up, sign-in and address book screens",
+      "description": "Registration and sign-in forms with validation, plus saved-address management and order history list.",
+      "rationale": "Standard forms and one list screen.",
+      "requirements": ["accounts"]
+    },
+    {
+      "key": "payment-provider",
+      "story": "pay",
+      "layer": "integration",
+      "points": 8,
+      "title": "Integrate payment provider (hosted fields and webhooks)",
+      "description": "Set up the provider account and test mode, create payment intents, verify webhook signatures, handle retries and idempotency keys.",
+      "rationale": "Third-party API with webhooks, idempotency and sandbox onboarding; the largest unknown in the plan.",
+      "requirements": ["pay", "security"]
+    },
+    {
+      "key": "payment-api",
+      "story": "pay",
+      "layer": "backend",
+      "points": 5,
+      "title": "Payment and order confirmation flow",
+      "description": "Attach a payment intent to a pending order, move the order to paid on a confirmed webhook, handle declines, and refund on cancellation.",
+      "rationale": "State transitions and failure paths around money.",
+      "requirements": ["pay", "security"]
+    },
+    {
+      "key": "payment-ui",
+      "story": "pay",
+      "layer": "frontend",
+      "points": 3,
+      "title": "Payment form and confirmation screen",
+      "description": "Embed the provider's hosted card fields in checkout, show decline messages and the confirmation page.",
+      "rationale": "Small UI around an embedded component.",
+      "requirements": ["pay", "security"]
+    },
+    {
+      "key": "order-status-api",
+      "story": "track",
+      "layer": "backend",
+      "points": 5,
+      "title": "Order status state machine and live update stream",
+      "description": "Allowed transitions from placed to delivered or cancelled, an audit trail, and a server-sent event stream the customer page subscribes to.",
+      "rationale": "State machine plus a streaming endpoint that must survive reconnects.",
+      "requirements": ["track", "availability"]
+    },
+    {
+      "key": "maps-integration",
+      "story": "track",
+      "layer": "integration",
+      "points": 5,
+      "title": "Map tiles and courier location ingestion",
+      "description": "Choose a map SDK, accept courier position updates and expose the latest position per active order.",
+      "rationale": "Vendor SDK plus a small write-heavy endpoint.",
+      "requirements": ["track"]
+    },
+    {
+      "key": "tracking-ui",
+      "story": "track",
+      "layer": "frontend",
+      "points": 5,
+      "title": "Live order tracking page with map",
+      "description": "Status timeline, estimated arrival, and a map with the courier marker updating from the event stream.",
+      "rationale": "Map rendering and live updates with reconnect handling.",
+      "requirements": ["track"]
+    },
+    {
+      "key": "notification-gateway",
+      "story": "notify",
+      "layer": "integration",
+      "points": 3,
+      "title": "Notification gateway for push, SMS and email",
+      "description": "Connect push, SMS and email providers behind one interface, with templates, user preferences and retry on failure.",
+      "rationale": "Three providers behind one interface; templates are short.",
+      "requirements": ["notify"]
+    },
+    {
+      "key": "menu-admin-api",
+      "story": "menu-admin",
+      "layer": "backend",
+      "points": 3,
+      "title": "Restaurant menu management API",
+      "description": "Create, update and delete items, toggle availability, and enforce that staff can only touch their own restaurant.",
+      "rationale": "CRUD with an ownership check and cache invalidation.",
+      "requirements": ["menu-admin", "accounts"]
+    },
+    {
+      "key": "menu-admin-ui",
+      "story": "menu-admin",
+      "layer": "frontend",
+      "points": 5,
+      "title": "Restaurant dashboard: menu editor",
+      "description": "Menu editor with image upload, price editing and a one-tap availability switch.",
+      "rationale": "Form-heavy screen with image upload.",
+      "requirements": ["menu-admin"]
+    },
+    {
+      "key": "order-inbox-ui",
+      "story": "restaurant-orders",
+      "layer": "frontend",
+      "points": 5,
+      "title": "Restaurant order inbox with accept and reject",
+      "description": "Live inbox with an audible alert, accept with preparation time, reject with reason, and the 3-minute timeout countdown.",
+      "rationale": "Real-time list with sound and a countdown.",
+      "requirements": ["restaurant-orders"]
+    },
+    {
+      "key": "dispatch-api",
+      "story": "courier",
+      "layer": "backend",
+      "points": 8,
+      "title": "Courier matching and dispatch service",
+      "description": "Find available couriers near the restaurant, send offers, award the job to the first acceptance, and escalate when nobody accepts.",
+      "rationale": "Concurrency on the first-accept rule plus timeouts and escalation.",
+      "requirements": ["courier"]
+    },
+    {
+      "key": "courier-app",
+      "story": "courier",
+      "layer": "frontend",
+      "points": 5,
+      "title": "Courier web app: offers, jobs and status updates",
+      "description": "Mobile web app showing offers, the active job, pickup and drop-off actions, and sending the courier's position.",
+      "rationale": "Mobile-first with geolocation permissions and background updates.",
+      "requirements": ["courier"]
+    },
+    {
+      "key": "ci-cd",
+      "story": "platform",
+      "layer": "devops",
+      "points": 5,
+      "title": "CI/CD pipeline and staging environment",
+      "description": "Build and test on every merge, deploy to staging, and manage secrets and database migrations.",
+      "rationale": "Pipeline, environment and migrations from scratch.",
+      "requirements": ["availability"]
+    },
+    {
+      "key": "monitoring",
+      "story": "platform",
+      "layer": "devops",
+      "points": 3,
+      "title": "Monitoring, logging and alerting",
+      "description": "Structured logs, a metrics dashboard for errors, latency and queue depth, and alert rules for failed ordering.",
+      "rationale": "Hosted tooling with a handful of dashboards and alerts.",
+      "requirements": ["availability"]
+    },
+    {
+      "key": "e2e-tests",
+      "story": "platform",
+      "layer": "testing",
+      "points": 5,
+      "title": "End-to-end order journey tests",
+      "description": "Automated browser tests from sign-in through payment (test mode), restaurant acceptance, courier delivery and customer tracking.",
+      "rationale": "Multi-actor scenario across three web apps.",
+      "requirements": ["availability"]
+    },
+    {
+      "key": "load-tests",
+      "story": "platform",
+      "layer": "testing",
+      "points": 3,
+      "title": "Load test of search and checkout",
+      "description": "Scripted load against search and checkout with 5,000 restaurants of seed data, reporting the p95 latency.",
+      "rationale": "One tool, two scenarios and a seed script.",
+      "requirements": ["perf"]
+    },
+    {
+      "key": "release-runbook",
+      "story": "platform",
+      "layer": "devops",
+      "points": 2,
+      "title": "Production release and rollback runbook",
+      "description": "Promote the release to production, verify with a smoke test and document the rollback steps.",
+      "rationale": "Mostly checklist work once the pipeline exists.",
+      "requirements": ["availability"]
+    }
+  ],
+  "dependencies": [
+    {
+      "from": "wireframes",
+      "to": "browse-ui",
+      "reason": "Screens are built from the approved wireframes and components."
+    },
+    {
+      "from": "wireframes",
+      "to": "checkout-ui",
+      "reason": "Checkout screens follow the wireframes and shared components."
+    },
+    {
+      "from": "menu-schema",
+      "to": "search-api",
+      "reason": "Queries run against the restaurant and menu tables."
+    },
+    {
+      "from": "search-api",
+      "to": "browse-ui",
+      "reason": "The screens call the search and menu endpoints."
+    },
+    {
+      "from": "menu-schema",
+      "to": "order-schema",
+      "reason": "Order items reference menu items."
+    },
+    {
+      "from": "user-schema",
+      "to": "auth-api",
+      "reason": "Authentication reads and writes the user table."
+    },
+    {
+      "from": "auth-api",
+      "to": "auth-ui",
+      "reason": "The forms call the authentication endpoints."
+    },
+    {
+      "from": "auth-api",
+      "to": "order-api",
+      "reason": "An order belongs to a signed-in customer."
+    },
+    {
+      "from": "search-api",
+      "to": "order-api",
+      "reason": "Checkout re-checks prices and availability through the menu endpoints."
+    },
+    {
+      "from": "order-schema",
+      "to": "order-api",
+      "reason": "The API persists orders in these tables."
+    },
+    {
+      "from": "order-api",
+      "to": "checkout-ui",
+      "reason": "Checkout calls the cart and order endpoints."
+    },
+    {
+      "from": "order-api",
+      "to": "payment-api",
+      "reason": "Payment is attached to a pending order."
+    },
+    {
+      "from": "payment-provider",
+      "to": "payment-api",
+      "reason": "The payment flow uses the provider integration."
+    },
+    {
+      "from": "payment-api",
+      "to": "payment-ui",
+      "reason": "The form needs the payment intent endpoint."
+    },
+    {
+      "from": "checkout-ui",
+      "to": "payment-ui",
+      "reason": "The payment form is embedded in the checkout screen."
+    },
+    {
+      "from": "payment-api",
+      "to": "order-status-api",
+      "reason": "An order enters the state machine when payment is confirmed."
+    },
+    {
+      "from": "order-status-api",
+      "to": "tracking-ui",
+      "reason": "The page subscribes to the status stream."
+    },
+    {
+      "from": "maps-integration",
+      "to": "tracking-ui",
+      "reason": "The map needs the SDK and the courier position endpoint."
+    },
+    {
+      "from": "order-status-api",
+      "to": "notification-gateway",
+      "reason": "Notifications are triggered by status events."
+    },
+    {
+      "from": "order-status-api",
+      "to": "order-inbox-ui",
+      "reason": "Accept and reject are state transitions."
+    },
+    {
+      "from": "menu-schema",
+      "to": "menu-admin-api",
+      "reason": "The API edits the menu tables."
+    },
+    {
+      "from": "auth-api",
+      "to": "menu-admin-api",
+      "reason": "Only signed-in staff of the restaurant may edit its menu."
+    },
+    {
+      "from": "menu-admin-api",
+      "to": "menu-admin-ui",
+      "reason": "The editor calls the menu management endpoints."
+    },
+    {
+      "from": "order-status-api",
+      "to": "dispatch-api",
+      "reason": "Dispatch starts when the restaurant accepts an order."
+    },
+    {
+      "from": "dispatch-api",
+      "to": "courier-app",
+      "reason": "The app consumes the offer and job endpoints."
+    },
+    {
+      "from": "maps-integration",
+      "to": "courier-app",
+      "reason": "The app posts position updates to the ingestion endpoint."
+    },
+    {
+      "from": "ci-cd",
+      "to": "monitoring",
+      "reason": "Dashboards and alerts are deployed through the pipeline."
+    },
+    {
+      "from": "ci-cd",
+      "to": "e2e-tests",
+      "reason": "Tests run against the staging environment from the pipeline."
+    },
+    {
+      "from": "payment-ui",
+      "to": "e2e-tests",
+      "reason": "The journey includes paying in test mode."
+    },
+    {
+      "from": "tracking-ui",
+      "to": "e2e-tests",
+      "reason": "The journey ends with live tracking."
+    },
+    {
+      "from": "order-inbox-ui",
+      "to": "e2e-tests",
+      "reason": "The restaurant accepts the order during the journey."
+    },
+    {
+      "from": "courier-app",
+      "to": "e2e-tests",
+      "reason": "A courier delivers the order during the journey."
+    },
+    {
+      "from": "search-api",
+      "to": "load-tests",
+      "reason": "Search is one of the two load scenarios."
+    },
+    {
+      "from": "order-api",
+      "to": "load-tests",
+      "reason": "Checkout is the other load scenario."
+    },
+    {
+      "from": "monitoring",
+      "to": "release-runbook",
+      "reason": "Alerts must be live before production traffic."
+    },
+    {
+      "from": "e2e-tests",
+      "to": "release-runbook",
+      "reason": "Release is gated on the end-to-end tests passing."
+    },
+    {
+      "from": "load-tests",
+      "to": "release-runbook",
+      "reason": "Release is gated on meeting the latency target."
+    },
+    {
+      "from": "order-api",
+      "to": "payment-api",
+      "reason": "The payment flow runs on the order created by checkout."
+    },
+    {
+      "from": "T-099",
+      "to": "tracking-ui",
+      "reason": "Live tracking needs the courier position feed."
+    }
+  ]
+}

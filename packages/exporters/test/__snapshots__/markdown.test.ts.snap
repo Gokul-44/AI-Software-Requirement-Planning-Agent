@@ -1,0 +1,481 @@
+// Vitest Snapshot v1, https://vitest.dev/guide/snapshot.html
+
+exports[`toMarkdown on the food-delivery fixture > matches the snapshot 1`] = `
+"# Project plan
+
+> An online food delivery app where customers order from nearby restaurants, pay online and follow the courier live, while restaurants run their menus and orders and couriers deliver.
+
+## Overview
+
+An online food delivery platform for one city: customers browse, order, pay and track, restaurants run menus and orders, and couriers deliver. 13 requirements become 4 epics, 10 stories and 27 tasks (117 points) over 4 sprints.
+
+| Measure | Value |
+| --- | --- |
+| Requirements | 13 (10 functional, 3 non-functional) |
+| Epics / stories / tasks | 4 / 10 / 27 |
+| Total estimate | 117 points, 468 hours |
+| Sprint plan | 4 sprints, 40 days (capacity 40 points and 60 h per sprint) |
+| Shortest possible duration (CPM, unlimited people) | 172 h, 28.5 working days |
+| Critical tasks | 9 of 27 |
+| Risks | 5 (3 high, 2 medium, 0 low) |
+| Issues | 3 |
+
+Configuration: 4 people, 10 points per person per sprint, 10-day sprints, 6 focus hours per day, relaxed sprint packing. Plan schema 1.0.
+
+## Assumptions
+
+- Single-city launch with about 200 restaurants and 50 couriers.
+- Card and wallet payments go through a hosted payment provider; the platform never stores card numbers.
+- Couriers use a mobile web app in v1; there are no native iOS or Android apps.
+- Restaurants are onboarded by operations staff; there is no self-service restaurant sign-up in v1.
+- Delivery fees are flat per restaurant; promotions, coupons and surge pricing are out of scope.
+- One language (English) and one currency.
+- The team is four full-stack developers working in 10-day sprints.
+
+## Requirements traceability
+
+12 of 13 requirements have a story and 12 have a task. Uncovered: R-010.
+
+| Requirement | Type | Priority | Text | Stories | Tasks |
+| --- | --- | --- | --- | --- | --- |
+| R-001 | functional | must | Customers can find restaurants near their location and browse menus, filtering by cuisine and searching by name or dish. | S-001 | T-001, T-002, T-003, T-004 |
+| R-002 | functional | must | Customers can add dishes to a cart and place an order for a chosen delivery address, with optional notes for the restaurant. | S-002 | T-005, T-006, T-007 |
+| R-003 | functional | must | Customers, restaurant staff and couriers can register and sign in; customers keep saved addresses and their order history. | S-003, S-007 | T-008, T-009, T-010, T-018 |
+| R-004 | functional | must | Customers can pay online by card or digital wallet; an order reaches the restaurant only after the payment is confirmed. | S-004 | T-011, T-012, T-013 |
+| R-005 | functional | must | Customers can follow an order from accepted to delivered and see the courier's position on a map while it is on the way. | S-005 | T-014, T-015, T-016 |
+| R-006 | functional | should | Customers receive a push, SMS or email notification when the order status changes. | S-006 | T-017 |
+| R-007 | functional | must | Restaurant staff can edit menu items, prices and availability, and changes appear to customers within one minute. | S-007 | T-018, T-019 |
+| R-008 | functional | must | Restaurant staff see new orders as they arrive and can accept or reject each one, stating a preparation time. | S-008 | T-020 |
+| R-009 | functional | must | Couriers receive delivery offers, accept one, and update its status from pickup to hand-over. | S-009 | T-021, T-022 |
+| R-010 | functional | could | Customers can rate the restaurant and the courier after delivery and leave a short review. | - | UNCOVERED |
+| R-011 | non_functional (performance) | must | Restaurant search and menu pages respond in under 2 seconds at the 95th percentile on a 4G connection, with 5,000 restaurants in the catalogue. | S-001, S-010 | T-003, T-026 |
+| R-012 | non_functional (security) | must | Card data never reaches the platform's servers; passwords are stored only as salted hashes; all traffic uses HTTPS. | S-003, S-004 | T-009, T-011, T-012, T-013 |
+| R-013 | non_functional (reliability) | must | Ordering is available 99.5% of each month, and an accepted order is never lost when a service restarts. | S-005, S-010 | T-014, T-023, T-024, T-025, T-027 |
+
+## Epics, stories and tasks
+
+### E-001 Customer Ordering
+
+Everything a customer does before paying: finding a restaurant, building a cart, placing an order and keeping an account.
+
+#### S-001 Search and browse nearby restaurants by cuisine, name or dish
+
+Priority: must. Requirements: R-001, R-011. 16 points in 4 tasks.
+
+As a hungry customer, I want to search and browse nearby restaurants by cuisine, name or dish, so that I can quickly find something I want to eat.
+
+Acceptance criteria:
+
+- The restaurant list shows only restaurants that deliver to the customer's location, sorted by distance by default.
+- Customers can filter by cuisine and search by restaurant or dish name.
+- A menu shows each item with a photo, price and description; unavailable items are greyed out and cannot be added.
+- Search and menu pages respond in under 2 seconds at the 95th percentile.
+
+| Task | Title | Layer | Points | Hours | Sprint | Depends on |
+| --- | --- | --- | --- | --- | --- | --- |
+| T-001 | Wireframes and design system for the ordering flow | design | 3 | 12 | 1 | - |
+| T-002 (critical) | Restaurant and menu database schema | database | 3 | 12 | 1 | - |
+| T-003 (critical) | Restaurant search and menu API | backend | 5 | 20 | 1 | T-002 |
+| T-004 | Restaurant list and menu screens | frontend | 5 | 20 | 3 | T-001, T-003 |
+
+#### S-002 Add dishes to a cart and place an order for my delivery address
+
+Priority: must. Requirements: R-002. 13 points in 3 tasks.
+
+As a customer, I want to add dishes to a cart and place an order for my delivery address, so that the food is prepared and brought to my door.
+
+Acceptance criteria:
+
+- A cart holds items from one restaurant only; adding an item from another restaurant asks the customer to start a new cart.
+- The cart shows item totals, the delivery fee and the order total, and updates them as quantities change.
+- Checkout requires a delivery address and accepts an optional note to the restaurant.
+- If an item becomes unavailable or its price changes, the customer is told before the order is placed.
+
+| Task | Title | Layer | Points | Hours | Sprint | Depends on |
+| --- | --- | --- | --- | --- | --- | --- |
+| T-005 | Order and order-item schema | database | 3 | 12 | 1 | T-002 |
+| T-006 (critical) | Cart and order placement API | backend | 5 | 20 | 1 | T-003, T-005, T-009 |
+| T-007 | Cart and checkout screens | frontend | 5 | 20 | 2 | T-001, T-006 |
+
+#### S-003 Register and sign in with my email and password
+
+Priority: must. Requirements: R-003, R-012. 10 points in 3 tasks.
+
+As a new user, I want to register and sign in with my email and password, so that my addresses and order history are saved.
+
+Acceptance criteria:
+
+- A user can register with an email address and a password of at least 10 characters.
+- Passwords are stored only as salted hashes and sessions expire after 30 days of inactivity.
+- Signed-in customers can save, edit and delete delivery addresses and view past orders.
+- Restaurant staff and couriers sign in through the same service and only see their own tools.
+
+| Task | Title | Layer | Points | Hours | Sprint | Depends on |
+| --- | --- | --- | --- | --- | --- | --- |
+| T-008 | User, role and address schema | database | 2 | 8 | 1 | - |
+| T-009 | Authentication and session API | backend | 5 | 20 | 1 | T-008 |
+| T-010 | Sign-up, sign-in and address book screens | frontend | 3 | 12 | 2 | T-009 |
+
+### E-002 Payments and Live Tracking
+
+Taking the payment securely, moving the order through its states and keeping the customer informed until delivery.
+
+#### S-004 Pay for my order by card or digital wallet
+
+Priority: must. Requirements: R-004, R-012. 16 points in 3 tasks.
+
+As a customer, I want to pay for my order by card or digital wallet, so that my order is confirmed without handling cash.
+
+Acceptance criteria:
+
+- Card details are entered in the payment provider's hosted fields and never reach our servers.
+- An order is sent to the restaurant only after the provider confirms the payment.
+- A declined payment shows a clear message and keeps the cart so the customer can retry.
+- A payment confirmation is shown on screen and sent by email, and duplicate webhooks never charge or confirm twice.
+
+| Task | Title | Layer | Points | Hours | Sprint | Depends on |
+| --- | --- | --- | --- | --- | --- | --- |
+| T-011 | Integrate payment provider (hosted fields and webhooks) | integration | 8 | 32 | 1 | - |
+| T-012 (critical) | Payment and order confirmation flow | backend | 5 | 20 | 2 | T-006, T-011 |
+| T-013 | Payment form and confirmation screen | frontend | 3 | 12 | 2 | T-007, T-012 |
+
+#### S-005 Watch my order progress and see the courier on a map
+
+Priority: must. Requirements: R-005, R-013. 15 points in 3 tasks.
+
+As a customer, I want to watch my order progress and see the courier on a map, so that I know when to expect my food.
+
+Acceptance criteria:
+
+- The order page shows the current status: placed, accepted, preparing, picked up, delivered or cancelled.
+- While the order is on the way, the courier's position on the map refreshes at least every 10 seconds.
+- The page updates without a manual refresh and recovers after a dropped connection.
+- An accepted order and its status history are stored durably and survive a service restart.
+
+| Task | Title | Layer | Points | Hours | Sprint | Depends on |
+| --- | --- | --- | --- | --- | --- | --- |
+| T-014 (critical) | Order status state machine and live update stream | backend | 5 | 20 | 2 | T-012 |
+| T-015 | Map tiles and courier location ingestion | integration | 5 | 20 | 1 | - |
+| T-016 | Live order tracking page with map | frontend | 5 | 20 | 2 | T-014, T-015 |
+
+#### S-006 Be notified when my order changes status
+
+Priority: should. Requirements: R-006. 3 points in 1 tasks.
+
+As a customer, I want to be notified when my order changes status, so that I do not have to keep the app open.
+
+Acceptance criteria:
+
+- A notification is sent when the order is accepted, picked up and delivered.
+- Customers can choose push, SMS or email, and can switch notifications off.
+- A failed notification is retried and never blocks the order from moving forward.
+
+| Task | Title | Layer | Points | Hours | Sprint | Depends on |
+| --- | --- | --- | --- | --- | --- | --- |
+| T-017 | Notification gateway for push, SMS and email | integration | 3 | 12 | 2 | T-014 |
+
+### E-003 Restaurant and Courier Operations
+
+The tools restaurant staff and couriers use to run their side of an order.
+
+#### S-007 Edit my menu, prices and item availability
+
+Priority: must. Requirements: R-003, R-007. 8 points in 2 tasks.
+
+As a restaurant manager, I want to edit my menu, prices and item availability, so that customers always see what I can really serve.
+
+Acceptance criteria:
+
+- A manager can add, edit and delete menu items with name, description, photo and price.
+- An item can be switched to unavailable with one action and is immediately greyed out for customers.
+- Menu changes are visible to customers within one minute.
+- Only staff of that restaurant can change its menu.
+
+| Task | Title | Layer | Points | Hours | Sprint | Depends on |
+| --- | --- | --- | --- | --- | --- | --- |
+| T-018 | Restaurant menu management API | backend | 3 | 12 | 2 | T-002, T-009 |
+| T-019 | Restaurant dashboard: menu editor | frontend | 5 | 20 | 3 | T-018 |
+
+#### S-008 See new orders and accept or reject them with a preparation time
+
+Priority: must. Requirements: R-008. 5 points in 1 tasks.
+
+As a restaurant staff member, I want to see new orders and accept or reject them with a preparation time, so that I stay in control of the kitchen's workload.
+
+Acceptance criteria:
+
+- A new paid order appears in the inbox within 5 seconds and plays a sound until it is answered.
+- Staff can accept an order with a preparation time, or reject it with a reason.
+- An order that is not answered within 3 minutes is cancelled and the customer is refunded.
+
+| Task | Title | Layer | Points | Hours | Sprint | Depends on |
+| --- | --- | --- | --- | --- | --- | --- |
+| T-020 | Restaurant order inbox with accept and reject | frontend | 5 | 20 | 2 | T-014 |
+
+#### S-009 Receive delivery offers, accept one and update its status
+
+Priority: must. Requirements: R-009. 13 points in 2 tasks.
+
+As a courier, I want to receive delivery offers, accept one and update its status, so that I can pick up and deliver orders efficiently.
+
+Acceptance criteria:
+
+- When an order is accepted, nearby available couriers receive an offer showing pickup, drop-off and earnings.
+- The first courier to accept gets the job; the others see it disappear.
+- The courier marks the order picked up and delivered, and the app shares the courier's position while the job is active.
+- If no courier accepts within 5 minutes, operations staff are alerted.
+
+| Task | Title | Layer | Points | Hours | Sprint | Depends on |
+| --- | --- | --- | --- | --- | --- | --- |
+| T-021 (critical) | Courier matching and dispatch service | backend | 8 | 32 | 3 | T-014 |
+| T-022 (critical) | Courier web app: offers, jobs and status updates | frontend | 5 | 20 | 3 | T-015, T-021 |
+
+### E-004 Platform and Reliability
+
+Build pipeline, monitoring, performance and end-to-end verification so the service can launch and stay up.
+
+#### S-010 Automated deployment, monitoring and load testing
+
+Priority: must. Requirements: R-011, R-013. 18 points in 5 tasks.
+
+As a platform operator, I want automated deployment, monitoring and load testing, so that ordering stays fast and available as traffic grows.
+
+Acceptance criteria:
+
+- Every merge to the main branch is built, tested and deployed to a staging environment automatically.
+- Error rate, latency and queue depth are visible on a dashboard, and an alert fires when ordering fails for 5 minutes.
+- A load test of search and checkout confirms the 2-second p95 target before release.
+- An end-to-end test covers the full order journey from sign-in to delivery.
+
+| Task | Title | Layer | Points | Hours | Sprint | Depends on |
+| --- | --- | --- | --- | --- | --- | --- |
+| T-023 | CI/CD pipeline and staging environment | devops | 5 | 20 | 3 | - |
+| T-024 | Monitoring, logging and alerting | devops | 3 | 12 | 3 | T-023 |
+| T-025 (critical) | End-to-end order journey tests | testing | 5 | 20 | 4 | T-013, T-016, T-020, T-022, T-023 |
+| T-026 | Load test of search and checkout | testing | 3 | 12 | 2 | T-003, T-006 |
+| T-027 (critical) | Production release and rollback runbook | devops | 2 | 8 | 4 | T-024, T-025, T-026 |
+
+## Sprint plan
+
+### Sprint 1
+
+Load: 39 of 40 points (98%).
+
+| Task | Title | Layer | Points | Planned hours |
+| --- | --- | --- | --- | --- |
+| T-001 | Wireframes and design system for the ordering flow | design | 3 | 0 to 12 |
+| T-002 (critical) | Restaurant and menu database schema | database | 3 | 0 to 12 |
+| T-003 (critical) | Restaurant search and menu API | backend | 5 | 12 to 32 |
+| T-005 | Order and order-item schema | database | 3 | 12 to 24 |
+| T-006 (critical) | Cart and order placement API | backend | 5 | 32 to 52 |
+| T-008 | User, role and address schema | database | 2 | 0 to 8 |
+| T-009 | Authentication and session API | backend | 5 | 8 to 28 |
+| T-011 | Integrate payment provider (hosted fields and webhooks) | integration | 8 | 0 to 32 |
+| T-015 | Map tiles and courier location ingestion | integration | 5 | 0 to 20 |
+
+### Sprint 2
+
+Load: 40 of 40 points (100%).
+
+| Task | Title | Layer | Points | Planned hours |
+| --- | --- | --- | --- | --- |
+| T-007 | Cart and checkout screens | frontend | 5 | 60 to 80 |
+| T-010 | Sign-up, sign-in and address book screens | frontend | 3 | 60 to 72 |
+| T-012 (critical) | Payment and order confirmation flow | backend | 5 | 60 to 80 |
+| T-013 | Payment form and confirmation screen | frontend | 3 | 80 to 92 |
+| T-014 (critical) | Order status state machine and live update stream | backend | 5 | 80 to 100 |
+| T-016 | Live order tracking page with map | frontend | 5 | 100 to 120 |
+| T-017 | Notification gateway for push, SMS and email | integration | 3 | 100 to 112 |
+| T-018 | Restaurant menu management API | backend | 3 | 60 to 72 |
+| T-020 | Restaurant order inbox with accept and reject | frontend | 5 | 100 to 120 |
+| T-026 | Load test of search and checkout | testing | 3 | 60 to 72 |
+
+### Sprint 3
+
+Load: 31 of 40 points (78%).
+
+| Task | Title | Layer | Points | Planned hours |
+| --- | --- | --- | --- | --- |
+| T-004 | Restaurant list and menu screens | frontend | 5 | 120 to 140 |
+| T-019 | Restaurant dashboard: menu editor | frontend | 5 | 120 to 140 |
+| T-021 (critical) | Courier matching and dispatch service | backend | 8 | 120 to 152 |
+| T-022 (critical) | Courier web app: offers, jobs and status updates | frontend | 5 | 152 to 172 |
+| T-023 | CI/CD pipeline and staging environment | devops | 5 | 120 to 140 |
+| T-024 | Monitoring, logging and alerting | devops | 3 | 140 to 152 |
+
+### Sprint 4
+
+Load: 7 of 40 points (18%).
+
+| Task | Title | Layer | Points | Planned hours |
+| --- | --- | --- | --- | --- |
+| T-025 (critical) | End-to-end order journey tests | testing | 5 | 180 to 200 |
+| T-027 (critical) | Production release and rollback runbook | devops | 2 | 200 to 208 |
+
+## Schedule
+
+Without a limit on people the plan could finish in 172 h (28.5 working days). With the team and sprint capacity above it takes 4 sprints (40 days).
+
+Critical path: T-002 -> T-003 -> T-006 -> T-012 -> T-014 -> T-021 -> T-022 -> T-025 -> T-027.
+
+### Gantt chart
+
+The capacity-feasible plan. Bars are placed in working days counted from project start (day 1 is shown as 2026-01-05; weekends are not modelled). Critical tasks are highlighted.
+
+\`\`\`mermaid
+gantt
+    title Sprint plan by working day
+    dateFormat YYYY-MM-DD
+    axisFormat %b %d
+    section Sprint 1
+    T-001 Wireframes and design system for the ordering flow :t001, 2026-01-05, 2026-01-07
+    T-002 Restaurant and menu database schema :crit, t002, 2026-01-05, 2026-01-07
+    T-008 User, role and address schema :t008, 2026-01-05, 2026-01-07
+    T-011 Integrate payment provider hosted fields and webhooks :t011, 2026-01-05, 2026-01-11
+    T-015 Map tiles and courier location ingestion :t015, 2026-01-05, 2026-01-09
+    T-009 Authentication and session API :t009, 2026-01-06, 2026-01-10
+    T-003 Restaurant search and menu API :crit, t003, 2026-01-07, 2026-01-11
+    T-005 Order and order-item schema :t005, 2026-01-07, 2026-01-09
+    T-006 Cart and order placement API :crit, t006, 2026-01-10, 2026-01-14
+    section Sprint 2
+    T-007 Cart and checkout screens :t007, 2026-01-15, 2026-01-19
+    T-010 Sign-up, sign-in and address book screens :t010, 2026-01-15, 2026-01-17
+    T-012 Payment and order confirmation flow :crit, t012, 2026-01-15, 2026-01-19
+    T-018 Restaurant menu management API :t018, 2026-01-15, 2026-01-17
+    T-026 Load test of search and checkout :t026, 2026-01-15, 2026-01-17
+    T-013 Payment form and confirmation screen :t013, 2026-01-18, 2026-01-21
+    T-014 Order status state machine and live update stream :crit, t014, 2026-01-18, 2026-01-22
+    T-016 Live order tracking page with map :t016, 2026-01-21, 2026-01-25
+    T-017 Notification gateway for push, SMS and email :t017, 2026-01-21, 2026-01-24
+    T-020 Restaurant order inbox with accept and reject :t020, 2026-01-21, 2026-01-25
+    section Sprint 3
+    T-004 Restaurant list and menu screens :t004, 2026-01-25, 2026-01-29
+    T-019 Restaurant dashboard menu editor :t019, 2026-01-25, 2026-01-29
+    T-021 Courier matching and dispatch service :crit, t021, 2026-01-25, 2026-01-31
+    T-023 CI/CD pipeline and staging environment :t023, 2026-01-25, 2026-01-29
+    T-024 Monitoring, logging and alerting :t024, 2026-01-28, 2026-01-31
+    T-022 Courier web app offers, jobs and status updates :crit, t022, 2026-01-30, 2026-02-03
+    section Sprint 4
+    T-025 End-to-end order journey tests :crit, t025, 2026-02-04, 2026-02-08
+    T-027 Production release and rollback runbook :crit, t027, 2026-02-07, 2026-02-09
+\`\`\`
+
+### Critical path graph
+
+Critical tasks have no slack. Arrows join critical tasks that directly follow each other.
+
+\`\`\`mermaid
+graph LR
+    T_002["T-002 Restaurant and menu database schema"]
+    T_003["T-003 Restaurant search and menu API"]
+    T_006["T-006 Cart and order placement API"]
+    T_012["T-012 Payment and order confirmation flow"]
+    T_014["T-014 Order status state machine and live update stream"]
+    T_021["T-021 Courier matching and dispatch service"]
+    T_022["T-022 Courier web app offers, jobs and status updates"]
+    T_025["T-025 End-to-end order journey tests"]
+    T_027["T-027 Production release and rollback runbook"]
+    T_002 --> T_003
+    T_003 --> T_006
+    T_006 --> T_012
+    T_012 --> T_014
+    T_014 --> T_021
+    T_021 --> T_022
+    T_022 --> T_025
+    T_025 --> T_027
+\`\`\`
+
+## Risks
+
+### RK-001 The backend chain decides the finish date
+
+Severity: medium. Origin: llm.
+
+CPM duration is 172 h (28.5 working days); 9 of 27 tasks (33%) are critical. Layer backend holds 112 of 172 critical-path hours (65%). Most of the longest path is backend work done one task after another, so a slip in any of those tasks moves the release date, and a second developer cannot shorten a chain of dependent tasks.
+
+Mitigation: Name an owner per critical backend task, review designs before coding starts, and split the largest tasks so that frontend and testing work can begin on agreed API contracts while the backend is built.
+
+Cited signals:
+
+- SG-01 (critical_path_length, medium): CPM duration is 172 h (28.5 working days); 9 of 27 tasks (33%) are critical.
+- SG-12 (critical_layer_concentration, medium): Layer backend holds 112 of 172 critical-path hours (65%).
+
+### RK-002 Payment and order state work gates tracking, notifications and couriers
+
+Severity: high. Origin: llm.
+
+T-012 "Payment and order confirmation flow" has 9 downstream tasks and 0 h slack (CPM). T-014 "Order status state machine and live update stream" has 7 downstream tasks and 0 h slack (CPM). Both tasks sit on the critical path, and the payment provider's sandbox onboarding and webhook behaviour are outside the team's control.
+
+Mitigation: Open the payment provider account and start its sandbox integration in the first sprint, agree the order status transitions early so dependent screens can use a stub, and keep a mock payment mode for demos.
+
+Cited signals:
+
+- SG-05 (critical_high_fanout, high): T-012 "Payment and order confirmation flow" has 9 downstream tasks and 0 h slack (CPM).
+- SG-06 (critical_high_fanout, high): T-014 "Order status state machine and live update stream" has 7 downstream tasks and 0 h slack (CPM).
+
+### RK-003 Early sprints have no spare capacity
+
+Severity: high. Origin: llm.
+
+Sprint 1 is loaded to 98% (39 of 40 points). Sprint 2 is loaded to 100% (40 of 40 points). A plan that is already full cannot absorb sick days, review rework or one underestimated task.
+
+Mitigation: Move low-priority work out of the first two sprints, leave a deliberate buffer in sprint planning, and re-estimate after the first sprint using the real completed points.
+
+Cited signals:
+
+- SG-08 (sprint_overload, medium): Sprint 1 is loaded to 98% (39 of 40 points).
+- SG-09 (sprint_overload, high): Sprint 2 is loaded to 100% (40 of 40 points).
+
+### RK-004 Little testing before a late integration point
+
+Severity: medium. Origin: llm.
+
+Testing is 8 of 117 points (6.8%), below the 10% minimum. T-025 "End-to-end order journey tests" has 5 direct predecessors (integration bottleneck). Problems between the customer, restaurant and courier screens would first show up near the end, when little time is left to fix them.
+
+Mitigation: Add unit and API tests to each backend task definition of done, add a payment-flow test task, and run a thin end-to-end journey as soon as checkout works rather than waiting for the last screen.
+
+Cited signals:
+
+- SG-10 (layer_imbalance, medium): Testing is 8 of 117 points (6.8%), below the 10% minimum.
+- SG-07 (high_fan_in, medium): T-025 "End-to-end order journey tests" has 5 direct predecessors (integration bottleneck).
+
+### RK-005 High-severity signal: critical_high_fanout
+
+Severity: high. Origin: template.
+
+T-002 "Restaurant and menu database schema" has 18 downstream tasks and 0 h slack (CPM).
+
+Mitigation: Review this signal with the team, assign an owner and decide whether the task can be split or started earlier.
+
+Cited signals:
+
+- SG-02 (critical_high_fanout, high): T-002 "Restaurant and menu database schema" has 18 downstream tasks and 0 h slack (CPM).
+
+## Signals
+
+Computed by the scheduler; risks may cite only these.
+
+| Signal | Kind | Severity | Value | Threshold | Tasks | Message |
+| --- | --- | --- | --- | --- | --- | --- |
+| SG-01 | critical_path_length | medium | 0.3333 | 0.25 | T-002, T-003, T-006, T-012, T-014, T-021, T-022, T-025, T-027 | CPM duration is 172 h (28.5 working days); 9 of 27 tasks (33%) are critical. |
+| SG-02 | critical_high_fanout | high | 18 | 5 | T-002 | T-002 "Restaurant and menu database schema" has 18 downstream tasks and 0 h slack (CPM). |
+| SG-03 | critical_high_fanout | high | 14 | 5 | T-003 | T-003 "Restaurant search and menu API" has 14 downstream tasks and 0 h slack (CPM). |
+| SG-04 | critical_high_fanout | high | 12 | 5 | T-006 | T-006 "Cart and order placement API" has 12 downstream tasks and 0 h slack (CPM). |
+| SG-05 | critical_high_fanout | high | 9 | 5 | T-012 | T-012 "Payment and order confirmation flow" has 9 downstream tasks and 0 h slack (CPM). |
+| SG-06 | critical_high_fanout | high | 7 | 5 | T-014 | T-014 "Order status state machine and live update stream" has 7 downstream tasks and 0 h slack (CPM). |
+| SG-07 | high_fan_in | medium | 5 | 4 | T-025 | T-025 "End-to-end order journey tests" has 5 direct predecessors (integration bottleneck). |
+| SG-08 | sprint_overload | medium | 0.975 | 0.9 | T-001, T-002, T-003, T-005, T-006, T-008, T-009, T-011, T-015 | Sprint 1 is loaded to 98% (39 of 40 points). |
+| SG-09 | sprint_overload | high | 1 | 0.98 | T-007, T-010, T-012, T-013, T-014, T-016, T-017, T-018, T-020, T-026 | Sprint 2 is loaded to 100% (40 of 40 points). |
+| SG-10 | layer_imbalance | medium | 0.0684 | 0.1 | T-025, T-026 | Testing is 8 of 117 points (6.8%), below the 10% minimum. |
+| SG-11 | uncovered_requirement | medium | 0 | - | - | R-010 (could) has no story, so no task can trace to it. |
+| SG-12 | critical_layer_concentration | medium | 0.6512 | 0.6 | T-003, T-006, T-012, T-014, T-021 | Layer backend holds 112 of 172 critical-path hours (65%). |
+
+## Issues
+
+| Issue | Stage | Severity | Kind | Message | Resolution |
+| --- | --- | --- | --- | --- | --- |
+| I-001 | 5 | warning | duplicate_edge | Dependency T-006 -&gt; T-012 dropped: it is listed more than once. | Edge removed. |
+| I-002 | 5 | warning | unknown_reference | Dependency T-099 -&gt; T-016 dropped: "T-099" is not a task. | Edge removed. |
+| I-003 | 2 | warning | uncovered_requirement | R-010 (could) has no story, so no task can trace to it. | Flagged for the user; no story was generated for it. |
+"
+`;

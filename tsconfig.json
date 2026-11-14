@@ -6,6 +6,8 @@
     { "path": "packages/scheduler" },
     { "path": "packages/scheduler/tsconfig.test.json" },
     { "path": "packages/exporters" },
+    { "path": "packages/exporters/tsconfig.test.json" },
+    { "path": "scripts" },
     { "path": "apps/api" },
     { "path": "apps/web" }
   ]
