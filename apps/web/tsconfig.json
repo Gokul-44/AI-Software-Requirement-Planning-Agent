@@ -1,6 +1,25 @@
 {
   "extends": "../../tsconfig.base.json",
-  "compilerOptions": { "rootDir": "src", "outDir": "dist" },
-  "include": ["src"],
-  "exclude": ["src/**/*.test.ts"]
+  "compilerOptions": {
+    "target": "ES2022",
+    "lib": ["ES2023", "DOM", "DOM.Iterable"],
+    "module": "ESNext",
+    "moduleResolution": "Bundler",
+    "jsx": "react-jsx",
+    "types": ["vite/client"],
+    "rootDir": ".",
+    "outDir": "node_modules/.tmp/tsc",
+    "tsBuildInfoFile": "node_modules/.tmp/tsc/tsconfig.tsbuildinfo",
+    "emitDeclarationOnly": true,
+    "declarationMap": false,
+    "sourceMap": false,
+    "exactOptionalPropertyTypes": false,
+    "resolveJsonModule": true
+  },
+  "include": ["src", "public/golden/food-delivery.json"],
+  "references": [
+    { "path": "../../packages/shared" },
+    { "path": "../../packages/scheduler" },
+    { "path": "../../packages/exporters" }
+  ]
 }

@@ -15,18 +15,21 @@
   },
   "scripts": {
     "dev": "tsc -b --watch --preserveWatchOutput",
-    "build": "tsc -b tsconfig.build.json",
+    "build": "tsc -b tsconfig.build.json && npm run build -w @spm/web",
     "fixture": "tsc -b tsconfig.build.json && node scripts/build-fixture.ts",
     "test": "vitest run",
     "typecheck": "tsc -b tsconfig.json",
     "lint": "eslint . && prettier --check .",
-    "format": "prettier --write ."
+    "format": "prettier --write .",
+    "dev:web": "npm run dev -w @spm/web"
   },
   "devDependencies": {
     "@eslint/js": "^10.0.1",
     "@types/node": "^26.6.6",
     "eslint": "^10.15.0",
     "eslint-config-prettier": "^10.1.8",
+    "eslint-plugin-react-hooks": "^7.1.1",
+    "eslint-plugin-react-refresh": "^0.5.7",
     "globals": "^17.14.0",
     "prettier": "^3.10.1",
     "typescript": "~6.0.3",

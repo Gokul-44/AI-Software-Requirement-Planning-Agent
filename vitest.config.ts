@@ -7,6 +7,8 @@ export default defineConfig({
   resolve: {
     alias: {
       '@spm/shared': src('./packages/shared/src/index.ts'),
+      '@spm/scheduler': src('./packages/scheduler/src/index.ts'),
+      '@spm/exporters': src('./packages/exporters/src/index.ts'),
     },
   },
   test: {
