@@ -194,12 +194,14 @@ runs the checks, applies migrations and triggers the API deploy through GitHub A
 
 ## Team
 
-| Avatar                                                                                                                                  | Name                   | Role                     | GitHub                                                                         |
-| --------------------------------------------------------------------------------------------------------------------------------------- | ---------------------- | ------------------------ | ------------------------------------------------------------------------------ |
-| <a href="https://github.com/add-username"><img src="https://github.com/add-username.png" width="80"></a> <!-- TODO: GitHub username --> | Saransh Sarang Naik    | Generation layer         | [add-username](https://github.com/add-username) <!-- TODO: GitHub username --> |
-| <a href="https://github.com/add-username"><img src="https://github.com/add-username.png" width="80"></a> <!-- TODO: GitHub username --> | Akshay Kumar Tapraniya | Scheduling & algorithms  | [add-username](https://github.com/add-username) <!-- TODO: GitHub username --> |
-| <a href="https://github.com/add-username"><img src="https://github.com/add-username.png" width="80"></a> <!-- TODO: GitHub username --> | Shreya Tiwari          | Backend & data           | [add-username](https://github.com/add-username) <!-- TODO: GitHub username --> |
-| <a href="https://github.com/Gokul-44"><img src="https://github.com/Gokul-44.png" width="80"></a>                                        | Gokul Faleja           | Frontend & visualisation | [Gokul-44](https://github.com/Gokul-44)                                        |
+All four members worked together on every part of the project: planning, design, development, testing, deployment and documentation.
+
+| Avatar                                                                                                                                  | Name                   | GitHub                                                                         |
+| --------------------------------------------------------------------------------------------------------------------------------------- | ---------------------- | ------------------------------------------------------------------------------ |
+| <a href="https://github.com/add-username"><img src="https://github.com/add-username.png" width="80"></a> <!-- TODO: GitHub username --> | Saransh Sarang Naik    | [add-username](https://github.com/add-username) <!-- TODO: GitHub username --> |
+| <a href="https://github.com/add-username"><img src="https://github.com/add-username.png" width="80"></a> <!-- TODO: GitHub username --> | Akshay Kumar Tapraniya | [add-username](https://github.com/add-username) <!-- TODO: GitHub username --> |
+| <a href="https://github.com/add-username"><img src="https://github.com/add-username.png" width="80"></a> <!-- TODO: GitHub username --> | Shreya Tiwari          | [add-username](https://github.com/add-username) <!-- TODO: GitHub username --> |
+| <a href="https://github.com/Gokul-44"><img src="https://github.com/Gokul-44.png" width="80"></a>                                        | Gokul Faleja           | [Gokul-44](https://github.com/Gokul-44)                                        |
 
 ## Academic note
 
