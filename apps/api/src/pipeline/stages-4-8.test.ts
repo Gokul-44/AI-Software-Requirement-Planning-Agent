@@ -1,4 +1,4 @@
-import { mkdtempSync, readFileSync, rmSync } from 'node:fs';
+import { mkdtempSync, readFileSync, rmSync, writeFileSync } from 'node:fs';
 import os from 'node:os';
 import path from 'node:path';
 import { afterEach, describe, expect, it } from 'vitest';
@@ -10,10 +10,11 @@ import { ApiErrorSchema } from '@spm/shared';
 import { createApp } from '../app.js';
 import { loadConfig } from '../config.js';
 import { MemoryRepository } from '../db/memory-repository.js';
+import { LlmQuotaError } from '../llm/errors.js';
 import { createHarness } from '../llm/harness.js';
 import { MockLlmClient } from '../llm/mock.js';
 import type { LlmClient, LlmRequest, LlmResponse } from '../llm/types.js';
-import { recordGolden } from '../scripts/golden.js';
+import { exportGolden, recordGolden } from '../scripts/golden.js';
 import { SINGLE_CALL_MAX_TASKS, proposeEdges, suspiciousEdges } from './dependencies.js';
 import { Tally } from './support.js';
 import { Pipeline } from './orchestrator.js';
@@ -610,6 +611,44 @@ describe('re-run (POST /runs/:id/rerun)', () => {
     expect((await statusOf(ctx, childId)).status).toBe('succeeded');
   });
 
+  it('a retry with reuse_cache after a quota error pays only for the calls that failed', async () => {
+    let exhausted = true;
+    let epicCalls = 0;
+    const llm = new Spy((name) => {
+      if (name !== 'Tasks') return;
+      epicCalls += 1;
+      if (exhausted && epicCalls === 3) throw new LlmQuotaError('daily quota used up');
+    });
+    const ctx = setup(llm);
+    const failedId = await startRun(ctx);
+    const failed = await statusOf(ctx, failedId);
+    expect(failed.status).toBe('failed');
+    expect(failed.error).toMatchObject({ stage: 3, code: 'STAGE_FAILED' });
+    expect(failed.error?.details['code']).toBe('QUOTA_EXHAUSTED');
+    const before = llm.calls.length;
+
+    exhausted = false;
+    const retry = await request(ctx.app)
+      .post(`/api/runs/${failedId}/rerun`)
+      .send({ from_stage: 3, reuse_cache: true });
+    expect(retry.status).toBe(202);
+    await ctx.pipeline.idle();
+    const retryId = (retry.body as { run_id: string }).run_id;
+    expect((await statusOf(ctx, retryId)).status).toBe('succeeded');
+    const epics = (await planOf(ctx, retryId)).epics.length;
+    const epicCallsOnRetry = llm.calls.slice(before).filter((c) => c.schemaName === 'Tasks').length;
+    // The two epics that succeeded before the quota ran out come from the cache.
+    expect(epicCallsOnRetry).toBe(epics - 2);
+    expect(llm.calls.slice(before).filter((c) => c.stage <= 2)).toEqual([]);
+
+    // Without reuse_cache a re-run asks the model for every epic again.
+    const mid = llm.calls.length;
+    const again = await request(ctx.app).post(`/api/runs/${retryId}/rerun`).send({ from_stage: 3 });
+    expect(again.status).toBe(202);
+    await ctx.pipeline.idle();
+    expect(llm.calls.slice(mid).filter((c) => c.schemaName === 'Tasks')).toHaveLength(epics);
+  });
+
   it('keeps the edges a user removed when a re-run starts after stage 5', async () => {
     const llm = new Spy((name, out, req) => {
       addCycle(name, out, req);
@@ -821,6 +860,70 @@ describe('golden demo runs', () => {
     // Recording again keeps one index entry.
     await recordGolden({ idea: FOOD, repo: ctx.repo, pipeline: ctx.pipeline, llm, outDir });
     expect(JSON.parse(readFileSync(path.join(outDir, 'index.json'), 'utf8'))).toHaveLength(1);
+  });
+
+  it('exports a stored run as a golden plan without calling the model, listing it first', async () => {
+    const llm = new Spy();
+    const ctx = setup(llm);
+    const outDir = mkdtempSync(path.join(os.tmpdir(), 'spm-golden-'));
+    dirs.push(outDir);
+    writeFileSync(path.join(outDir, 'index.json'), '["hand-written.json"]\n', 'utf8');
+    // A run whose stored idea has the Windows caret escaping (the review's finding 4).
+    const runId = await startRun(ctx, '^I^ want^ an^ online^ food^ delivery^ app^');
+    const calls = llm.calls.length;
+
+    const result = await exportGolden({
+      repo: ctx.repo,
+      runId,
+      slug: 'food-delivery-gemini',
+      outDir,
+    });
+    expect(llm.calls.length).toBe(calls);
+    expect(result.file).toBe(path.join(outDir, 'food-delivery-gemini.json'));
+    const written = PlanSchema.parse(JSON.parse(readFileSync(result.file, 'utf8')));
+    assertPlanIntegrity(written);
+    expect(written.run.id).toBe(runId);
+    expect(written.project.idea_text).toBe(FOOD);
+    expect(JSON.parse(readFileSync(path.join(outDir, 'index.json'), 'utf8'))).toEqual([
+      'food-delivery-gemini.json',
+      'hand-written.json',
+    ]);
+    expect((await ctx.repo.getRun(runId))?.isGolden).toBe(true);
+    expect(result.marked).toBe(true);
+  });
+
+  it('exports without touching the database when mark is false, and rejects bad input', async () => {
+    const ctx = setup(new Spy());
+    const outDir = mkdtempSync(path.join(os.tmpdir(), 'spm-golden-'));
+    dirs.push(outDir);
+    const runId = await startRun(ctx);
+    const result = await exportGolden({
+      repo: ctx.repo,
+      runId,
+      slug: 'plan-a',
+      outDir,
+      mark: false,
+    });
+    expect(result.marked).toBe(false);
+    expect((await ctx.repo.getRun(runId))?.isGolden).toBe(false);
+
+    await expect(exportGolden({ repo: ctx.repo, runId, slug: 'Bad Slug', outDir })).rejects.toThrow(
+      /slug/i,
+    );
+    await expect(
+      exportGolden({
+        repo: ctx.repo,
+        runId: '00000000-0000-4000-8000-000000000000',
+        slug: 'plan-b',
+        outDir,
+      }),
+    ).rejects.toThrow(/does not exist/);
+
+    const broken = setup(new Spy((name, out) => (name === 'Stories' ? { epics: [] } : out)));
+    const failedId = await startRun(broken);
+    await expect(
+      exportGolden({ repo: broken.repo, runId: failedId, slug: 'plan-c', outDir }),
+    ).rejects.toThrow(/no finished plan/);
   });
 
   it('refuses to write a golden file when the run did not succeed', async () => {

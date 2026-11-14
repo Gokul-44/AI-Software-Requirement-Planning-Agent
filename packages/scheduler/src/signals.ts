@@ -13,9 +13,11 @@ export interface Thresholds {
   criticalFanoutHigh: number;
   /** high_fan_in: at least this many direct predecessors. */
   fanInMin: number;
-  /** sprint_overload: utilisation (load / C) for medium / high severity. */
-  overloadMedium: number;
-  overloadHigh: number;
+  /**
+   * sprint_overload: a sprint counts as full at this utilisation (load / C). Greedy packing fills
+   * sprints by design, so all full sprints are reported together as ONE medium signal.
+   */
+  sprintFull: number;
   /** sprint_imbalance: coefficient of variation of utilisation (last sprint excluded). */
   imbalanceCv: number;
   /** capacity_bound: capacity-feasible duration / CPM duration. */
@@ -37,8 +39,7 @@ export const DEFAULT_THRESHOLDS: Thresholds = {
   criticalShareMedium: 0.25,
   criticalFanoutHigh: 5,
   fanInMin: 4,
-  overloadMedium: 0.9,
-  overloadHigh: 0.98,
+  sprintFull: 0.98,
   imbalanceCv: 0.35,
   capacityBoundRatio: 1.5,
   isolatedMediumCount: 3,
@@ -60,6 +61,7 @@ type Severity = Signal['severity'];
 
 const round4 = (x: number) => Math.round(x * 1e4) / 1e4;
 const plural = (n: number, one: string, many: string) => `${n} ${n === 1 ? one : many}`;
+const formatDays = (d: number) => String(Number(d.toFixed(1)));
 const label = (id: string, title: string) => `${id} "${title}"`;
 
 /**
@@ -158,30 +160,28 @@ export function computeSignals(
     }
   }
 
-  // sprint_overload
+  // sprint_overload: ONE combined signal for every sprint packed to at least `sprintFull`.
+  // Packing fills each sprint up to C on purpose, so this is a "no buffer" warning (medium at
+  // most), never a high risk that the packing itself causes.
   const sprints = [...schedule.sprints].sort((a, b) => a.number - b.number);
-  for (const sp of sprints) {
-    const util = sp.capacity_points > 0 ? sp.load_points / sp.capacity_points : 0;
-    let severity: Severity | null = null;
-    let threshold = 0;
-    if (util >= th.overloadHigh) {
-      severity = 'high';
-      threshold = th.overloadHigh;
-    } else if (util >= th.overloadMedium) {
-      severity = 'medium';
-      threshold = th.overloadMedium;
-    }
-    if (severity !== null) {
-      emit(
-        'sprint_overload',
-        severity,
-        round4(util),
-        threshold,
-        [...sp.task_ids].sort(compareCodes),
-        `Sprint ${sp.number} is loaded to ${Math.round(util * 100)}% ` +
-          `(${sp.load_points} of ${sp.capacity_points} points).`,
-      );
-    }
+  const utilOf = (sp: (typeof sprints)[number]) =>
+    sp.capacity_points > 0 ? sp.load_points / sp.capacity_points : 0;
+  const fullSprints = sprints.filter((sp) => utilOf(sp) >= th.sprintFull);
+  if (fullSprints.length > 0) {
+    const fullNumbers = new Set(fullSprints.map((sp) => sp.number));
+    const criticalInFull = critical
+      .filter((t) => fullNumbers.has(scheduled.get(t.id)?.sprint ?? -1))
+      .map((t) => t.id);
+    emit(
+      'sprint_overload',
+      'medium',
+      round4(Math.max(...fullSprints.map(utilOf))),
+      th.sprintFull,
+      criticalInFull,
+      `${fullSprints.length} of ${sprints.length} ${sprints.length === 1 ? 'sprint' : 'sprints'} ` +
+        `${fullSprints.length === 1 ? 'is' : 'are'} packed to at least ` +
+        `${Math.round(th.sprintFull * 100)}% of capacity, so there is no buffer for estimation error.`,
+    );
   }
 
   // sprint_imbalance: coefficient of variation (population) of utilisation, last sprint excluded
@@ -210,7 +210,7 @@ export function computeSignals(
     }
   }
 
-  // capacity_bound
+  // capacity_bound: the ratio is computed once, from hours, and shown the same way everywhere.
   const sprintCount = schedule.capacity_plan.sprint_count;
   if (D > 0 && sprintCount > 0) {
     const capacityHours = sprintCount * schedule.capacity_plan.hours_per_sprint;
@@ -222,9 +222,9 @@ export function computeSignals(
         round4(ratio),
         th.capacityBoundRatio,
         [],
-        `Capacity-feasible plan is ${Number(capacityHours.toFixed(1))} h ` +
-          `(${plural(sprintCount, 'sprint', 'sprints')}) against a CPM minimum of ${D} h: ` +
-          `ratio ${ratio.toFixed(2)}x.`,
+        `Capacity-feasible plan is ${formatDays(schedule.capacity_plan.duration_days)} working days ` +
+          `(${plural(sprintCount, 'sprint', 'sprints')}) against a CPM minimum of ` +
+          `${formatDays(schedule.cpm.duration_days)} working days: ratio ${ratio.toFixed(2)}x.`,
       );
     }
   }

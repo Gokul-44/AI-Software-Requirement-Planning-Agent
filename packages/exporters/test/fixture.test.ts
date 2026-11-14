@@ -2,7 +2,7 @@ import { readFileSync } from 'node:fs';
 import { describe, expect, it } from 'vitest';
 import { PlanSchema, findPlanIntegrityProblems } from '@spm/shared';
 import { toJiraCsv } from '../src/index.js';
-import { FIXTURE_URL, GOLDEN_URL, SAMPLE_CSV_URL, loadFixture } from './helpers.js';
+import { FIXTURE_URL, SAMPLE_CSV_URL, loadFixture } from './helpers.js';
 
 describe('food-delivery fixture', () => {
   const raw = readFileSync(FIXTURE_URL, 'utf8');
@@ -35,8 +35,9 @@ describe('food-delivery fixture', () => {
     }
   });
 
-  it('keeps the golden copy for the web app identical', () => {
-    expect(readFileSync(GOLDEN_URL, 'utf8')).toBe(raw);
+  it('is clearly a hand-written test fixture, not model output', () => {
+    expect(plan.run.llm.provider).toBe('fixture');
+    expect(plan.run.llm.model).toBe('hand-written');
   });
 
   it('keeps docs/samples/jira-sample.csv in step with the exporter', () => {

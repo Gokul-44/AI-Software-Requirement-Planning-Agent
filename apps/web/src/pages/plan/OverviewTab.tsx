@@ -15,6 +15,7 @@ import {
   formatCost,
   formatDays,
   formatDuration,
+  formatRatio,
   formatNumber,
   pct,
   plural,
@@ -27,7 +28,7 @@ export function OverviewTab() {
   const cfg = run.config;
   const cpmDays = schedule.cpm.duration_days;
   const planDays = schedule.capacity_plan.duration_days;
-  const ratio = capacityRatio(planDays, cpmDays);
+  const ratio = capacityRatio(schedule.capacity_plan, schedule.cpm.duration_hours);
   const capacityBound = ratio !== null && ratio >= CAPACITY_BOUND_RATIO;
   const coverageRatio =
     coverage.requirements_total > 0
@@ -182,7 +183,7 @@ export function OverviewTab() {
           {ratio !== null ? (
             <>
               <span className="mx-2 text-muted">·</span>
-              <strong>Ratio {ratio.toFixed(1)}×</strong>
+              <strong>Ratio {formatRatio(ratio)}</strong>
               <span className={capacityBound ? ' font-semibold text-amber-700' : ' text-muted'}>
                 {capacityBound
                   ? ' → capacity-bound: adding people would shorten the plan.'

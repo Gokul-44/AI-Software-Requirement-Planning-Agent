@@ -230,7 +230,7 @@ export function createApp(deps: AppDeps): Express {
         'Request validation failed.',
         zodDetails(parsed.error),
       );
-    const { from_stage, config: patch, access_code } = parsed.data;
+    const { from_stage, config: patch, access_code, reuse_cache } = parsed.data;
     if (parent.status === 'queued' || parent.status === 'running') {
       throw new AppError('INVALID_STATE', 'The run is still in progress.', {
         status: parent.status,
@@ -272,7 +272,7 @@ export function createApp(deps: AppDeps): Express {
     });
     // Stages 6 and 7 keep nothing outside the final plan, so only 1-5 are copied.
     await repo.cloneRunData(parent.id, runId, Math.min(from_stage - 1, 5));
-    pipeline.launch(runId, { fromStage: from_stage });
+    pipeline.launch(runId, { fromStage: from_stage, reuseCache: reuse_cache === true });
     res.status(202).json({ run_id: runId });
   });
 

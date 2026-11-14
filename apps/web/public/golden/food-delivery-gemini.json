@@ -1,0 +1,1945 @@
+{
+  "schema_version": "1.0",
+  "project": {
+    "id": "b7b89eaa-3423-4dba-bf07-9a8c64f61b05",
+    "idea_text": "I want an online food delivery app",
+    "created_at": "2026-11-14T14:31:22.371Z"
+  },
+  "run": {
+    "id": "ce5068d9-2e00-43db-ac6d-366a155d267c",
+    "status": "succeeded",
+    "created_at": "2026-11-14T14:31:22.371Z",
+    "finished_at": "2026-11-14T14:36:37.323Z",
+    "llm": {
+      "provider": "gemini",
+      "model": "gemini-3.6-flash",
+      "prompt_versions": {
+        "1": "v1",
+        "2": "v1",
+        "3": "v1",
+        "4": "v1",
+        "5": "v1",
+        "7": "v1"
+      }
+    },
+    "config": {
+      "team_size": 4,
+      "velocity_points_per_person": 10,
+      "sprint_length_days": 10,
+      "focus_hours_per_day": 6,
+      "points_to_hours": {
+        "1": 4,
+        "2": 8,
+        "3": 12,
+        "5": 20,
+        "8": 32,
+        "13": 52
+      },
+      "pack_mode": "relaxed"
+    },
+    "usage": {
+      "input_tokens": 14506,
+      "output_tokens": 7755,
+      "est_cost_usd": 0,
+      "duration_ms": 314952
+    }
+  },
+  "summary": "An online food delivery platform that connects customers with local restaurants, allowing users to browse menus, place orders, make digital payments, and track their deliveries in real time.",
+  "assumptions": [
+    "The initial launch will focus on a web-based portal and mobile-responsive interface.",
+    "Third-party payment gateways will handle credit card and digital wallet transactions.",
+    "Delivery logistics will be managed by independent courier partners using a dedicated driver interface.",
+    "Restaurant partners will manage their own menu availability and order acceptance via a partner dashboard."
+  ],
+  "requirements": [
+    {
+      "id": "R-001",
+      "type": "functional",
+      "category": null,
+      "text": "Customers can register, log in, and manage their profile details including saved delivery addresses.",
+      "priority": "must",
+      "story_ids": [
+        "S-001",
+        "S-002"
+      ],
+      "task_ids": [
+        "T-001",
+        "T-002",
+        "T-003",
+        "T-004",
+        "T-005",
+        "T-006",
+        "T-007"
+      ]
+    },
+    {
+      "id": "R-002",
+      "type": "functional",
+      "category": null,
+      "text": "Customers can search for restaurants by name, cuisine type, or dish.",
+      "priority": "must",
+      "story_ids": [
+        "S-003"
+      ],
+      "task_ids": [
+        "T-008",
+        "T-009",
+        "T-010"
+      ]
+    },
+    {
+      "id": "R-003",
+      "type": "functional",
+      "category": null,
+      "text": "Customers can view restaurant menus, item descriptions, prices, and customization options.",
+      "priority": "must",
+      "story_ids": [
+        "S-004"
+      ],
+      "task_ids": [
+        "T-011",
+        "T-012",
+        "T-013"
+      ]
+    },
+    {
+      "id": "R-004",
+      "type": "functional",
+      "category": null,
+      "text": "Customers can add items to a shopping cart and place an order using electronic payment methods.",
+      "priority": "must",
+      "story_ids": [
+        "S-005"
+      ],
+      "task_ids": [
+        "T-014",
+        "T-015",
+        "T-016",
+        "T-017"
+      ]
+    },
+    {
+      "id": "R-005",
+      "type": "functional",
+      "category": null,
+      "text": "Customers can view the real-time status and live map tracking of their active food delivery.",
+      "priority": "should",
+      "story_ids": [
+        "S-008"
+      ],
+      "task_ids": [
+        "T-024",
+        "T-025",
+        "T-026"
+      ]
+    },
+    {
+      "id": "R-006",
+      "type": "functional",
+      "category": null,
+      "text": "Restaurants can accept or reject incoming orders and update preparation status through an order management view.",
+      "priority": "must",
+      "story_ids": [
+        "S-006"
+      ],
+      "task_ids": [
+        "T-018",
+        "T-019",
+        "T-020"
+      ]
+    },
+    {
+      "id": "R-007",
+      "type": "functional",
+      "category": null,
+      "text": "Couriers can accept available delivery tasks and update delivery status as orders progress.",
+      "priority": "must",
+      "story_ids": [
+        "S-007"
+      ],
+      "task_ids": [
+        "T-021",
+        "T-022",
+        "T-023"
+      ]
+    },
+    {
+      "id": "R-008",
+      "type": "functional",
+      "category": null,
+      "text": "Customers can leave ratings and text reviews for completed restaurant orders.",
+      "priority": "could",
+      "story_ids": [
+        "S-009"
+      ],
+      "task_ids": [
+        "T-027",
+        "T-028",
+        "T-029",
+        "T-030"
+      ]
+    },
+    {
+      "id": "R-009",
+      "type": "non_functional",
+      "category": "performance",
+      "text": "The system shall display menu pages within 2 seconds of a customer request under normal load conditions.",
+      "priority": "should",
+      "story_ids": [
+        "S-011"
+      ],
+      "task_ids": [
+        "T-033",
+        "T-034",
+        "T-035"
+      ]
+    },
+    {
+      "id": "R-010",
+      "type": "non_functional",
+      "category": "security",
+      "text": "All user payment transactions must be encrypted in transit using TLS 1.3 protocol.",
+      "priority": "must",
+      "story_ids": [
+        "S-010"
+      ],
+      "task_ids": [
+        "T-031",
+        "T-032"
+      ]
+    },
+    {
+      "id": "R-011",
+      "type": "non_functional",
+      "category": "reliability",
+      "text": "The food ordering system shall maintain 99.9% uptime during peak meal hours (11:00-14:00 and 17:00-21:00).",
+      "priority": "must",
+      "story_ids": [
+        "S-011"
+      ],
+      "task_ids": [
+        "T-033",
+        "T-034",
+        "T-035"
+      ]
+    }
+  ],
+  "epics": [
+    {
+      "id": "E-001",
+      "title": "User Authentication and Profile Management",
+      "description": "Enables customers to securely create accounts, manage login credentials, and save delivery addresses.",
+      "story_ids": [
+        "S-001",
+        "S-002"
+      ]
+    },
+    {
+      "id": "E-002",
+      "title": "Restaurant Discovery and Menus",
+      "description": "Allows customers to search for restaurants, browse menus, and view detailed dish options efficiently.",
+      "story_ids": [
+        "S-003",
+        "S-004"
+      ]
+    },
+    {
+      "id": "E-003",
+      "title": "Cart, Ordering, and Payments",
+      "description": "Handles cart management, checkout processes, and secure electronic payment processing.",
+      "story_ids": [
+        "S-005"
+      ]
+    },
+    {
+      "id": "E-004",
+      "title": "Order Fulfillment and Delivery Tracking",
+      "description": "Provides order processing tools for restaurants, task assignment for couriers, and live tracking for users.",
+      "story_ids": [
+        "S-006",
+        "S-007",
+        "S-008"
+      ]
+    },
+    {
+      "id": "E-005",
+      "title": "Reviews and Ratings",
+      "description": "Enables post-delivery customer feedback for restaurants.",
+      "story_ids": [
+        "S-009"
+      ]
+    },
+    {
+      "id": "E-006",
+      "title": "Platform Performance and Security",
+      "description": "Ensures platform reliability, fast performance, and secure payment handling.",
+      "story_ids": [
+        "S-010",
+        "S-011"
+      ]
+    }
+  ],
+  "stories": [
+    {
+      "id": "S-001",
+      "epic_id": "E-001",
+      "as_a": "Customer",
+      "i_want": "to register and log into my account",
+      "so_that": "I can access personalized services and view my order history",
+      "acceptance_criteria": [
+        "Given a new user on the signup page, when valid details are submitted, then an account is created.",
+        "Given a registered user, when correct credentials are entered, then login succeeds within 2 seconds."
+      ],
+      "priority": "must",
+      "requirement_ids": [
+        "R-001"
+      ],
+      "task_ids": [
+        "T-001",
+        "T-002",
+        "T-003",
+        "T-004"
+      ]
+    },
+    {
+      "id": "S-002",
+      "epic_id": "E-001",
+      "as_a": "Customer",
+      "i_want": "to save and manage multiple delivery addresses",
+      "so_that": "I can easily select my current location during checkout",
+      "acceptance_criteria": [
+        "Given an authenticated user, when adding a new address, then it appears in the saved addresses list.",
+        "Given a user with saved addresses, when editing an address, then changes are saved correctly."
+      ],
+      "priority": "must",
+      "requirement_ids": [
+        "R-001"
+      ],
+      "task_ids": [
+        "T-005",
+        "T-006",
+        "T-007"
+      ]
+    },
+    {
+      "id": "S-003",
+      "epic_id": "E-002",
+      "as_a": "Customer",
+      "i_want": "to search for restaurants by name, cuisine, or dish",
+      "so_that": "I can quickly find the exact food I am craving",
+      "acceptance_criteria": [
+        "Given a search query, when executed, matching restaurants and dishes are listed.",
+        "Given filter parameters, when applied, results are narrowed down accurately."
+      ],
+      "priority": "must",
+      "requirement_ids": [
+        "R-002"
+      ],
+      "task_ids": [
+        "T-008",
+        "T-009",
+        "T-010"
+      ]
+    },
+    {
+      "id": "S-004",
+      "epic_id": "E-002",
+      "as_a": "Customer",
+      "i_want": "to view restaurant menus and customize dish options",
+      "so_that": "I can tailor my meal to my dietary preferences",
+      "acceptance_criteria": [
+        "Given a restaurant page, when opened, the full menu with prices is displayed.",
+        "Given a customizable dish, when selected, available options (e.g., spice level) are configurable."
+      ],
+      "priority": "must",
+      "requirement_ids": [
+        "R-003"
+      ],
+      "task_ids": [
+        "T-011",
+        "T-012",
+        "T-013"
+      ]
+    },
+    {
+      "id": "S-005",
+      "epic_id": "E-003",
+      "as_a": "Customer",
+      "i_want": "to add items to a cart and checkout using digital payments",
+      "so_that": "I can place my food order conveniently",
+      "acceptance_criteria": [
+        "Given items in the cart, when checking out, the total price including fees is calculated.",
+        "Given valid payment details, when submitted, the transaction processes successfully."
+      ],
+      "priority": "must",
+      "requirement_ids": [
+        "R-004"
+      ],
+      "task_ids": [
+        "T-014",
+        "T-015",
+        "T-016",
+        "T-017"
+      ]
+    },
+    {
+      "id": "S-006",
+      "epic_id": "E-004",
+      "as_a": "Restaurant Staff",
+      "i_want": "to view, accept, or reject incoming orders",
+      "so_that": "I can manage kitchen preparation effectively",
+      "acceptance_criteria": [
+        "Given a new incoming order, when the restaurant accepts it, the status updates to preparing.",
+        "Given a new incoming order, when rejected, the customer is notified immediately."
+      ],
+      "priority": "must",
+      "requirement_ids": [
+        "R-006"
+      ],
+      "task_ids": [
+        "T-018",
+        "T-019",
+        "T-020"
+      ]
+    },
+    {
+      "id": "S-007",
+      "epic_id": "E-004",
+      "as_a": "Courier",
+      "i_want": "to accept delivery tasks and update order progress",
+      "so_that": "I can deliver food efficiently to customers",
+      "acceptance_criteria": [
+        "Given an available delivery task, when accepted by a courier, it is assigned exclusively to them.",
+        "Given an in-transit order, when marked delivered by the courier, the order updates to completed."
+      ],
+      "priority": "must",
+      "requirement_ids": [
+        "R-007"
+      ],
+      "task_ids": [
+        "T-021",
+        "T-022",
+        "T-023"
+      ]
+    },
+    {
+      "id": "S-008",
+      "epic_id": "E-004",
+      "as_a": "Customer",
+      "i_want": "to track my active food delivery on a live map",
+      "so_that": "I know exactly when my food will arrive",
+      "acceptance_criteria": [
+        "Given an active order in transit, when opening tracking, the courier's real-time location is displayed on a map.",
+        "Given a status change in delivery, when updated by courier, the change reflects on the user UI."
+      ],
+      "priority": "should",
+      "requirement_ids": [
+        "R-005"
+      ],
+      "task_ids": [
+        "T-024",
+        "T-025",
+        "T-026"
+      ]
+    },
+    {
+      "id": "S-009",
+      "epic_id": "E-005",
+      "as_a": "Customer",
+      "i_want": "to rate and review my completed food order",
+      "so_that": "I can share my experience with other users and the restaurant",
+      "acceptance_criteria": [
+        "Given a completed order, when submitting a 1-5 star rating and text review, it saves successfully.",
+        "Given a submitted review, when viewing the restaurant page, the overall average rating reflects the feedback."
+      ],
+      "priority": "could",
+      "requirement_ids": [
+        "R-008"
+      ],
+      "task_ids": [
+        "T-027",
+        "T-028",
+        "T-029",
+        "T-030"
+      ]
+    },
+    {
+      "id": "S-010",
+      "epic_id": "E-006",
+      "as_a": "Platform Operator",
+      "i_want": "all payment data encrypted with TLS 1.3",
+      "so_that": "user sensitive financial data remains completely safe",
+      "acceptance_criteria": [
+        "Given any payment API endpoint, when inspected, all connections enforce TLS 1.3 encryption.",
+        "Given non-TLS 1.3 payment connection attempts, when initiated, they are rejected by the system."
+      ],
+      "priority": "must",
+      "requirement_ids": [
+        "R-010"
+      ],
+      "task_ids": [
+        "T-031",
+        "T-032"
+      ]
+    },
+    {
+      "id": "S-011",
+      "epic_id": "E-006",
+      "as_a": "Platform Operator",
+      "i_want": "menu pages to load in under 2 seconds and high system uptime during peak hours",
+      "so_that": "customers experience fast load times and reliable service when ordering",
+      "acceptance_criteria": [
+        "Given normal load, when a menu page is requested, it loads in under 2 seconds.",
+        "Given peak hours (11-14 and 17-21), when system uptime is measured, it remains at or above 99.9%."
+      ],
+      "priority": "must",
+      "requirement_ids": [
+        "R-009",
+        "R-011"
+      ],
+      "task_ids": [
+        "T-033",
+        "T-034",
+        "T-035"
+      ]
+    }
+  ],
+  "tasks": [
+    {
+      "id": "T-001",
+      "story_id": "S-001",
+      "title": "Design authentication database schema and user tables",
+      "description": "Create database schema and migration scripts for user accounts, credentials, and authentication sessions.",
+      "layer": "database",
+      "points": 2,
+      "hours": 8,
+      "estimate_rationale": "Standard database schema design for user tables and authentication entity relationships.",
+      "requirement_ids": [
+        "R-001"
+      ]
+    },
+    {
+      "id": "T-002",
+      "story_id": "S-001",
+      "title": "Implement registration and login REST endpoints",
+      "description": "Develop backend endpoints for user signup and authentication using secure password hashing and JWT issuance. Ensure sub-2-second response time.",
+      "layer": "backend",
+      "points": 3,
+      "hours": 12,
+      "estimate_rationale": "Backend logic and endpoints for password hashing, registration, and login token generation.",
+      "requirement_ids": [
+        "R-001"
+      ]
+    },
+    {
+      "id": "T-003",
+      "story_id": "S-001",
+      "title": "Build login and registration UI components",
+      "description": "Develop signup and login forms with client-side validation, error handling, and session state management.",
+      "layer": "frontend",
+      "points": 3,
+      "hours": 12,
+      "estimate_rationale": "Standard frontend form design with validation for login and registration flows.",
+      "requirement_ids": [
+        "R-001"
+      ]
+    },
+    {
+      "id": "T-004",
+      "story_id": "S-001",
+      "title": "Write automated tests for authentication flow",
+      "description": "Create integration and unit tests covering successful and failed login/signup scenarios, validating response times.",
+      "layer": "testing",
+      "points": 2,
+      "hours": 8,
+      "estimate_rationale": "Writing automated unit and integration tests for auth controllers and tokens.",
+      "requirement_ids": [
+        "R-001"
+      ]
+    },
+    {
+      "id": "T-005",
+      "story_id": "S-002",
+      "title": "Create address management database tables",
+      "description": "Design and execute database migrations for storing multiple user delivery addresses linked to the user account.",
+      "layer": "database",
+      "points": 2,
+      "hours": 8,
+      "estimate_rationale": "Simple schema definition for address entities with user relationships.",
+      "requirement_ids": [
+        "R-001"
+      ]
+    },
+    {
+      "id": "T-006",
+      "story_id": "S-002",
+      "title": "Implement address CRUD API endpoints",
+      "description": "Develop backend endpoints allowing authenticated users to create, read, update, and delete delivery addresses.",
+      "layer": "backend",
+      "points": 3,
+      "hours": 12,
+      "estimate_rationale": "Standard CRUD API endpoints for managing user address records.",
+      "requirement_ids": [
+        "R-001"
+      ]
+    },
+    {
+      "id": "T-007",
+      "story_id": "S-002",
+      "title": "Build address management interface",
+      "description": "Develop UI screens to list saved addresses, add new delivery locations, and edit existing address details.",
+      "layer": "frontend",
+      "points": 3,
+      "hours": 12,
+      "estimate_rationale": "UI components for displaying, adding, editing, and deleting saved addresses.",
+      "requirement_ids": [
+        "R-001"
+      ]
+    },
+    {
+      "id": "T-008",
+      "story_id": "S-003",
+      "title": "Implement search and filtering API endpoint for restaurants and dishes",
+      "description": "Create a backend endpoint that accepts search query strings and filter parameters (cuisine, rating, dish type) and queries the database for matching results.",
+      "layer": "backend",
+      "points": 5,
+      "hours": 20,
+      "estimate_rationale": "Backend search and filtering queries involving complex indexing across multiple entities.",
+      "requirement_ids": [
+        "R-002"
+      ]
+    },
+    {
+      "id": "T-009",
+      "story_id": "S-003",
+      "title": "Build UI search bar and filter controls for restaurant discovery",
+      "description": "Design and implement responsive search bar and filter UI components allowing users to search by name, cuisine, or dish with real-time result updates.",
+      "layer": "frontend",
+      "points": 3,
+      "hours": 12,
+      "estimate_rationale": "Frontend search input with filtering controls and state management.",
+      "requirement_ids": [
+        "R-002"
+      ]
+    },
+    {
+      "id": "T-010",
+      "story_id": "S-003",
+      "title": "Write unit and integration tests for search filter logic",
+      "description": "Add backend integration tests verifying search query accuracy, fuzzy matching, and filter parameter combinations for restaurant discovery.",
+      "layer": "testing",
+      "points": 2,
+      "hours": 8,
+      "estimate_rationale": "Targeted unit and integration tests for search query combinations and edge cases.",
+      "requirement_ids": [
+        "R-002"
+      ]
+    },
+    {
+      "id": "T-011",
+      "story_id": "S-004",
+      "title": "Build menu retrieval and dish customization endpoints",
+      "description": "Develop REST APIs to fetch full restaurant menus with prices and retrieve customizable options (e.g., spice levels, add-ons) for specific dishes.",
+      "layer": "backend",
+      "points": 3,
+      "hours": 12,
+      "estimate_rationale": "Backend endpoints to retrieve nested menu items and handle customization options.",
+      "requirement_ids": [
+        "R-003"
+      ]
+    },
+    {
+      "id": "T-012",
+      "story_id": "S-004",
+      "title": "Develop restaurant menu display and dish options modal UI",
+      "description": "Create the front-end page for displaying structured menus with prices and interactive modal popups for selecting dish options and dietary preferences.",
+      "layer": "frontend",
+      "points": 3,
+      "hours": 12,
+      "estimate_rationale": "Interactive UI display for restaurant menus and dish customization modal options.",
+      "requirement_ids": [
+        "R-003"
+      ]
+    },
+    {
+      "id": "T-013",
+      "story_id": "S-004",
+      "title": "Automate end-to-end menu navigation and customization testing",
+      "description": "Implement E2E test cases covering user navigation to restaurant pages, rendering full menus, and selecting dish customization options.",
+      "layer": "testing",
+      "points": 3,
+      "hours": 12,
+      "estimate_rationale": "End-to-end automation scripts for testing menu navigation and modal selections.",
+      "requirement_ids": [
+        "R-003"
+      ]
+    },
+    {
+      "id": "T-014",
+      "story_id": "S-005",
+      "title": "Implement cart management and total price calculation API",
+      "description": "Create backend endpoints for adding items to cart and calculating total price including delivery fees and taxes as specified in acceptance criteria.",
+      "layer": "backend",
+      "points": 5,
+      "hours": 20,
+      "estimate_rationale": "Cart session management combined with total price dynamic calculation logic.",
+      "requirement_ids": [
+        "R-004"
+      ]
+    },
+    {
+      "id": "T-015",
+      "story_id": "S-005",
+      "title": "Integrate Stripe payment gateway for checkout processing",
+      "description": "Integrate third-party payment processor to securely submit and process customer transactions during checkout.",
+      "layer": "integration",
+      "points": 8,
+      "hours": 32,
+      "estimate_rationale": "Complex third-party payment integration with webhook handling and secure processing.",
+      "requirement_ids": [
+        "R-004"
+      ]
+    },
+    {
+      "id": "T-016",
+      "story_id": "S-005",
+      "title": "Build frontend cart and checkout payment UI",
+      "description": "Develop user interface for customers to view cart items, fee breakdowns, enter payment details, and complete order checkout.",
+      "layer": "frontend",
+      "points": 5,
+      "hours": 20,
+      "estimate_rationale": "Multi-step checkout interface handling cart validation and payment SDK integration.",
+      "requirement_ids": [
+        "R-004"
+      ]
+    },
+    {
+      "id": "T-017",
+      "story_id": "S-005",
+      "title": "Create end-to-end automated tests for cart checkout flow",
+      "description": "Write integration and E2E tests validating cart calculation accuracy and successful payment transaction flows.",
+      "layer": "testing",
+      "points": 3,
+      "hours": 12,
+      "estimate_rationale": "End-to-end test suite for validating full cart update and checkout sequence.",
+      "requirement_ids": [
+        "R-004"
+      ]
+    },
+    {
+      "id": "T-018",
+      "story_id": "S-006",
+      "title": "Implement order acceptance and rejection backend endpoints",
+      "description": "Create API endpoints for restaurant staff to update order status to preparing or rejected. Trigger immediate customer notifications on rejection.",
+      "layer": "backend",
+      "points": 3,
+      "hours": 12,
+      "estimate_rationale": "Order status update API endpoints with state machine constraints.",
+      "requirement_ids": [
+        "R-006"
+      ]
+    },
+    {
+      "id": "T-019",
+      "story_id": "S-006",
+      "title": "Build restaurant order management dashboard UI",
+      "description": "Develop incoming order management UI displaying real-time order requests with clear Accept and Reject action buttons.",
+      "layer": "frontend",
+      "points": 5,
+      "hours": 20,
+      "estimate_rationale": "Real-time or responsive dashboard UI for restaurant staff to process orders.",
+      "requirement_ids": [
+        "R-006"
+      ]
+    },
+    {
+      "id": "T-020",
+      "story_id": "S-006",
+      "title": "Write unit and integration tests for order decision flows",
+      "description": "Test order status transitions from pending to preparing or rejected, ensuring notification events fire correctly on rejection.",
+      "layer": "testing",
+      "points": 2,
+      "hours": 8,
+      "estimate_rationale": "Integration tests validating state transitions for order acceptance or rejection.",
+      "requirement_ids": [
+        "R-006"
+      ]
+    },
+    {
+      "id": "T-021",
+      "story_id": "S-007",
+      "title": "Implement courier task assignment and status tracking API",
+      "description": "Create atomic task acceptance mechanism to prevent double assignment and allow status updates to delivered and completed.",
+      "layer": "backend",
+      "points": 5,
+      "hours": 20,
+      "estimate_rationale": "Task assignment engine and state tracking API for active couriers.",
+      "requirement_ids": [
+        "R-007"
+      ]
+    },
+    {
+      "id": "T-022",
+      "story_id": "S-007",
+      "title": "Develop courier mobile app delivery workflow interface",
+      "description": "Build UI screens for couriers to view available tasks, accept exclusive assignments, and mark orders as delivered.",
+      "layer": "frontend",
+      "points": 5,
+      "hours": 20,
+      "estimate_rationale": "Mobile delivery UI tailored for courier task acceptance and progress updates.",
+      "requirement_ids": [
+        "R-007"
+      ]
+    },
+    {
+      "id": "T-023",
+      "story_id": "S-007",
+      "title": "Test courier task concurrency and state transitions",
+      "description": "Verify concurrent task acceptance logic and validate end-to-end status flow from accepted to completed.",
+      "layer": "testing",
+      "points": 3,
+      "hours": 12,
+      "estimate_rationale": "Testing concurrent driver assignments and state transition edge cases.",
+      "requirement_ids": [
+        "R-007"
+      ]
+    },
+    {
+      "id": "T-024",
+      "story_id": "S-008",
+      "title": "Implement WebSocket service for live GPS tracking stream",
+      "description": "Build WebSocket server to ingest courier GPS location updates and publish real-time location and status changes to tracking subscribers.",
+      "layer": "backend",
+      "points": 8,
+      "hours": 32,
+      "estimate_rationale": "Complex WebSocket architecture for processing real-time concurrent GPS coordinate streams.",
+      "requirement_ids": [
+        "R-005"
+      ]
+    },
+    {
+      "id": "T-025",
+      "story_id": "S-008",
+      "title": "Build live interactive map tracking component",
+      "description": "Integrate interactive map component in customer app displaying real-time courier pin updates and status notifications.",
+      "layer": "frontend",
+      "points": 5,
+      "hours": 20,
+      "estimate_rationale": "Interactive map interface displaying real-time location updates from WebSockets.",
+      "requirement_ids": [
+        "R-005"
+      ]
+    },
+    {
+      "id": "T-026",
+      "story_id": "S-008",
+      "title": "Integrate third-party mapping SDK",
+      "description": "Configure map provider SDK (e.g. Google Maps or Mapbox) with real-time marker movement and route render logic.",
+      "layer": "integration",
+      "points": 3,
+      "hours": 12,
+      "estimate_rationale": "Setup and configuration of external mapping SDK provider.",
+      "requirement_ids": [
+        "R-005"
+      ]
+    },
+    {
+      "id": "T-027",
+      "story_id": "S-009",
+      "title": "Create database schema for order ratings and reviews",
+      "description": "Design and execute migration for the reviews table storing order_id, user_id, restaurant_id, star rating (1-5), and review text.",
+      "layer": "database",
+      "points": 1,
+      "hours": 4,
+      "estimate_rationale": "Simple database table schema for storing ratings and textual reviews.",
+      "requirement_ids": [
+        "R-008"
+      ]
+    },
+    {
+      "id": "T-028",
+      "story_id": "S-009",
+      "title": "Implement order review submission and aggregation API",
+      "description": "Build POST /orders/{id}/reviews endpoint validating completed status and 1-5 rating. Recalculate and update restaurant average rating upon successful save.",
+      "layer": "backend",
+      "points": 3,
+      "hours": 12,
+      "estimate_rationale": "API endpoints for submitting feedback and calculating aggregate ratings.",
+      "requirement_ids": [
+        "R-008"
+      ]
+    },
+    {
+      "id": "T-029",
+      "story_id": "S-009",
+      "title": "Build rating and review submission form component",
+      "description": "Create UI for completed orders allowing customers to select a 1-5 star rating, enter a text review, and submit feedback with error handling.",
+      "layer": "frontend",
+      "points": 2,
+      "hours": 8,
+      "estimate_rationale": "Frontend input component for star ratings and review feedback.",
+      "requirement_ids": [
+        "R-008"
+      ]
+    },
+    {
+      "id": "T-030",
+      "story_id": "S-009",
+      "title": "Add automated tests for review submission and average calculation",
+      "description": "Write integration tests validating review submission rules, preventing duplicate reviews per order, and confirming restaurant average updates accurately.",
+      "layer": "testing",
+      "points": 2,
+      "hours": 8,
+      "estimate_rationale": "Unit tests verifying review submission endpoints and average math calculations.",
+      "requirement_ids": [
+        "R-008"
+      ]
+    },
+    {
+      "id": "T-031",
+      "story_id": "S-010",
+      "title": "Configure server ingress rules to enforce TLS 1.3 for payment endpoints",
+      "description": "Update web server/ingress configuration to accept only TLS 1.3 protocol versions and modern cipher suites for all payment-related routes, explicitly rejecting TLS 1.2 and lower.",
+      "layer": "devops",
+      "points": 1,
+      "hours": 4,
+      "estimate_rationale": "Configuration update to ingress server rules enforcing TLS version.",
+      "requirement_ids": [
+        "R-010"
+      ]
+    },
+    {
+      "id": "T-032",
+      "story_id": "S-010",
+      "title": "Implement automated security tests for TLS enforcement",
+      "description": "Create integration tests that attempt connections to payment endpoints using legacy TLS versions and assert that the connections are actively rejected.",
+      "layer": "testing",
+      "points": 2,
+      "hours": 8,
+      "estimate_rationale": "Automated security test scripts checking TLS version enforcement.",
+      "requirement_ids": [
+        "R-010"
+      ]
+    },
+    {
+      "id": "T-033",
+      "story_id": "S-011",
+      "title": "Implement Redis caching layer for restaurant menu data",
+      "description": "Cache menu API responses in Redis with proper cache invalidation on menu updates to ensure endpoint response times remain well under 2 seconds.",
+      "layer": "backend",
+      "points": 5,
+      "hours": 20,
+      "estimate_rationale": "Setting up Redis cache layer and implementing invalidation strategies for menus.",
+      "requirement_ids": [
+        "R-009",
+        "R-011"
+      ]
+    },
+    {
+      "id": "T-034",
+      "story_id": "S-011",
+      "title": "Optimize frontend menu rendering and asset delivery",
+      "description": "Implement code splitting, lazy loading of menu images, and payload optimization on menu pages to achieve sub-2-second page load times.",
+      "layer": "frontend",
+      "points": 3,
+      "hours": 12,
+      "estimate_rationale": "Frontend optimization focusing on asset compression and component render performance.",
+      "requirement_ids": [
+        "R-009",
+        "R-011"
+      ]
+    },
+    {
+      "id": "T-035",
+      "story_id": "S-011",
+      "title": "Set up auto-scaling rules and uptime monitoring for peak hours",
+      "description": "Configure infrastructure auto-scaling groups based on CPU/memory usage and establish synthetic uptime monitoring alerts targeting 99.9% uptime during peak hours.",
+      "layer": "devops",
+      "points": 3,
+      "hours": 12,
+      "estimate_rationale": "DevOps configuration for cluster autoscaling policies and uptime metrics.",
+      "requirement_ids": [
+        "R-009",
+        "R-011"
+      ]
+    }
+  ],
+  "dependencies": [
+    {
+      "from": "T-001",
+      "to": "T-002",
+      "type": "FS",
+      "source": "llm",
+      "reason": "Backend REST endpoints require the authentication database schema to store and retrieve user data."
+    },
+    {
+      "from": "T-001",
+      "to": "T-005",
+      "type": "FS",
+      "source": "llm",
+      "reason": "Address management tables depend on the user schema foundation for foreign key references."
+    },
+    {
+      "from": "T-001",
+      "to": "T-008",
+      "type": "FS",
+      "source": "llm",
+      "reason": "Search and filtering backend APIs require authenticated user context and base database models."
+    },
+    {
+      "from": "T-001",
+      "to": "T-027",
+      "type": "FS",
+      "source": "llm",
+      "reason": "Review database schema requires user schema base."
+    },
+    {
+      "from": "T-002",
+      "to": "T-003",
+      "type": "FS",
+      "source": "llm",
+      "reason": "Frontend login and registration UI components require backend REST endpoints to process user authentication."
+    },
+    {
+      "from": "T-003",
+      "to": "T-004",
+      "type": "FS",
+      "source": "llm",
+      "reason": "Automated authentication flow tests require completed frontend and backend implementations."
+    },
+    {
+      "from": "T-005",
+      "to": "T-006",
+      "type": "FS",
+      "source": "llm",
+      "reason": "Address CRUD endpoints require the address database tables."
+    },
+    {
+      "from": "T-006",
+      "to": "T-007",
+      "type": "FS",
+      "source": "llm",
+      "reason": "Address management interface requires address CRUD API endpoints."
+    },
+    {
+      "from": "T-008",
+      "to": "T-009",
+      "type": "FS",
+      "source": "llm",
+      "reason": "Frontend search UI controls rely on search and filtering API endpoints."
+    },
+    {
+      "from": "T-008",
+      "to": "T-010",
+      "type": "FS",
+      "source": "llm",
+      "reason": "Testing search filter logic requires backend endpoint implementation."
+    },
+    {
+      "from": "T-011",
+      "to": "T-012",
+      "type": "FS",
+      "source": "llm",
+      "reason": "Menu display and dish options UI require backend menu retrieval and customization endpoints."
+    },
+    {
+      "from": "T-011",
+      "to": "T-014",
+      "type": "FS",
+      "source": "llm",
+      "reason": "Cart management and price calculation backend requires menu and customization data models."
+    },
+    {
+      "from": "T-011",
+      "to": "T-033",
+      "type": "FS",
+      "source": "llm",
+      "reason": "Redis caching layer requires backend menu endpoints implementation."
+    },
+    {
+      "from": "T-012",
+      "to": "T-013",
+      "type": "FS",
+      "source": "llm",
+      "reason": "End-to-end menu navigation testing requires frontend menu UI implementation."
+    },
+    {
+      "from": "T-012",
+      "to": "T-034",
+      "type": "FS",
+      "source": "llm",
+      "reason": "Frontend rendering optimization requires menu UI components."
+    },
+    {
+      "from": "T-014",
+      "to": "T-015",
+      "type": "FS",
+      "source": "llm",
+      "reason": "Stripe payment integration relies on cart total price calculation service."
+    },
+    {
+      "from": "T-014",
+      "to": "T-018",
+      "type": "FS",
+      "source": "llm",
+      "reason": "Order decision endpoints depend on cart and order creation data models."
+    },
+    {
+      "from": "T-015",
+      "to": "T-016",
+      "type": "FS",
+      "source": "llm",
+      "reason": "Frontend checkout UI requires Stripe integration and cart API endpoints."
+    },
+    {
+      "from": "T-015",
+      "to": "T-031",
+      "type": "FS",
+      "source": "llm",
+      "reason": "TLS 1.3 ingress rules require completed payment endpoint setup."
+    },
+    {
+      "from": "T-016",
+      "to": "T-017",
+      "type": "FS",
+      "source": "llm",
+      "reason": "Cart and checkout end-to-end tests require UI and payment processing setup."
+    },
+    {
+      "from": "T-018",
+      "to": "T-019",
+      "type": "FS",
+      "source": "llm",
+      "reason": "Restaurant order management UI relies on order decision backend endpoints."
+    },
+    {
+      "from": "T-018",
+      "to": "T-020",
+      "type": "FS",
+      "source": "llm",
+      "reason": "Testing order decision flows requires order acceptance and rejection backend endpoints."
+    },
+    {
+      "from": "T-018",
+      "to": "T-021",
+      "type": "FS",
+      "source": "llm",
+      "reason": "Courier task assignment requires backend order acceptance workflow."
+    },
+    {
+      "from": "T-018",
+      "to": "T-028",
+      "type": "FS",
+      "source": "llm",
+      "reason": "Review submission API requires review database schema and fulfilled orders."
+    },
+    {
+      "from": "T-021",
+      "to": "T-022",
+      "type": "FS",
+      "source": "llm",
+      "reason": "Courier mobile UI requires assignment and tracking API endpoints."
+    },
+    {
+      "from": "T-021",
+      "to": "T-023",
+      "type": "FS",
+      "source": "llm",
+      "reason": "Testing courier task concurrency requires task assignment API backend."
+    },
+    {
+      "from": "T-021",
+      "to": "T-024",
+      "type": "FS",
+      "source": "llm",
+      "reason": "Live GPS tracking WebSocket service depends on active courier delivery tasks."
+    },
+    {
+      "from": "T-024",
+      "to": "T-025",
+      "type": "FS",
+      "source": "llm",
+      "reason": "Interactive map component requires both the live WebSocket stream and third-party mapping SDK."
+    },
+    {
+      "from": "T-026",
+      "to": "T-025",
+      "type": "FS",
+      "source": "llm",
+      "reason": "Interactive map component requires both the live WebSocket stream and third-party mapping SDK."
+    },
+    {
+      "from": "T-027",
+      "to": "T-028",
+      "type": "FS",
+      "source": "llm",
+      "reason": "Review submission API requires review database schema and fulfilled orders."
+    },
+    {
+      "from": "T-028",
+      "to": "T-029",
+      "type": "FS",
+      "source": "llm",
+      "reason": "Review submission UI requires backend submission and aggregation endpoints."
+    },
+    {
+      "from": "T-028",
+      "to": "T-030",
+      "type": "FS",
+      "source": "llm",
+      "reason": "Automated review tests require backend review submission and aggregation logic."
+    },
+    {
+      "from": "T-031",
+      "to": "T-032",
+      "type": "FS",
+      "source": "llm",
+      "reason": "Automated security tests require server ingress TLS configuration."
+    },
+    {
+      "from": "T-033",
+      "to": "T-035",
+      "type": "FS",
+      "source": "llm",
+      "reason": "Auto-scaling and monitoring setup requires core application backend services."
+    }
+  ],
+  "schedule": {
+    "unit": "hours",
+    "cpm": {
+      "duration_hours": 116,
+      "duration_days": 19.5,
+      "critical_path": [
+        "T-011",
+        "T-014",
+        "T-018",
+        "T-021",
+        "T-024",
+        "T-025"
+      ]
+    },
+    "capacity_plan": {
+      "sprint_count": 3,
+      "duration_days": 30,
+      "capacity_points_per_sprint": 40,
+      "hours_per_sprint": 60
+    },
+    "tasks": [
+      {
+        "task_id": "T-001",
+        "es": 0,
+        "ef": 8,
+        "ls": 76,
+        "lf": 84,
+        "slack": 76,
+        "critical": false,
+        "sprint": 1,
+        "planned_start": 0,
+        "planned_finish": 8,
+        "descendants": 13
+      },
+      {
+        "task_id": "T-002",
+        "es": 8,
+        "ef": 20,
+        "ls": 84,
+        "lf": 96,
+        "slack": 76,
+        "critical": false,
+        "sprint": 1,
+        "planned_start": 8,
+        "planned_finish": 20,
+        "descendants": 2
+      },
+      {
+        "task_id": "T-003",
+        "es": 20,
+        "ef": 32,
+        "ls": 96,
+        "lf": 108,
+        "slack": 76,
+        "critical": false,
+        "sprint": 1,
+        "planned_start": 20,
+        "planned_finish": 32,
+        "descendants": 1
+      },
+      {
+        "task_id": "T-004",
+        "es": 32,
+        "ef": 40,
+        "ls": 108,
+        "lf": 116,
+        "slack": 76,
+        "critical": false,
+        "sprint": 2,
+        "planned_start": 60,
+        "planned_finish": 68,
+        "descendants": 0
+      },
+      {
+        "task_id": "T-005",
+        "es": 8,
+        "ef": 16,
+        "ls": 84,
+        "lf": 92,
+        "slack": 76,
+        "critical": false,
+        "sprint": 1,
+        "planned_start": 8,
+        "planned_finish": 16,
+        "descendants": 2
+      },
+      {
+        "task_id": "T-006",
+        "es": 16,
+        "ef": 28,
+        "ls": 92,
+        "lf": 104,
+        "slack": 76,
+        "critical": false,
+        "sprint": 1,
+        "planned_start": 16,
+        "planned_finish": 28,
+        "descendants": 1
+      },
+      {
+        "task_id": "T-007",
+        "es": 28,
+        "ef": 40,
+        "ls": 104,
+        "lf": 116,
+        "slack": 76,
+        "critical": false,
+        "sprint": 3,
+        "planned_start": 120,
+        "planned_finish": 132,
+        "descendants": 0
+      },
+      {
+        "task_id": "T-008",
+        "es": 8,
+        "ef": 28,
+        "ls": 84,
+        "lf": 104,
+        "slack": 76,
+        "critical": false,
+        "sprint": 1,
+        "planned_start": 8,
+        "planned_finish": 28,
+        "descendants": 2
+      },
+      {
+        "task_id": "T-009",
+        "es": 28,
+        "ef": 40,
+        "ls": 104,
+        "lf": 116,
+        "slack": 76,
+        "critical": false,
+        "sprint": 3,
+        "planned_start": 120,
+        "planned_finish": 132,
+        "descendants": 0
+      },
+      {
+        "task_id": "T-010",
+        "es": 28,
+        "ef": 36,
+        "ls": 108,
+        "lf": 116,
+        "slack": 80,
+        "critical": false,
+        "sprint": 3,
+        "planned_start": 120,
+        "planned_finish": 128,
+        "descendants": 0
+      },
+      {
+        "task_id": "T-011",
+        "es": 0,
+        "ef": 12,
+        "ls": 0,
+        "lf": 12,
+        "slack": 0,
+        "critical": true,
+        "sprint": 1,
+        "planned_start": 0,
+        "planned_finish": 12,
+        "descendants": 22
+      },
+      {
+        "task_id": "T-012",
+        "es": 12,
+        "ef": 24,
+        "ls": 92,
+        "lf": 104,
+        "slack": 80,
+        "critical": false,
+        "sprint": 3,
+        "planned_start": 120,
+        "planned_finish": 132,
+        "descendants": 2
+      },
+      {
+        "task_id": "T-013",
+        "es": 24,
+        "ef": 36,
+        "ls": 104,
+        "lf": 116,
+        "slack": 80,
+        "critical": false,
+        "sprint": 3,
+        "planned_start": 132,
+        "planned_finish": 144,
+        "descendants": 0
+      },
+      {
+        "task_id": "T-014",
+        "es": 12,
+        "ef": 32,
+        "ls": 12,
+        "lf": 32,
+        "slack": 0,
+        "critical": true,
+        "sprint": 1,
+        "planned_start": 12,
+        "planned_finish": 32,
+        "descendants": 16
+      },
+      {
+        "task_id": "T-015",
+        "es": 32,
+        "ef": 64,
+        "ls": 52,
+        "lf": 84,
+        "slack": 20,
+        "critical": false,
+        "sprint": 2,
+        "planned_start": 60,
+        "planned_finish": 92,
+        "descendants": 4
+      },
+      {
+        "task_id": "T-016",
+        "es": 64,
+        "ef": 84,
+        "ls": 84,
+        "lf": 104,
+        "slack": 20,
+        "critical": false,
+        "sprint": 2,
+        "planned_start": 92,
+        "planned_finish": 112,
+        "descendants": 1
+      },
+      {
+        "task_id": "T-017",
+        "es": 84,
+        "ef": 96,
+        "ls": 104,
+        "lf": 116,
+        "slack": 20,
+        "critical": false,
+        "sprint": 3,
+        "planned_start": 120,
+        "planned_finish": 132,
+        "descendants": 0
+      },
+      {
+        "task_id": "T-018",
+        "es": 32,
+        "ef": 44,
+        "ls": 32,
+        "lf": 44,
+        "slack": 0,
+        "critical": true,
+        "sprint": 1,
+        "planned_start": 32,
+        "planned_finish": 44,
+        "descendants": 10
+      },
+      {
+        "task_id": "T-019",
+        "es": 44,
+        "ef": 64,
+        "ls": 96,
+        "lf": 116,
+        "slack": 52,
+        "critical": false,
+        "sprint": 3,
+        "planned_start": 120,
+        "planned_finish": 140,
+        "descendants": 0
+      },
+      {
+        "task_id": "T-020",
+        "es": 44,
+        "ef": 52,
+        "ls": 108,
+        "lf": 116,
+        "slack": 64,
+        "critical": false,
+        "sprint": 1,
+        "planned_start": 44,
+        "planned_finish": 52,
+        "descendants": 0
+      },
+      {
+        "task_id": "T-021",
+        "es": 44,
+        "ef": 64,
+        "ls": 44,
+        "lf": 64,
+        "slack": 0,
+        "critical": true,
+        "sprint": 2,
+        "planned_start": 60,
+        "planned_finish": 80,
+        "descendants": 4
+      },
+      {
+        "task_id": "T-022",
+        "es": 64,
+        "ef": 84,
+        "ls": 96,
+        "lf": 116,
+        "slack": 32,
+        "critical": false,
+        "sprint": 2,
+        "planned_start": 80,
+        "planned_finish": 100,
+        "descendants": 0
+      },
+      {
+        "task_id": "T-023",
+        "es": 64,
+        "ef": 76,
+        "ls": 104,
+        "lf": 116,
+        "slack": 40,
+        "critical": false,
+        "sprint": 2,
+        "planned_start": 80,
+        "planned_finish": 92,
+        "descendants": 0
+      },
+      {
+        "task_id": "T-024",
+        "es": 64,
+        "ef": 96,
+        "ls": 64,
+        "lf": 96,
+        "slack": 0,
+        "critical": true,
+        "sprint": 2,
+        "planned_start": 80,
+        "planned_finish": 112,
+        "descendants": 1
+      },
+      {
+        "task_id": "T-025",
+        "es": 96,
+        "ef": 116,
+        "ls": 96,
+        "lf": 116,
+        "slack": 0,
+        "critical": true,
+        "sprint": 3,
+        "planned_start": 132,
+        "planned_finish": 152,
+        "descendants": 0
+      },
+      {
+        "task_id": "T-026",
+        "es": 0,
+        "ef": 12,
+        "ls": 84,
+        "lf": 96,
+        "slack": 84,
+        "critical": false,
+        "sprint": 3,
+        "planned_start": 120,
+        "planned_finish": 132,
+        "descendants": 1
+      },
+      {
+        "task_id": "T-027",
+        "es": 8,
+        "ef": 12,
+        "ls": 92,
+        "lf": 96,
+        "slack": 84,
+        "critical": false,
+        "sprint": 1,
+        "planned_start": 8,
+        "planned_finish": 12,
+        "descendants": 3
+      },
+      {
+        "task_id": "T-028",
+        "es": 44,
+        "ef": 56,
+        "ls": 96,
+        "lf": 108,
+        "slack": 52,
+        "critical": false,
+        "sprint": 3,
+        "planned_start": 120,
+        "planned_finish": 132,
+        "descendants": 2
+      },
+      {
+        "task_id": "T-029",
+        "es": 56,
+        "ef": 64,
+        "ls": 108,
+        "lf": 116,
+        "slack": 52,
+        "critical": false,
+        "sprint": 3,
+        "planned_start": 132,
+        "planned_finish": 140,
+        "descendants": 0
+      },
+      {
+        "task_id": "T-030",
+        "es": 56,
+        "ef": 64,
+        "ls": 108,
+        "lf": 116,
+        "slack": 52,
+        "critical": false,
+        "sprint": 3,
+        "planned_start": 132,
+        "planned_finish": 140,
+        "descendants": 0
+      },
+      {
+        "task_id": "T-031",
+        "es": 64,
+        "ef": 68,
+        "ls": 104,
+        "lf": 108,
+        "slack": 40,
+        "critical": false,
+        "sprint": 2,
+        "planned_start": 92,
+        "planned_finish": 96,
+        "descendants": 1
+      },
+      {
+        "task_id": "T-032",
+        "es": 68,
+        "ef": 76,
+        "ls": 108,
+        "lf": 116,
+        "slack": 40,
+        "critical": false,
+        "sprint": 2,
+        "planned_start": 96,
+        "planned_finish": 104,
+        "descendants": 0
+      },
+      {
+        "task_id": "T-033",
+        "es": 12,
+        "ef": 32,
+        "ls": 84,
+        "lf": 104,
+        "slack": 72,
+        "critical": false,
+        "sprint": 1,
+        "planned_start": 12,
+        "planned_finish": 32,
+        "descendants": 1
+      },
+      {
+        "task_id": "T-034",
+        "es": 24,
+        "ef": 36,
+        "ls": 104,
+        "lf": 116,
+        "slack": 80,
+        "critical": false,
+        "sprint": 3,
+        "planned_start": 132,
+        "planned_finish": 144,
+        "descendants": 0
+      },
+      {
+        "task_id": "T-035",
+        "es": 32,
+        "ef": 44,
+        "ls": 104,
+        "lf": 116,
+        "slack": 72,
+        "critical": false,
+        "sprint": 1,
+        "planned_start": 32,
+        "planned_finish": 44,
+        "descendants": 0
+      }
+    ],
+    "sprints": [
+      {
+        "number": 1,
+        "load_points": 40,
+        "capacity_points": 40,
+        "utilisation": 1,
+        "task_ids": [
+          "T-011",
+          "T-014",
+          "T-018",
+          "T-020",
+          "T-033",
+          "T-035",
+          "T-001",
+          "T-002",
+          "T-005",
+          "T-008",
+          "T-003",
+          "T-006",
+          "T-027"
+        ]
+      },
+      {
+        "number": 2,
+        "load_points": 39,
+        "capacity_points": 40,
+        "utilisation": 0.975,
+        "task_ids": [
+          "T-021",
+          "T-024",
+          "T-015",
+          "T-016",
+          "T-022",
+          "T-031",
+          "T-023",
+          "T-032",
+          "T-004"
+        ]
+      },
+      {
+        "number": 3,
+        "load_points": 40,
+        "capacity_points": 40,
+        "utilisation": 1,
+        "task_ids": [
+          "T-017",
+          "T-019",
+          "T-007",
+          "T-009",
+          "T-012",
+          "T-010",
+          "T-013",
+          "T-034",
+          "T-028",
+          "T-029",
+          "T-030",
+          "T-026",
+          "T-025"
+        ]
+      }
+    ]
+  },
+  "signals": [
+    {
+      "id": "SG-01",
+      "kind": "critical_path_length",
+      "severity": "low",
+      "value": 0.1714,
+      "threshold": null,
+      "task_ids": [
+        "T-011",
+        "T-014",
+        "T-018",
+        "T-021",
+        "T-024",
+        "T-025"
+      ],
+      "message": "CPM duration is 116 h (19.5 working days); 6 of 35 tasks (17%) are critical."
+    },
+    {
+      "id": "SG-02",
+      "kind": "critical_high_fanout",
+      "severity": "high",
+      "value": 22,
+      "threshold": 5,
+      "task_ids": [
+        "T-011"
+      ],
+      "message": "T-011 \"Build menu retrieval and dish customization endpoints\" has 22 downstream tasks and 0 h slack (CPM)."
+    },
+    {
+      "id": "SG-03",
+      "kind": "critical_high_fanout",
+      "severity": "high",
+      "value": 16,
+      "threshold": 5,
+      "task_ids": [
+        "T-014"
+      ],
+      "message": "T-014 \"Implement cart management and total price calculation API\" has 16 downstream tasks and 0 h slack (CPM)."
+    },
+    {
+      "id": "SG-04",
+      "kind": "critical_high_fanout",
+      "severity": "high",
+      "value": 10,
+      "threshold": 5,
+      "task_ids": [
+        "T-018"
+      ],
+      "message": "T-018 \"Implement order acceptance and rejection backend endpoints\" has 10 downstream tasks and 0 h slack (CPM)."
+    },
+    {
+      "id": "SG-05",
+      "kind": "sprint_overload",
+      "severity": "high",
+      "value": 1,
+      "threshold": 0.98,
+      "task_ids": [
+        "T-001",
+        "T-002",
+        "T-003",
+        "T-005",
+        "T-006",
+        "T-008",
+        "T-011",
+        "T-014",
+        "T-018",
+        "T-020",
+        "T-027",
+        "T-033",
+        "T-035"
+      ],
+      "message": "Sprint 1 is loaded to 100% (40 of 40 points)."
+    },
+    {
+      "id": "SG-06",
+      "kind": "sprint_overload",
+      "severity": "medium",
+      "value": 0.975,
+      "threshold": 0.9,
+      "task_ids": [
+        "T-004",
+        "T-015",
+        "T-016",
+        "T-021",
+        "T-022",
+        "T-023",
+        "T-024",
+        "T-031",
+        "T-032"
+      ],
+      "message": "Sprint 2 is loaded to 98% (39 of 40 points)."
+    },
+    {
+      "id": "SG-07",
+      "kind": "sprint_overload",
+      "severity": "high",
+      "value": 1,
+      "threshold": 0.98,
+      "task_ids": [
+        "T-007",
+        "T-009",
+        "T-010",
+        "T-012",
+        "T-013",
+        "T-017",
+        "T-019",
+        "T-025",
+        "T-026",
+        "T-028",
+        "T-029",
+        "T-030",
+        "T-034"
+      ],
+      "message": "Sprint 3 is loaded to 100% (40 of 40 points)."
+    },
+    {
+      "id": "SG-08",
+      "kind": "capacity_bound",
+      "severity": "medium",
+      "value": 1.5517,
+      "threshold": 1.5,
+      "task_ids": [],
+      "message": "Capacity-feasible plan is 180 h (3 sprints) against a CPM minimum of 116 h: ratio 1.55x."
+    },
+    {
+      "id": "SG-09",
+      "kind": "critical_layer_concentration",
+      "severity": "medium",
+      "value": 0.8276,
+      "threshold": 0.6,
+      "task_ids": [
+        "T-011",
+        "T-014",
+        "T-018",
+        "T-021",
+        "T-024"
+      ],
+      "message": "Layer backend holds 96 of 116 critical-path hours (83%)."
+    }
+  ],
+  "risks": [
+    {
+      "id": "RK-001",
+      "severity": "high",
+      "title": "High-fanout critical backend tasks present major bottleneck",
+      "description": "Tasks T-011, T-014, and T-018 on the critical path have 0 h slack (CPM) and direct high downstream dependencies (22, 16, and 10 downstream tasks respectively). Any delay in these core endpoints will instantly block broad dependent work across the project.",
+      "mitigation": "Prioritize and allocate senior backend engineering resources to T-011, T-014, and T-018 to ensure on-time delivery and unblock downstream teams.",
+      "signal_ids": [
+        "SG-02",
+        "SG-03",
+        "SG-04"
+      ],
+      "origin": "llm"
+    },
+    {
+      "id": "RK-002",
+      "severity": "high",
+      "title": "Severe sprint capacity saturation across all sprints",
+      "description": "Sprint 1 and Sprint 3 are fully saturated at 100% capacity load (40 of 40 points each), while Sprint 2 is loaded at 98% (39 of 40 points). There is zero buffer to accommodate unexpected task complexity or scope expansion across the entire release cycle.",
+      "mitigation": "Re-balance story points across sprints or de-scope non-critical tasks from Sprints 1, 2, and 3 to build a sustainable capacity buffer.",
+      "signal_ids": [
+        "SG-05",
+        "SG-06",
+        "SG-07"
+      ],
+      "origin": "llm"
+    },
+    {
+      "id": "RK-003",
+      "severity": "medium",
+      "title": "Backend layer concentration on the critical path",
+      "description": "The backend layer accounts for 96 out of 116 critical-path hours (83%), while CPM duration is 116 h across 6 critical tasks out of 35 total tasks (17%). Backend delivery delays directly determine the minimum project finish time.",
+      "mitigation": "Cross-train frontend or full-stack developers to assist with critical backend endpoints and reduce critical-path backend dependency.",
+      "signal_ids": [
+        "SG-09",
+        "SG-01"
+      ],
+      "origin": "llm"
+    },
+    {
+      "id": "RK-004",
+      "severity": "medium",
+      "title": "Significant schedule expansion from resource capacity constraints",
+      "description": "The capacity-feasible plan requires 180 h (3 sprints) compared to the theoretical CPM minimum of 116 h, resulting in a 1.55x duration expansion ratio due to resource capacity limitations.",
+      "mitigation": "Evaluate options to increase short-term team capacity or adjust project milestones to align expectations with the realistic 180 h timeline.",
+      "signal_ids": [
+        "SG-08"
+      ],
+      "origin": "llm"
+    }
+  ],
+  "coverage": {
+    "requirements_total": 11,
+    "requirements_with_story": 11,
+    "requirements_with_task": 11,
+    "uncovered_requirement_ids": [],
+    "stories_without_tasks": []
+  },
+  "issues": []
+}

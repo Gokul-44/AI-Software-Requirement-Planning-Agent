@@ -57,13 +57,13 @@
   --color-text: var(--color-brand-green-950);
   --color-muted: #4a6354;
 
-  /* Epic colours for charts: mid and dark shades of green and sand only (white labels stay readable), never purple. */
+  /* Epic colours for charts: mid and dark shades of green and sand only, never purple. Every one gives at least 4.5:1 with the light label text drawn on it. */
   --color-epic-1: var(--color-brand-green-700);
   --color-epic-2: var(--color-sand-700);
-  --color-epic-3: var(--color-brand-green-500);
+  --color-epic-3: #42795a; /* a green between 500 and 600: surface text on it is 4.9:1 */
   --color-epic-4: var(--color-sand-900);
   --color-epic-5: var(--color-brand-green-900);
-  --color-epic-6: var(--color-sand-600);
+  --color-epic-6: #876a2f; /* ochre: surface text on it is 4.9:1 (sand-600 was 3.4:1) */
   --color-epic-7: var(--color-brand-green-600);
   --color-epic-8: var(--color-sand-800);
 
@@ -80,6 +80,29 @@ body,
 
 html {
   scroll-behavior: smooth;
+  /*
+   * Large screens scale the whole interface: every size in the app is in rem, so a larger root
+   * font makes text, spacing and the content container grow together (1920 px: 112.5%,
+   * 2560 px: 125%). Without it a 2560 px window shows tiny text in a narrow column.
+   */
+  font-size: 100%;
+}
+@media (min-width: 1920px) {
+  html {
+    font-size: 112.5%;
+  }
+}
+@media (min-width: 2400px) {
+  html {
+    font-size: 125%;
+  }
+}
+
+/* The page content column: centred, 87.5rem (1400 px at 16 px root) at most. Bands (hero, header, footer) stay full width. */
+@utility spm-container {
+  margin-inline: auto;
+  width: 100%;
+  max-width: 87.5rem;
 }
 
 body {
@@ -87,7 +110,7 @@ body {
   background: var(--color-page);
   color: var(--color-text);
   font-family: var(--font-sans);
-  font-size: 14px;
+  font-size: 0.875rem;
   line-height: 1.5;
   -webkit-font-smoothing: antialiased;
   overflow-x: hidden;

@@ -21,7 +21,7 @@ const ZOOM_STEP = 1.35;
 const ZOOM_MIN = 0.4;
 const ZOOM_MAX = 4;
 const MIN_PX_PER_HOUR = 2.6;
-const MAX_PX_PER_HOUR = 6;
+const MAX_PX_PER_HOUR = 12;
 const FOOTER_H = 22;
 const RIGHT_PAD = 48;
 const MIN_BAR_PX = 4;
@@ -292,7 +292,7 @@ export function Gantt({ schedule, mode }: { schedule: Schedule; mode: GanttMode 
                     height={BAR_H}
                     rx={3}
                     fill={color}
-                    opacity={b.critical ? 1 : 0.88}
+                    opacity={1}
                     stroke={selected ? INK_COLOR : b.critical ? CRITICAL_STROKE : 'none'}
                     strokeWidth={selected ? 2 : 1.5}
                   />

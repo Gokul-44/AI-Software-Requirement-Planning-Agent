@@ -6,16 +6,22 @@ import { createLlmClient } from '../llm/factory.js';
 import { createHarness } from '../llm/harness.js';
 import { Pipeline } from '../pipeline/orchestrator.js';
 import { recordGolden } from './golden.js';
+import { readIdea } from './idea.js';
 
 /**
  * Records one golden demo plan:
- *   npm run golden:record -- "I want an online food delivery app"
+ *   npm run golden:record -- --idea-file idea.txt      (safest on Windows)
+ *   npm run golden:record -- --idea "I want an online food delivery app"
+ *   IDEA="I want an online food delivery app" npm run golden:record
+ * The idea never comes from shell-split arguments (see scripts/idea.ts).
  * Runs the full pipeline with the configured provider, stores the run in the database, writes the
  * plan to apps/web/public/golden/<slug>.json and marks the run is_golden. Never prints secrets.
  */
-const idea = process.argv.slice(2).join(' ').trim();
+const idea = readIdea({ argv: process.argv.slice(2), env: process.env }) ?? '';
 if (idea.length < 10) {
-  console.error('Usage: npm run golden:record -- "<idea of at least 10 characters>"');
+  console.error(
+    'Usage: npm run golden:record -- --idea-file <file> | --idea "<at least 10 characters>"',
+  );
   process.exit(1);
 }
 

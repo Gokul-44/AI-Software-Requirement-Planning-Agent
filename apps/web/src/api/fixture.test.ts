@@ -73,3 +73,13 @@ describe('simulated cycle, failure and re-run', () => {
     expect(simulateRunStatus({ ...sim, fromStage: 6 }, 1_000 + 30_000).status).toBe('succeeded');
   });
 });
+
+describe('simulated quota failure', () => {
+  it('fails stage 3 with details.code QUOTA_EXHAUSTED after one attempt', () => {
+    const failed = simulateRunStatus({ ...sim, mode: 'quota' }, 1_000 + 60_000);
+    expect(failed.status).toBe('failed');
+    expect(failed.error?.stage).toBe(3);
+    expect(failed.error?.details['code']).toBe('QUOTA_EXHAUSTED');
+    expect(failed.stages[2]).toMatchObject({ status: 'failed', attempts: 1 });
+  });
+});

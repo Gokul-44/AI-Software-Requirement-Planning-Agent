@@ -1659,43 +1659,16 @@
       "id": "SG-08",
       "kind": "sprint_overload",
       "severity": "medium",
-      "value": 0.975,
-      "threshold": 0.9,
-      "task_ids": [
-        "T-001",
-        "T-002",
-        "T-003",
-        "T-005",
-        "T-006",
-        "T-008",
-        "T-009",
-        "T-011",
-        "T-015"
-      ],
-      "message": "Sprint 1 is loaded to 98% (39 of 40 points)."
-    },
-    {
-      "id": "SG-09",
-      "kind": "sprint_overload",
-      "severity": "high",
       "value": 1,
       "threshold": 0.98,
       "task_ids": [
-        "T-007",
-        "T-010",
         "T-012",
-        "T-013",
-        "T-014",
-        "T-016",
-        "T-017",
-        "T-018",
-        "T-020",
-        "T-026"
+        "T-014"
       ],
-      "message": "Sprint 2 is loaded to 100% (40 of 40 points)."
+      "message": "1 of 4 sprints is packed to at least 98% of capacity, so there is no buffer for estimation error."
     },
     {
-      "id": "SG-10",
+      "id": "SG-09",
       "kind": "layer_imbalance",
       "severity": "medium",
       "value": 0.0684,
@@ -1707,7 +1680,7 @@
       "message": "Testing is 8 of 117 points (6.8%), below the 10% minimum."
     },
     {
-      "id": "SG-11",
+      "id": "SG-10",
       "kind": "uncovered_requirement",
       "severity": "medium",
       "value": 0,
@@ -1716,7 +1689,7 @@
       "message": "R-010 (could) has no story, so no task can trace to it."
     },
     {
-      "id": "SG-12",
+      "id": "SG-11",
       "kind": "critical_layer_concentration",
       "severity": "medium",
       "value": 0.6512,
@@ -1740,7 +1713,7 @@
       "mitigation": "Name an owner per critical backend task, review designs before coding starts, and split the largest tasks so that frontend and testing work can begin on agreed API contracts while the backend is built.",
       "signal_ids": [
         "SG-01",
-        "SG-12"
+        "SG-11"
       ],
       "origin": "llm"
     },
@@ -1758,13 +1731,12 @@
     },
     {
       "id": "RK-003",
-      "severity": "high",
-      "title": "Early sprints have no spare capacity",
-      "description": "Sprint 1 is loaded to 98% (39 of 40 points). Sprint 2 is loaded to 100% (40 of 40 points). A plan that is already full cannot absorb sick days, review rework or one underestimated task.",
+      "severity": "medium",
+      "title": "The sprints have no spare capacity",
+      "description": "1 of 4 sprints is packed to at least 98% of capacity, so there is no buffer for estimation error. A plan that is already full cannot absorb sick days, review rework or one underestimated task.",
       "mitigation": "Move low-priority work out of the first two sprints, leave a deliberate buffer in sprint planning, and re-estimate after the first sprint using the real completed points.",
       "signal_ids": [
-        "SG-08",
-        "SG-09"
+        "SG-08"
       ],
       "origin": "llm"
     },
@@ -1775,7 +1747,7 @@
       "description": "Testing is 8 of 117 points (6.8%), below the 10% minimum. T-025 \"End-to-end order journey tests\" has 5 direct predecessors (integration bottleneck). Problems between the customer, restaurant and courier screens would first show up near the end, when little time is left to fix them.",
       "mitigation": "Add unit and API tests to each backend task definition of done, add a payment-flow test task, and run a thin end-to-end journey as soon as checkout works rather than waiting for the last screen.",
       "signal_ids": [
-        "SG-10",
+        "SG-09",
         "SG-07"
       ],
       "origin": "llm"

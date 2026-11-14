@@ -129,6 +129,12 @@ export const RerunRequestSchema = z.strictObject({
   config: ConfigPatchSchema.optional(),
   /** Needed when the server runs with DEMO_ACCESS_CODE, as for a new project. */
   access_code: z.string().optional(),
+  /**
+   * Retry after a failure: stage `from_stage` and later ones read the cache, so model calls that
+   * already succeeded (for example the first epics of stage 3) are not paid for again. Without it
+   * a re-run asks the model again from `from_stage` on.
+   */
+  reuse_cache: z.boolean().optional(),
 });
 export type RerunRequest = z.infer<typeof RerunRequestSchema>;
 

@@ -173,7 +173,7 @@ function GraphInner() {
 
       <div
         className="relative overflow-hidden rounded-2xl border border-border bg-surface shadow-card"
-        style={{ height: 'clamp(480px, calc(100vh - 290px), 820px)' }}
+        style={{ height: 'clamp(30rem, calc(100dvh - 18rem), 100rem)' }}
       >
         <ReactFlow
           nodes={nodes}

@@ -55,7 +55,7 @@ describe('signals on the E1 graph', () => {
     expect(cap?.value).toBeCloseTo(80 / 52, 3);
     expect(cap?.threshold).toBe(1.5);
     expect(cap?.message).toBe(
-      'Capacity-feasible plan is 80 h (2 sprints) against a CPM minimum of 52 h: ratio 1.54x.',
+      'Capacity-feasible plan is 10 working days (2 sprints) against a CPM minimum of 6.5 working days: ratio 1.54x.',
     );
 
     expect(imb).toMatchObject({ value: 0, threshold: 1, task_ids: [] });
@@ -87,14 +87,16 @@ describe('signals on the E1 graph', () => {
     if (!r.ok) throw new Error('expected a DAG');
     const strictThresholds = computeSignals(
       { ...e1Core(), schedule: r.schedule },
-      { criticalFanoutHigh: 2, overloadMedium: 0.8 },
+      { criticalFanoutHigh: 2, sprintFull: 0.8 },
     );
-    // B (2 descendants) now also counts; both sprints sit at 0.80 utilisation.
+    // B (2 descendants) now also counts; both sprints sit at 0.80 utilisation, reported as ONE signal.
     expect(ofKind(strictThresholds, 'critical_high_fanout').map((s) => s.task_ids)).toEqual([
       ['A'],
       ['B'],
     ]);
-    expect(ofKind(strictThresholds, 'sprint_overload')).toHaveLength(2);
+    const overload = ofKind(strictThresholds, 'sprint_overload');
+    expect(overload).toHaveLength(1);
+    expect(overload[0]?.message).toMatch(/^2 of 2 sprints are packed to at least 80%/);
     expect(DEFAULT_THRESHOLDS.criticalFanoutHigh).toBe(5);
   });
 });
@@ -182,19 +184,46 @@ describe('sprint_overload', () => {
   const pts = (...points: (1 | 2 | 3 | 5 | 8 | 13)[]): TaskSpec[] =>
     points.map((p, i) => ({ id: `X${i}`, points: p, hours: p * 4 }));
 
-  it('is medium at exactly 0.90 and high at exactly 0.98', () => {
-    // C = 50. 45 points = 0.90.
-    const medium = ofKind(run(makeCore(pts(13, 13, 13, 5, 1))), 'sprint_overload');
-    expect(medium).toHaveLength(1);
-    expect(medium[0]).toMatchObject({ severity: 'medium', value: 0.9, threshold: 0.9 });
-    expect(medium[0]?.message).toBe('Sprint 1 is loaded to 90% (45 of 50 points).');
-    // 49 points = 0.98.
-    const high = ofKind(run(makeCore(pts(13, 13, 13, 8, 2))), 'sprint_overload');
-    expect(high[0]).toMatchObject({ severity: 'high', value: 0.98, threshold: 0.98 });
-    expect(high[0]?.task_ids).toHaveLength(5);
+  it('is ONE combined medium signal for all sprints packed to at least 98%, never high', () => {
+    // C = 50. 49 of 50 points = 0.98: one full sprint of one.
+    const one = ofKind(run(makeCore(pts(13, 13, 13, 8, 2))), 'sprint_overload');
+    expect(one).toHaveLength(1);
+    expect(one[0]).toMatchObject({ severity: 'medium', value: 0.98, threshold: 0.98 });
+    expect(one[0]?.message).toBe(
+      '1 of 1 sprint is packed to at least 98% of capacity, so there is no buffer for estimation error.',
+    );
   });
 
-  it('does not fire below 0.90', () => {
+  it('emits a single signal however many sprints are full', () => {
+    // Four 13-point tasks per sprint is 52 > 50, so each sprint holds three (39) plus filler; use
+    // exact fits: 13+13+13+8+3 = 50 (100%), twice, and a short last sprint.
+    const loads = pts(13, 13, 13, 8, 3, 13, 13, 13, 8, 3, 2);
+    const all = run(makeCore(loads));
+    const overload = ofKind(all, 'sprint_overload');
+    expect(overload).toHaveLength(1);
+    expect(overload[0]?.severity).toBe('medium');
+    expect(overload[0]?.message).toMatch(/^2 of 3 sprints are packed to at least 98% of capacity/);
+    expect(overload[0]?.value).toBe(1);
+  });
+
+  it('lists only critical tasks of the full sprints', () => {
+    const core = makeCore(
+      [
+        { id: 'A', points: 13, hours: 40 },
+        { id: 'B', points: 13, hours: 10 },
+        { id: 'C', points: 13, hours: 10 },
+        { id: 'D', points: 8, hours: 10 },
+        { id: 'E', points: 3, hours: 10 },
+      ],
+      [['A', 'B']],
+    );
+    const overload = ofKind(run(core), 'sprint_overload');
+    expect(overload).toHaveLength(1);
+    expect(overload[0]?.task_ids).toEqual(['A', 'B']);
+  });
+
+  it('does not fire below 98%', () => {
+    expect(ofKind(run(makeCore(pts(13, 13, 13, 5, 1))), 'sprint_overload')).toHaveLength(0);
     expect(ofKind(run(makeCore(pts(13, 13, 13, 5))), 'sprint_overload')).toHaveLength(0);
   });
 });

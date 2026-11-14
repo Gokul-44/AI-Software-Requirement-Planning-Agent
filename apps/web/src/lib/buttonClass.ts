@@ -4,8 +4,8 @@ export type ButtonVariant = 'primary' | 'secondary' | 'ghost' | 'danger' | 'dark
 export type ButtonSize = 'sm' | 'md' | 'lg';
 
 /**
- * Button styles, shared by buttons and links. White on the accent is only used for bold labels:
- * `lg` is 16 px bold on #8B5CF6; the smaller sizes use the darker accent-600 / accent-700.
+ * Button styles, shared by buttons and links. White text on the accent uses accent-600 or darker
+ * at every size (5.7:1 and up), never the brand value accent-500 (4.2:1, below WCAG AA).
  */
 export function buttonClass(
   variant: ButtonVariant = 'secondary',
@@ -19,7 +19,7 @@ export function buttonClass(
     size === 'lg' && 'px-6 py-3 text-base',
     variant === 'primary' &&
       (size === 'lg'
-        ? 'bg-accent-500 font-bold text-white shadow-md hover:-translate-y-0.5 hover:bg-accent-600 hover:shadow-lg'
+        ? 'bg-accent-700 font-bold text-white shadow-md hover:-translate-y-0.5 hover:bg-accent-800 hover:shadow-lg'
         : 'bg-accent-600 text-white shadow-sm hover:bg-accent-700'),
     variant === 'secondary' &&
       'border border-sand-500 bg-surface text-brand-green-900 shadow-sm hover:bg-sand-100',

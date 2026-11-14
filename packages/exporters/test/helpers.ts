@@ -5,8 +5,8 @@ import type { Plan } from '@spm/shared';
 const repoFile = (...parts: string[]): URL =>
   new URL(`../../../${parts.join('/')}`, import.meta.url);
 
-export const FIXTURE_URL = repoFile('fixtures', 'plan.food-delivery.json');
-export const GOLDEN_URL = repoFile('apps', 'web', 'public', 'golden', 'food-delivery.json');
+/** The hand-written TEST FIXTURE plan (not a golden demo plan; those are real model output). */
+export const FIXTURE_URL = repoFile('fixtures', 'test-plan.food-delivery.json');
 export const SAMPLE_CSV_URL = repoFile('docs', 'samples', 'jira-sample.csv');
 
 /** A fresh, validated copy of the food-delivery fixture on every call. */

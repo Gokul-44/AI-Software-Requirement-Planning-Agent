@@ -30,9 +30,10 @@ const SIM_ATTEMPTS = [1, 1, 2, 1, 1, 1, 1, 1];
  * the cycle, failure and limit screens can be shown without a server.
  *   [demo:cycle]  the run stops at stage 5 with a dependency cycle to resolve
  *   [demo:fail]   stage 3 fails
+ *   [demo:quota]  stage 3 fails because the free AI quota is used up
  *   [demo:limit]  starting the run answers RATE_LIMITED
  */
-export type SimMode = 'normal' | 'cycle' | 'fail';
+export type SimMode = 'normal' | 'cycle' | 'fail' | 'quota';
 
 export interface SimRun {
   runId: string;
@@ -128,6 +129,19 @@ export function simulateRunStatus(sim: SimRun, now: number): RunStatus {
         details: {},
       };
       stages.push({ stage: n, name, status: 'failed', attempts: 3, latency_ms: duration });
+      halted = true;
+      return;
+    }
+    if (mode === 'quota' && n === 3) {
+      current = n;
+      status = 'failed';
+      error = {
+        stage: 3,
+        code: 'STAGE_FAILED',
+        message: 'Gemini API error 429: You exceeded your current quota (simulated).',
+        details: { code: 'QUOTA_EXHAUSTED', attempts: 1 },
+      };
+      stages.push({ stage: n, name, status: 'failed', attempts: 1, latency_ms: duration });
       halted = true;
       return;
     }
@@ -245,7 +259,9 @@ export function createFixtureApi(): PlanApi {
         ? 'cycle'
         : req.idea_text.includes('[demo:fail]')
           ? 'fail'
-          : 'normal';
+          : req.idea_text.includes('[demo:quota]')
+            ? 'quota'
+            : 'normal';
       const cycle = mode === 'cycle' ? simCycle(first) : undefined;
       const sim: SimRun = {
         runId: crypto.randomUUID(),

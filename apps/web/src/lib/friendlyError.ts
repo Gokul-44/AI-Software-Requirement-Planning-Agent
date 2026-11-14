@@ -14,6 +14,7 @@ export const GOLDEN_CODES = new Set([
   'TOO_MANY_RUNS',
   'BUDGET_EXHAUSTED',
   'LLM_UNAVAILABLE',
+  'QUOTA_EXHAUSTED',
   'NETWORK',
 ]);
 
@@ -83,10 +84,16 @@ const BY_CODE: Record<string, Omit<FriendlyError, 'code'>> = {
       'The server hit an unexpected error. Try again in a moment; if it keeps happening, share the request id below with the team.',
     offerGolden: false,
   },
+  QUOTA_EXHAUSTED: {
+    title: 'The free AI quota is used up right now',
+    message:
+      'The free language-model quota is used up (or rate-limited) right now, so this stage could not run. Everything finished before it is saved. Retry from the failed stage in a little while, or open a sample plan to see a finished plan now.',
+    offerGolden: true,
+  },
   STAGE_FAILED: {
     title: 'A planning stage failed',
     message:
-      'The model could not produce a valid result for this stage after several attempts. Starting a new run usually fixes it.',
+      'The model could not produce a valid result for this stage after several attempts. Retrying from this stage keeps the finished stages and usually fixes it.',
     offerGolden: true,
   },
   NETWORK: {
@@ -114,4 +121,26 @@ export function friendlyError(error: unknown): FriendlyError {
 
 export function friendlyCode(code: string): FriendlyError {
   return { ...(BY_CODE[code] ?? FALLBACK), code };
+}
+
+/** A failed run's error as the status endpoint reports it (`code` is always STAGE_FAILED). */
+export interface StageErrorLike {
+  code: string;
+  details?: Record<string, unknown> | undefined;
+}
+
+/** The finer reason of a failed stage: `details.code` (for example QUOTA_EXHAUSTED), if any. */
+export function stageFailureReason(error: StageErrorLike): string {
+  const detail = error.details?.['code'];
+  return typeof detail === 'string' ? detail : error.code;
+}
+
+/** True when the stage failed because the free model quota or rate limit is used up. */
+export function isQuotaFailure(error: StageErrorLike): boolean {
+  return stageFailureReason(error) === 'QUOTA_EXHAUSTED';
+}
+
+/** Friendly wording for a failed stage: the quota message for quota failures, else by code. */
+export function friendlyStageError(error: StageErrorLike): FriendlyError {
+  return friendlyCode(isQuotaFailure(error) ? 'QUOTA_EXHAUSTED' : error.code);
 }

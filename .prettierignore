@@ -6,6 +6,6 @@ package-lock.json
 docs
 playwright-report
 .claude
-fixtures/plan.food-delivery.json
+fixtures/test-plan.food-delivery.json
 apps/web/public/golden
 neon.ts

@@ -1,17 +1,19 @@
 import clsx from 'clsx';
-import { AlertCircle, ArrowLeft, Check, Clock, Pause, RotateCcw, X } from 'lucide-react';
+import { ArrowLeft, Check, Clock, Pause, X } from 'lucide-react';
 import { useEffect, useState } from 'react';
 import { Link, useNavigate, useParams } from 'react-router-dom';
 import { USE_FIXTURE } from '../api/client';
-import { useRunStatus } from '../api/hooks';
+import { useRerun, useRunStatus } from '../api/hooks';
 import type { RunStatus } from '../api/types';
 import { CycleResolver } from '../components/CycleResolver';
+import { RunErrorPanel } from '../components/RunErrorPanel';
 import { StatusBadge } from '../components/StatusBadge';
 import { useToast } from '../components/toastContext';
-import { Badge, Button, Card, ErrorState, GoldenDemoButton, Skeleton } from '../components/ui';
+import { Badge, Card, ErrorState, Skeleton } from '../components/ui';
 import { buttonClass } from '../lib/buttonClass';
 import { formatClock, formatDuration } from '../lib/format';
-import { friendlyCode } from '../lib/friendlyError';
+import { friendlyError } from '../lib/friendlyError';
+import { attemptLabel, runView } from '../lib/runView';
 import { useDocumentTitle } from '../lib/useDocumentTitle';
 
 const STAGES: {
@@ -177,12 +179,13 @@ function PlanSkeleton() {
 }
 
 export function RunProgressPage() {
-  useDocumentTitle('Building your plan');
   const { runId = '' } = useParams();
   const navigate = useNavigate();
   const { toast } = useToast();
   const run = useRunStatus(runId);
+  const rerun = useRerun(runId);
   const status = run.data?.status;
+  useDocumentTitle(status ? runView(status).heading : 'Building your plan');
   const active = status === 'queued' || status === 'running' || status === 'needs_resolution';
   const elapsed = useElapsed(runId, active);
 
@@ -225,7 +228,34 @@ export function RunProgressPage() {
   const finished = data.status === 'succeeded';
   const waiting = data.status === 'needs_resolution';
   const done = data.stages.filter((s) => s.status === 'succeeded' || s.status === 'cached').length;
-  const stageError = data.error ? friendlyCode(data.error.code) : null;
+  const view = runView(data.status);
+  // A run can also be `failed` without a stage error (for example it was interrupted by a restart).
+  const failedError: RunStatus['error'] =
+    data.error ??
+    (data.status === 'failed'
+      ? {
+          stage: Math.min(8, Math.max(1, data.current_stage)),
+          code: 'STAGE_FAILED',
+          message: '',
+          details: {},
+        }
+      : null);
+
+  function retryFromFailedStage() {
+    if (!failedError) return;
+    // The stages before the failed one are copied and the failed one reads the cache, so only
+    // the model calls that did not succeed are made again.
+    rerun.mutate(
+      { from_stage: failedError.stage, reuse_cache: true },
+      {
+        onSuccess: (created) => navigate(`/runs/${created.run_id}`),
+        onError: (err) => {
+          const f = friendlyError(err);
+          toast('error', f.title, f.message);
+        },
+      },
+    );
+  }
 
   return (
     <div className="mx-auto max-w-6xl space-y-6">
@@ -239,19 +269,24 @@ export function RunProgressPage() {
         </Link>
         <div className="mt-2 flex flex-wrap items-center justify-between gap-3">
           <h1 className="text-2xl font-bold tracking-tight text-text sm:text-3xl">
-            {finished ? 'Your plan is ready' : 'Building your plan'}
+            {view.heading}
           </h1>
           <div className="flex items-center gap-3">
-            <span className="inline-flex items-center gap-1.5 text-sm text-muted tabular-nums">
-              <Clock className="h-4 w-4" aria-hidden="true" />
-              <span className="sr-only">Elapsed time</span>
-              {formatClock(elapsed)}
-            </span>
+            {view.showClock ? (
+              <span className="inline-flex items-center gap-1.5 text-sm text-muted tabular-nums">
+                <Clock className="h-4 w-4" aria-hidden="true" />
+                <span className="sr-only">Elapsed time</span>
+                {formatClock(elapsed)}
+              </span>
+            ) : null}
             <StatusBadge status={data.status} />
           </div>
         </div>
         <p className="mt-1 text-sm text-muted">
-          {done} of 8 stages complete. This page refreshes every 2 seconds while the run is active.
+          {done} of 8 stages complete.
+          {view.showRefreshNote
+            ? ' This page refreshes every 2 seconds while the run is active.'
+            : ''}
           {USE_FIXTURE ? ' Fixture mode: this run is simulated.' : ''}
         </p>
         <div
@@ -268,6 +303,15 @@ export function RunProgressPage() {
           />
         </div>
       </div>
+
+      {failedError ? (
+        <RunErrorPanel
+          error={failedError}
+          retrying={rerun.isPending}
+          onRetry={retryFromFailedStage}
+          onNewRun={() => navigate('/#new')}
+        />
+      ) : null}
 
       {data.status === 'needs_resolution' && data.cycle ? (
         <CycleResolver
@@ -360,7 +404,7 @@ export function RunProgressPage() {
                       entry.status !== 'pending' &&
                       entry.status !== 'cached' &&
                       entry.status !== 'running'
-                        ? `${entry.attempts} attempt${entry.attempts === 1 ? '' : 's'}`
+                        ? attemptLabel(n, entry.attempts)
                         : ' '}
                     </dd>
                     <dt className="sr-only">Time</dt>
@@ -381,35 +425,7 @@ export function RunProgressPage() {
         </Card>
 
         <div className="space-y-5">
-          <PlanSkeleton />
-
-          {data.status === 'failed' || data.error ? (
-            <div role="alert" className="rounded-2xl border border-red-200 bg-red-50 p-5">
-              <div className="flex items-start gap-3">
-                <AlertCircle className="mt-0.5 h-5 w-5 shrink-0 text-red-700" aria-hidden="true" />
-                <div>
-                  <div className="font-semibold text-red-900">
-                    {data.error
-                      ? `Stage ${data.error.stage} failed`
-                      : (stageError?.title ?? 'The run failed')}
-                  </div>
-                  <p className="mt-1 text-sm text-red-900">
-                    {stageError?.message ?? 'The run stopped before it finished.'}
-                  </p>
-                  {data.error?.message ? (
-                    <p className="mt-1.5 text-xs text-red-800">Detail: {data.error.message}</p>
-                  ) : null}
-                  <div className="mt-4 flex flex-wrap gap-2">
-                    <Button size="sm" variant="primary" onClick={() => navigate('/#new')}>
-                      <RotateCcw className="h-3.5 w-3.5" aria-hidden="true" />
-                      Start a new run
-                    </Button>
-                    <GoldenDemoButton size="sm" />
-                  </div>
-                </div>
-              </div>
-            </div>
-          ) : null}
+          {view.showPlanPreview ? <PlanSkeleton /> : null}
 
           {data.issues_count.error + data.issues_count.warning > 0 ? (
             <p className="text-sm text-muted">

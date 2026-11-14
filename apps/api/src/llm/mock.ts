@@ -225,22 +225,38 @@ function mockCoverageStories(input: CoverageInput) {
 
 // ----------------------------------------------------------------------------- stage 3
 
+/**
+ * Follows prompt stage3.v2: the first story of each epic that stores data gets a `database` task
+ * (the schema), and every other story's backend task names its create/read operations, so the
+ * mock output has the same shape as a v2 answer.
+ */
 function mockTasks(stories: StoryBrief[]) {
+  let schemaDone = false;
   const tasks = stories.flatMap((story) => {
     const goal = clip(story.i_want, 30);
     const platform = /operator|admin/i.test(story.as_a);
     const note = `Part of ${story.id}. ${clip(story.acceptance_criteria[0] ?? story.i_want, 200)}`;
-    const items = [
+    const items: { layer: string; title: string }[] = [];
+    if (!platform && !schemaDone) {
+      schemaDone = true;
+      items.push({
+        layer: 'database',
+        title: `Create data model and migration for ${story.id}: ${goal}`,
+      });
+    }
+    items.push(
       {
         layer: platform ? 'devops' : 'backend',
-        title: `${platform ? 'Set up' : 'Implement API for'} ${story.id}: ${goal}`,
+        title: platform
+          ? `Set up ${story.id}: ${goal}`
+          : `Implement create and read endpoints for ${story.id}: ${goal}`,
       },
       {
         layer: platform ? 'backend' : 'frontend',
         title: `${platform ? 'Instrument' : 'Build UI for'} ${story.id}: ${goal}`,
       },
       { layer: 'testing', title: `Write automated tests for ${story.id}: ${goal}` },
-    ];
+    );
     return items.map((t) => ({
       story_id: story.id,
       title: clip(t.title, 100),

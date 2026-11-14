@@ -8,12 +8,10 @@ import {
   SeverityBadge,
   Select,
 } from '../../components/ui';
-import { titleCase } from '../../lib/format';
+import { formatSignalNumber, titleCase } from '../../lib/format';
 import { usePlan } from './context';
 
 const RANK: Record<string, number> = { high: 0, medium: 1, low: 2 };
-
-const num = (n: number) => String(Number(n.toFixed(2)));
 
 export function RisksTab() {
   const { plan, index, selectTask } = usePlan();
@@ -94,8 +92,10 @@ export function RisksTab() {
                             </span>
                             <span className="text-xs text-muted">{titleCase(s.kind)}</span>
                             <span className="ml-auto text-xs font-semibold text-text tabular-nums">
-                              value {num(s.value)}
-                              {s.threshold !== null ? ` · threshold ${num(s.threshold)}` : ''}
+                              value {formatSignalNumber(s.kind, s.value, s)}
+                              {s.threshold !== null
+                                ? ` · threshold ${formatSignalNumber(s.kind, s.threshold, s)}`
+                                : ''}
                             </span>
                           </div>
                           <p className="mt-1 text-xs text-muted">{s.message}</p>
@@ -161,9 +161,11 @@ export function RisksTab() {
                     <td className="px-3 py-2">
                       <SeverityBadge severity={s.severity} />
                     </td>
-                    <td className="px-3 py-2 text-right tabular-nums">{num(s.value)}</td>
+                    <td className="px-3 py-2 text-right tabular-nums">
+                      {formatSignalNumber(s.kind, s.value, s)}
+                    </td>
                     <td className="px-3 py-2 text-right text-muted tabular-nums">
-                      {s.threshold === null ? '-' : num(s.threshold)}
+                      {s.threshold === null ? '-' : formatSignalNumber(s.kind, s.threshold, s)}
                     </td>
                     <td className="px-3 py-2 text-muted">{s.message}</td>
                     <td className="px-3 py-2 font-mono text-xs text-muted">

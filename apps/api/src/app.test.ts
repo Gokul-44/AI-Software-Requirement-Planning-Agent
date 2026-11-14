@@ -83,7 +83,7 @@ describe('POST /api/projects to a finished plan', () => {
     expect(run?.promptVersions).toEqual({
       '1': 'v1',
       '2': 'v1',
-      '3': 'v1',
+      '3': 'v2',
       '4': 'v1',
       '5': 'v1',
       '7': 'v1',

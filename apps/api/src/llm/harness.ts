@@ -139,8 +139,12 @@ export function createHarness(opts: HarnessOptions): Harness {
         });
       } catch (err) {
         if (err instanceof LlmError) {
+          // A daily quota, or a per-minute 429 that was still refused after the queue's backoff
+          // retries: either way the free quota is used up for now.
           const code: StageErrorCode =
-            err instanceof LlmQuotaError ? 'QUOTA_EXHAUSTED' : 'LLM_UNAVAILABLE';
+            err instanceof LlmQuotaError || err.status === 429
+              ? 'QUOTA_EXHAUSTED'
+              : 'LLM_UNAVAILABLE';
           throw new StageCallError(code, err.message, {
             attempts: attempt,
             usage,

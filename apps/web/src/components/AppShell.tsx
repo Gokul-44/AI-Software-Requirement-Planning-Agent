@@ -29,7 +29,7 @@ const navLink = ({ isActive }: { isActive: boolean }) =>
 function TopBar() {
   return (
     <header className="sticky top-0 z-40 border-b border-sand-300/10 bg-brand-green-950/90 backdrop-blur-md">
-      <div className="mx-auto flex h-16 max-w-[1400px] items-center justify-between gap-3 px-4 sm:px-6">
+      <div className="spm-container flex h-16 items-center justify-between gap-3 px-4 sm:px-6">
         <Link to="/" aria-label="Planning Agent home" className="shrink-0 rounded-xl">
           <span className="hidden sm:block">
             <Logo tone="light" />
@@ -78,7 +78,7 @@ function TopBar() {
 function Footer() {
   return (
     <footer className="mt-0 bg-brand-green-950 text-sand-200">
-      <div className="mx-auto grid max-w-[1400px] gap-8 px-4 py-10 sm:px-6 md:grid-cols-[1.4fr_1fr_1fr]">
+      <div className="spm-container grid gap-8 px-4 py-10 sm:px-6 md:grid-cols-[1.4fr_1fr_1fr]">
         <div>
           <Logo tone="light" />
           <p className="mt-4 max-w-sm text-sm text-sand-300">
@@ -137,7 +137,7 @@ export function AppShell() {
   const landing = pathname === '/';
   return (
     <ToastProvider>
-      <div className="flex min-h-screen flex-col">
+      <div className="flex min-h-dvh flex-col">
         <a
           href="#main"
           className="sr-only focus:not-sr-only focus:fixed focus:top-2 focus:left-2 focus:z-50 focus:rounded-full focus:bg-accent-600 focus:px-4 focus:py-2 focus:text-sm focus:font-semibold focus:text-white"
@@ -149,7 +149,7 @@ export function AppShell() {
           id="main"
           className={clsx(
             'w-full flex-1',
-            !landing && 'mx-auto max-w-[1400px] px-4 pt-6 pb-16 sm:px-6 sm:pt-8',
+            !landing && 'spm-container px-4 pt-6 pb-16 sm:px-6 sm:pt-8',
           )}
         >
           <Outlet />

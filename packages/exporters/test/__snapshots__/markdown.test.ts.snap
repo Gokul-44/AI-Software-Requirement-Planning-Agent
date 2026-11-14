@@ -17,7 +17,7 @@ An online food delivery platform for one city: customers browse, order, pay and 
 | Sprint plan | 4 sprints, 40 days (capacity 40 points and 60 h per sprint) |
 | Shortest possible duration (CPM, unlimited people) | 172 h, 28.5 working days |
 | Critical tasks | 9 of 27 |
-| Risks | 5 (3 high, 2 medium, 0 low) |
+| Risks | 5 (2 high, 3 medium, 0 low) |
 | Issues | 3 |
 
 Configuration: 4 people, 10 points per person per sprint, 10-day sprints, 6 focus hours per day, relaxed sprint packing. Plan schema 1.0.
@@ -398,7 +398,7 @@ Mitigation: Name an owner per critical backend task, review designs before codin
 Cited signals:
 
 - SG-01 (critical_path_length, medium): CPM duration is 172 h (28.5 working days); 9 of 27 tasks (33%) are critical.
-- SG-12 (critical_layer_concentration, medium): Layer backend holds 112 of 172 critical-path hours (65%).
+- SG-11 (critical_layer_concentration, medium): Layer backend holds 112 of 172 critical-path hours (65%).
 
 ### RK-002 Payment and order state work gates tracking, notifications and couriers
 
@@ -413,18 +413,17 @@ Cited signals:
 - SG-05 (critical_high_fanout, high): T-012 "Payment and order confirmation flow" has 9 downstream tasks and 0 h slack (CPM).
 - SG-06 (critical_high_fanout, high): T-014 "Order status state machine and live update stream" has 7 downstream tasks and 0 h slack (CPM).
 
-### RK-003 Early sprints have no spare capacity
+### RK-003 The sprints have no spare capacity
 
-Severity: high. Origin: llm.
+Severity: medium. Origin: llm.
 
-Sprint 1 is loaded to 98% (39 of 40 points). Sprint 2 is loaded to 100% (40 of 40 points). A plan that is already full cannot absorb sick days, review rework or one underestimated task.
+1 of 4 sprints is packed to at least 98% of capacity, so there is no buffer for estimation error. A plan that is already full cannot absorb sick days, review rework or one underestimated task.
 
 Mitigation: Move low-priority work out of the first two sprints, leave a deliberate buffer in sprint planning, and re-estimate after the first sprint using the real completed points.
 
 Cited signals:
 
-- SG-08 (sprint_overload, medium): Sprint 1 is loaded to 98% (39 of 40 points).
-- SG-09 (sprint_overload, high): Sprint 2 is loaded to 100% (40 of 40 points).
+- SG-08 (sprint_overload, medium): 1 of 4 sprints is packed to at least 98% of capacity, so there is no buffer for estimation error.
 
 ### RK-004 Little testing before a late integration point
 
@@ -436,7 +435,7 @@ Mitigation: Add unit and API tests to each backend task definition of done, add 
 
 Cited signals:
 
-- SG-10 (layer_imbalance, medium): Testing is 8 of 117 points (6.8%), below the 10% minimum.
+- SG-09 (layer_imbalance, medium): Testing is 8 of 117 points (6.8%), below the 10% minimum.
 - SG-07 (high_fan_in, medium): T-025 "End-to-end order journey tests" has 5 direct predecessors (integration bottleneck).
 
 ### RK-005 High-severity signal: critical_high_fanout
@@ -464,11 +463,10 @@ Computed by the scheduler; risks may cite only these.
 | SG-05 | critical_high_fanout | high | 9 | 5 | T-012 | T-012 "Payment and order confirmation flow" has 9 downstream tasks and 0 h slack (CPM). |
 | SG-06 | critical_high_fanout | high | 7 | 5 | T-014 | T-014 "Order status state machine and live update stream" has 7 downstream tasks and 0 h slack (CPM). |
 | SG-07 | high_fan_in | medium | 5 | 4 | T-025 | T-025 "End-to-end order journey tests" has 5 direct predecessors (integration bottleneck). |
-| SG-08 | sprint_overload | medium | 0.975 | 0.9 | T-001, T-002, T-003, T-005, T-006, T-008, T-009, T-011, T-015 | Sprint 1 is loaded to 98% (39 of 40 points). |
-| SG-09 | sprint_overload | high | 1 | 0.98 | T-007, T-010, T-012, T-013, T-014, T-016, T-017, T-018, T-020, T-026 | Sprint 2 is loaded to 100% (40 of 40 points). |
-| SG-10 | layer_imbalance | medium | 0.0684 | 0.1 | T-025, T-026 | Testing is 8 of 117 points (6.8%), below the 10% minimum. |
-| SG-11 | uncovered_requirement | medium | 0 | - | - | R-010 (could) has no story, so no task can trace to it. |
-| SG-12 | critical_layer_concentration | medium | 0.6512 | 0.6 | T-003, T-006, T-012, T-014, T-021 | Layer backend holds 112 of 172 critical-path hours (65%). |
+| SG-08 | sprint_overload | medium | 1 | 0.98 | T-012, T-014 | 1 of 4 sprints is packed to at least 98% of capacity, so there is no buffer for estimation error. |
+| SG-09 | layer_imbalance | medium | 0.0684 | 0.1 | T-025, T-026 | Testing is 8 of 117 points (6.8%), below the 10% minimum. |
+| SG-10 | uncovered_requirement | medium | 0 | - | - | R-010 (could) has no story, so no task can trace to it. |
+| SG-11 | critical_layer_concentration | medium | 0.6512 | 0.6 | T-003, T-006, T-012, T-014, T-021 | Layer backend holds 112 of 172 critical-path hours (65%). |
 
 ## Issues
 

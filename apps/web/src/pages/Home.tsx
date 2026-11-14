@@ -122,10 +122,7 @@ function Section({
   children: ReactNode;
 }) {
   return (
-    <section
-      id={id}
-      className="mx-auto w-full max-w-[1400px] scroll-mt-24 px-4 py-12 sm:px-6 sm:py-16"
-    >
+    <section id={id} className="spm-container scroll-mt-24 px-4 py-12 sm:px-6 sm:py-16">
       <div className="max-w-2xl">
         <h2 className="text-2xl font-bold tracking-tight text-text sm:text-3xl">{title}</h2>
         {lead ? <p className="mt-2 text-base text-muted">{lead}</p> : null}
@@ -170,7 +167,7 @@ export function HomePage() {
   return (
     <>
       <section id="new" className="spm-hero scroll-mt-16 text-sand-50">
-        <div className="mx-auto max-w-[1400px] px-4 pt-14 pb-16 sm:px-6 sm:pt-20 sm:pb-24">
+        <div className="spm-container px-4 pt-14 pb-16 sm:px-6 sm:pt-20 sm:pb-24">
           <div className="spm-fade-up mx-auto max-w-3xl text-center">
             <Badge className="bg-sand-100/10 text-sand-200 ring-sand-300/25">
               <Sparkles className="h-3.5 w-3.5" aria-hidden="true" />
@@ -418,7 +415,7 @@ export function HomePage() {
       </Section>
 
       <section className="bg-brand-green-900 text-sand-100">
-        <div className="mx-auto grid max-w-[1400px] gap-8 px-4 py-12 sm:px-6 sm:py-16 lg:grid-cols-[1fr_1.2fr] lg:items-center">
+        <div className="spm-container grid gap-8 px-4 py-12 sm:px-6 sm:py-16 lg:grid-cols-[1fr_1.2fr] lg:items-center">
           <div>
             <h2 className="text-2xl font-bold tracking-tight text-sand-50 sm:text-3xl">
               Why you can trust it

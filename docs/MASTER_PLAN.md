@@ -362,9 +362,9 @@ for v in order:
 | `critical_path_length` | CPM duration in days; share of tasks that are critical | share ≥ 40% → high; ≥ 25% → medium |
 | `critical_high_fanout` | critical task with ≥ N transitive descendants | N ≥ 5 → high |
 | `high_fan_in` | task with ≥ 4 direct predecessors (integration bottleneck) | medium |
-| `sprint_overload` | sprint utilisation = load / C | ≥ 0.90 → medium; ≥ 0.98 → high |
+| `sprint_overload` | ONE combined signal for all sprints packed to ≥ 98% of C (greedy packing fills sprints by design, so it is a "no buffer" warning); task_ids = the critical tasks in those sprints | medium, never high |
 | `sprint_imbalance` | coefficient of variation of utilisation (excluding the last sprint) | ≥ 0.35 → low |
-| `capacity_bound` | capacity-feasible duration ÷ CPM duration | ≥ 1.5 → medium |
+| `capacity_bound` | capacity-feasible hours (sprints × hours per sprint) ÷ CPM hours; computed once from hours and shown as `x.xx×` everywhere | ≥ 1.5 → medium |
 | `isolated_task` | no predecessors and no successors | low (≥ 3 tasks → medium) |
 | `layer_anomaly` | `testing` or deploy-type `devops` task with no predecessor | low |
 | `layer_imbalance` | testing share of points < 10%, or no devops tasks | medium |

@@ -1,7 +1,7 @@
-import golden from '../../public/golden/food-delivery.json';
+import fixture from '../../../../fixtures/test-plan.food-delivery.json';
 import type { Plan } from '../api/types';
 
-/** The golden sample plan the UI is developed against (tests only). */
+/** The hand-written test fixture plan (fixtures/test-plan.food-delivery.json), for tests only. */
 export function loadGoldenPlan(): Plan {
-  return structuredClone(golden) as unknown as Plan;
+  return structuredClone(fixture) as unknown as Plan;
 }

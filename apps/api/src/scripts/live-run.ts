@@ -6,14 +6,21 @@ import { createLlmClient } from '../llm/factory.js';
 import { createHarness } from '../llm/harness.js';
 import { Pipeline } from '../pipeline/orchestrator.js';
 import { PROMPT_VERSIONS } from '../prompts/index.js';
+import { readIdea } from './idea.js';
 
 /**
  * One full run (stages 1-8) with the configured provider, stored in the database.
- * Usage: npm run live-run -w @spm/api -- "I want an online food delivery app"
+ * Usage (the idea never comes from shell-split arguments, see scripts/idea.ts):
+ *   npm run live-run -w @spm/api -- --idea-file idea.txt      (safest on Windows)
+ *   npm run live-run -w @spm/api -- --idea "I want an online food delivery app"
+ *   IDEA="I want an online food delivery app" npm run live-run -w @spm/api
+ * With no idea it runs "I want an online food delivery app".
  * Prints counts, attempts and time per stage, then the plan numbers. Never prints keys or
  * connection strings.
  */
-const idea = process.argv[2] ?? 'I want an online food delivery app';
+const idea =
+  readIdea({ argv: process.argv.slice(2), env: process.env }) ??
+  'I want an online food delivery app';
 const config = loadConfig();
 const logger = pino({ level: config.LOG_LEVEL });
 if (!config.DATABASE_URL) throw new Error('DATABASE_URL is not set.');

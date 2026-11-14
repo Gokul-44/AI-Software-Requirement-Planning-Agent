@@ -1,5 +1,7 @@
 /**
- * Builds the sample plan the UI is developed against.
+ * Builds the hand-written TEST FIXTURE plan (provider "fixture", model "hand-written"). It is used
+ * by unit tests only. The golden demo plans in apps/web/public/golden are real model output
+ * exported with `npm run golden:export`; this script no longer writes there.
  *
  *   npm run fixture
  *
@@ -8,8 +10,7 @@
  *   real signal ids -> assemble plan.json -> PlanSchema + assertPlanIntegrity -> write files.
  *
  * Outputs (all regenerated, never edited by hand):
- *   fixtures/plan.food-delivery.json
- *   apps/web/public/golden/food-delivery.json
+ *   fixtures/test-plan.food-delivery.json
  *   docs/samples/jira-sample.csv
  */
 import { mkdirSync, readFileSync, writeFileSync } from 'node:fs';
@@ -75,10 +76,7 @@ interface FixtureInput {
 
 const root = path.resolve(import.meta.dirname, '..');
 const inputPath = path.join(root, 'fixtures', 'plan-input.food-delivery.json');
-const outputPaths = [
-  path.join(root, 'fixtures', 'plan.food-delivery.json'),
-  path.join(root, 'apps', 'web', 'public', 'golden', 'food-delivery.json'),
-];
+const outputPaths = [path.join(root, 'fixtures', 'test-plan.food-delivery.json')];
 const csvPath = path.join(root, 'docs', 'samples', 'jira-sample.csv');
 
 const code = (prefix: string, index: number) => `${prefix}-${String(index + 1).padStart(3, '0')}`;
@@ -317,13 +315,10 @@ const RISKS: RiskDef[] = [
   },
   {
     origin: 'llm',
-    title: 'Early sprints have no spare capacity',
-    cites: [
-      { kind: 'sprint_overload', match: (s) => s.message.startsWith('Sprint 1 ') },
-      { kind: 'sprint_overload', match: (s) => s.message.startsWith('Sprint 2 ') },
-    ],
-    describe: ([first, second]) =>
-      `${first?.message} ${second?.message} A plan that is already full cannot absorb sick days, ` +
+    title: 'The sprints have no spare capacity',
+    cites: [{ kind: 'sprint_overload' }],
+    describe: ([overload]) =>
+      `${overload?.message} A plan that is already full cannot absorb sick days, ` +
       `review rework or one underestimated task.`,
     mitigation:
       'Move low-priority work out of the first two sprints, leave a deliberate buffer in sprint planning, ' +

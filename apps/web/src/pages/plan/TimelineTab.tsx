@@ -4,7 +4,7 @@ import { Gantt } from '../../components/Gantt';
 import { WhatIfPanel } from '../../components/WhatIfPanel';
 import { Badge, Card, Legend } from '../../components/ui';
 import { CRITICAL_COLOR } from '../../lib/colors';
-import { capacityRatio, formatDays, plural } from '../../lib/format';
+import { capacityRatio, formatDays, formatRatio, plural } from '../../lib/format';
 import type { GanttMode } from '../../lib/gantt';
 import { usePlan } from './context';
 
@@ -20,7 +20,7 @@ export function TimelineTab() {
   const team = whatIf.result.ok ? whatIf.result.config.team_size : plan.run.config.team_size;
   const cpmDays = plan.schedule.cpm.duration_days;
   const planDays = schedule.capacity_plan.duration_days;
-  const ratio = capacityRatio(planDays, cpmDays);
+  const ratio = capacityRatio(schedule.capacity_plan, plan.schedule.cpm.duration_hours);
 
   return (
     <div className="space-y-5">
@@ -85,7 +85,7 @@ export function TimelineTab() {
               <strong>{formatDays(cpmDays)} working days</strong>. Faded bars show slack: how far a
               task can slip without delaying the end. The dashed line marks where the
               capacity-feasible plan really ends ({formatDays(planDays)} days
-              {ratio !== null ? `, ${ratio.toFixed(1)}× longer` : ''}). Sprint bands are shown for
+              {ratio !== null ? `, ${formatRatio(ratio)} as long` : ''}). Sprint bands are shown for
               reference only.
             </p>
           </>

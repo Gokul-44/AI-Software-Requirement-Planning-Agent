@@ -97,6 +97,11 @@ export interface ExecuteOptions {
    * and serves it from the cache.
    */
   fromStage?: number;
+  /**
+   * Retry of a failed run: this stage and later ones keep reading the cache (only successful
+   * answers are cached), so a retry after a quota error pays only for the calls that failed.
+   */
+  reuseCache?: boolean;
   /** Resume after `needs_resolution`: the edges the user chose to remove. Continues at stage 6. */
   resolution?: EdgeRef[];
 }
@@ -165,7 +170,10 @@ export class Pipeline {
     const from = options.fromStage;
     // Stage 7's result is only kept in the final plan, so a re-run "from 8" starts at 7.
     const start = options.resolution ? 6 : Math.min(from ?? 1, 7);
-    const freshFrom = from !== undefined && from > 1 ? from : Number.POSITIVE_INFINITY;
+    const freshFrom =
+      from !== undefined && from > 1 && options.reuseCache !== true
+        ? from
+        : Number.POSITIVE_INFINITY;
     const freshHarness = bypassing(this.deps.harness);
     const state: RunState = { scheduled: null, signals: null, risks: null };
     const totals = { input: run.inputTokens, output: run.outputTokens };

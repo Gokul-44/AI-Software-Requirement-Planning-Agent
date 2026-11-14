@@ -25,6 +25,7 @@
     "format": "prettier --write .",
     "dev:web": "npm run dev -w @spm/web",
     "golden:record": "npm run golden:record -w @spm/api --",
+    "golden:export": "npm run golden:export -w @spm/api --",
     "dev:api": "npm run dev -w @spm/api"
   },
   "devDependencies": {

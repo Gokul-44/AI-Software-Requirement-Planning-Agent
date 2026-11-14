@@ -191,6 +191,20 @@ describe('callStage', () => {
       },
     );
   });
+
+  it('also reports a 429 that survived the backoff retries as QUOTA_EXHAUSTED', async () => {
+    const rateLimited = new LlmTransientError('Gemini API error 429', { status: 429 });
+    const harness = createHarness({
+      llm: new ScriptedClient([rateLimited]),
+      cache: new MemoryRepository().cache,
+    });
+    await expect(harness.callStage(spec())).rejects.toMatchObject({ code: 'QUOTA_EXHAUSTED' });
+    const unavailable = createHarness({
+      llm: new ScriptedClient([new LlmTransientError('boom', { status: 503 })]),
+      cache: new MemoryRepository().cache,
+    });
+    await expect(unavailable.callStage(spec())).rejects.toMatchObject({ code: 'LLM_UNAVAILABLE' });
+  });
 });
 
 describe('QueuedLlmClient', () => {

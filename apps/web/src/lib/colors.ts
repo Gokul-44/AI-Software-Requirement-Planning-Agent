@@ -5,8 +5,11 @@
  */
 export const EPIC_COLORS = Array.from({ length: 8 }, (_, i) => `var(--color-epic-${i + 1})`);
 
-/** The critical path is the one thing drawn in the accent colour. */
-export const CRITICAL_COLOR = 'var(--color-accent-500)';
+/**
+ * The critical path is the one thing drawn in the accent colour. It uses accent-600, not the
+ * brand value accent-500: light labels on the bars then reach 5.5:1 (on accent-500 only 4.1:1).
+ */
+export const CRITICAL_COLOR = 'var(--color-accent-600)';
 /** Outline for critical bars and nodes: dark enough to separate purple from the sand. */
 export const CRITICAL_STROKE = 'var(--color-accent-800)';
 export const INK_COLOR = 'var(--color-brand-green-950)';

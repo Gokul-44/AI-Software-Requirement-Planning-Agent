@@ -16,7 +16,7 @@
     "exactOptionalPropertyTypes": false,
     "resolveJsonModule": true
   },
-  "include": ["src", "public/golden/food-delivery.json"],
+  "include": ["src", "../../fixtures/test-plan.food-delivery.json"],
   "references": [
     { "path": "../../packages/shared" },
     { "path": "../../packages/scheduler" },

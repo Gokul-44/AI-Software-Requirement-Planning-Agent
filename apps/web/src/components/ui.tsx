@@ -225,16 +225,24 @@ export function EmptyState({
 }
 
 /** "Open a golden demo plan": opens the first recorded plan, or the home page demo gallery. */
-export function GoldenDemoButton({ size = 'md' }: { size?: ButtonSize }) {
+export function GoldenDemoButton({
+  size = 'md',
+  label = 'Open a golden demo plan',
+  variant = 'primary',
+}: {
+  size?: ButtonSize;
+  label?: string;
+  variant?: ButtonVariant;
+}) {
   const golden = useGolden();
   const first = golden.data?.[0];
   return (
     <Link
       to={first ? `/runs/${first.run_id}/plan` : '/#demos'}
-      className={buttonClass('primary', size)}
+      className={buttonClass(variant, size)}
     >
       <Sparkles className="h-4 w-4" aria-hidden="true" />
-      Open a golden demo plan
+      {label}
     </Link>
   );
 }
