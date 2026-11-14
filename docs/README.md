@@ -2,13 +2,6 @@
 
 | File                                                   | What it is                                                                       |
 | ------------------------------------------------------ | -------------------------------------------------------------------------------- |
-| [product/explanation.md](product/explanation.md)       | Master explanation of the whole project in simple English (start here)          |
-| [QA_ANSWERS.md](QA_ANSWERS.md)                         | The 5 examiner questions with one-minute answers, slide bullets and follow-ups   |
-| [presentation/slide-outline.md](presentation/slide-outline.md) | Slide-by-slide outline of the final presentation, with speakers and notes |
-| [PRESENTATION_SCRIPT.md](PRESENTATION_SCRIPT.md)       | Word-for-word presentation script with timings and who answers which question   |
-| [DEMO_WALKTHROUGH.md](DEMO_WALKTHROUGH.md)             | Click-by-click live demo plan, backup paths and the backup video guide           |
-| [VIVA_NOTES.md](VIVA_NOTES.md)                         | The 15 most likely viva questions with short answers                             |
-| [WORK_SPLIT.md](WORK_SPLIT.md)                         | How the work was shared (all members) and who presents what                      |
 | [guides/local-setup.md](guides/local-setup.md)         | Prerequisites, install, environment files, mock vs Gemini, run and test          |
 | [guides/deployment.md](guides/deployment.md)           | Step-by-step deployment on Vercel, Render and Neon, with GitHub Actions          |
 | [design/design-document.md](design/design-document.md) | The full design: problem, algorithms, schema, API, tests, deployment, risks      |
