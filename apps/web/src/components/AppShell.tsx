@@ -15,8 +15,8 @@ const TEAM = [
   'Shreya Tiwari',
 ] as const;
 
-/** Placeholder: replace with the team repository URL before the final submission. */
-export const GITHUB_URL = 'https://github.com/your-team/spm-planning-agent';
+/** The team repository on GitHub. */
+export const GITHUB_URL = 'https://github.com/Gokul-44/AI-Software-Requirement-Planning-Agent';
 
 const navLink = ({ isActive }: { isActive: boolean }) =>
   clsx(
@@ -101,19 +101,19 @@ function Footer() {
             <br />
             Software Project Management
           </p>
-          <a
-            href={GITHUB_URL}
-            target="_blank"
-            rel="noreferrer"
-            className="mt-3 inline-flex items-center gap-2 rounded-full border border-sand-300/25 px-3.5 py-1.5 text-sm text-sand-100 hover:bg-sand-100/10"
-          >
-            <GitFork className="h-4 w-4" aria-hidden="true" />
-            GitHub repository
-          </a>
         </div>
       </div>
-      <div className="border-t border-sand-300/10 py-4 text-center text-xs text-sand-300">
-        Built by the team above for the Software Project Management course.
+      <div className="flex flex-wrap items-center justify-between gap-3 border-t border-sand-300/10 px-4 py-3 text-xs text-sand-300 sm:px-6">
+        <a
+          href={GITHUB_URL}
+          target="_blank"
+          rel="noreferrer"
+          className="inline-flex items-center gap-2 rounded-full border border-sand-300/25 px-3.5 py-1.5 text-sm text-sand-100 transition hover:bg-sand-100/10"
+        >
+          <GitFork className="h-4 w-4" aria-hidden="true" />
+          GitHub repository
+        </a>
+        <span>Built by the team above for the Software Project Management course.</span>
       </div>
     </footer>
   );
