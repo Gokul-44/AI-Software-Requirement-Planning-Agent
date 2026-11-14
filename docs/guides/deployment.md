@@ -65,8 +65,8 @@ These are already set to safe values by `render.yaml`: `NODE_ENV=production`, `L
 2. Settings (check they match; the single-page-app rewrite comes from `apps/web/vercel.json`):
    - **Root Directory:** `apps/web`
    - **Framework Preset:** Vite
-   - **Build Command:** `npm run build` (default)
-   - **Output Directory:** `dist` (default)
+   - **Build Command** and **Install Command:** leave as they are (they come from `apps/web/vercel.json`, which builds from the repository root)
+   - **Output Directory:** `dist`
 3. **Environment Variables** → add `VITE_API_BASE_URL` = the Render URL **plus `/api`**, for example
    `https://spm-planning-agent-api.onrender.com/api`. (Leave `VITE_USE_FIXTURE` unset.)
 4. Deploy. Copy the Vercel URL, then go back to Render and set `CORS_ORIGIN` to it.
