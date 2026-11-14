@@ -198,10 +198,10 @@ All four members worked together on every part of the project: planning, design,
 
 | Avatar                                                                                                                                  | Name                   | GitHub                                                                         |
 | --------------------------------------------------------------------------------------------------------------------------------------- | ---------------------- | ------------------------------------------------------------------------------ |
+| <a href="https://github.com/Gokul-44"><img src="https://github.com/Gokul-44.png" width="80"></a>                                        | Gokul Faleja           | [Gokul-44](https://github.com/Gokul-44)                                        |
 | <a href="https://github.com/add-username"><img src="https://github.com/add-username.png" width="80"></a> <!-- TODO: GitHub username --> | Saransh Sarang Naik    | [add-username](https://github.com/add-username) <!-- TODO: GitHub username --> |
 | <a href="https://github.com/add-username"><img src="https://github.com/add-username.png" width="80"></a> <!-- TODO: GitHub username --> | Akshay Kumar Tapraniya | [add-username](https://github.com/add-username) <!-- TODO: GitHub username --> |
 | <a href="https://github.com/add-username"><img src="https://github.com/add-username.png" width="80"></a> <!-- TODO: GitHub username --> | Shreya Tiwari          | [add-username](https://github.com/add-username) <!-- TODO: GitHub username --> |
-| <a href="https://github.com/Gokul-44"><img src="https://github.com/Gokul-44.png" width="80"></a>                                        | Gokul Faleja           | [Gokul-44](https://github.com/Gokul-44)                                        |
 
 ## Academic note
 
