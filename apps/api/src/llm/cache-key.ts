@@ -1,0 +1,44 @@
+import { createHash } from 'node:crypto';
+
+/** JSON with sorted object keys, so equal values always hash equally. */
+export function canonicalJson(value: unknown): string {
+  return JSON.stringify(sortKeys(value));
+}
+
+function sortKeys(value: unknown): unknown {
+  if (Array.isArray(value)) return value.map(sortKeys);
+  if (value !== null && typeof value === 'object') {
+    const out: Record<string, unknown> = {};
+    for (const key of Object.keys(value).sort()) {
+      const v = (value as Record<string, unknown>)[key];
+      if (v !== undefined) out[key] = sortKeys(v);
+    }
+    return out;
+  }
+  return value;
+}
+
+export interface CacheKeyParts {
+  stage: number;
+  promptVersion: string;
+  provider: string;
+  model: string;
+  settings: unknown;
+  input: unknown;
+}
+
+/** sha256(stage | prompt_version | provider | model | settings | canonical input), MASTER_PLAN B3.1. */
+export function buildCacheKey(p: CacheKeyParts): string {
+  return createHash('sha256')
+    .update(
+      [
+        String(p.stage),
+        p.promptVersion,
+        p.provider,
+        p.model,
+        canonicalJson(p.settings),
+        canonicalJson(p.input),
+      ].join('|'),
+    )
+    .digest('hex');
+}
