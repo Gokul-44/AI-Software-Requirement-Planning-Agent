@@ -1,0 +1,68 @@
+name: Deploy
+
+# On every push to main: run the same checks as CI, apply database migrations to Neon, then
+# ask Render to deploy the API. Vercel deploys the website by itself from the same push.
+on:
+  push:
+    branches: [main]
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: deploy-main
+  cancel-in-progress: false
+
+jobs:
+  ci:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    env:
+      # Never call a real LLM from CI.
+      LLM_PROVIDER: replay
+      LLM_API_KEY: ''
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 24
+          cache: npm
+      - run: npm ci
+      - run: npm run lint
+      - run: npm run typecheck
+      - run: npm test
+      - run: npm run build
+
+  migrate:
+    needs: ci
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 24
+          cache: npm
+      - run: npm ci
+      - name: Apply database migrations (additive SQL files in apps/api/migrations)
+        run: npm run migrate:deploy
+        env:
+          # Secret: the Neon DIRECT (unpooled) connection string.
+          DATABASE_URL: ${{ secrets.DATABASE_URL }}
+
+  deploy-api:
+    needs: migrate
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    steps:
+      - name: Trigger the Render deploy hook
+        env:
+          RENDER_DEPLOY_HOOK_URL: ${{ secrets.RENDER_DEPLOY_HOOK_URL }}
+        run: |
+          if [ -z "$RENDER_DEPLOY_HOOK_URL" ]; then
+            echo "RENDER_DEPLOY_HOOK_URL is not set; skipping the API deploy."
+            exit 1
+          fi
+          curl --fail --silent --show-error -X POST "$RENDER_DEPLOY_HOOK_URL" > /dev/null
+          echo "Render deploy requested."

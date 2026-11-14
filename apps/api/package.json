@@ -31,6 +31,7 @@
     "start": "node --env-file-if-exists=.env dist/server.js",
     "dev": "tsc -b && node --env-file-if-exists=.env dist/server.js",
     "migrate": "node --env-file-if-exists=.env ../../node_modules/node-pg-migrate/bin/node-pg-migrate.js -m migrations --database-url-var DATABASE_URL_UNPOOLED up",
+    "migrate:deploy": "node ../../node_modules/node-pg-migrate/bin/node-pg-migrate.js -m migrations --database-url-var DATABASE_URL up",
     "migrate:down": "node --env-file-if-exists=.env ../../node_modules/node-pg-migrate/bin/node-pg-migrate.js -m migrations --database-url-var DATABASE_URL_UNPOOLED down",
     "live-run": "tsc -b && node --env-file-if-exists=.env dist/scripts/live-run.js",
     "golden:record": "tsc -b && node --env-file-if-exists=.env dist/scripts/golden-record.js",

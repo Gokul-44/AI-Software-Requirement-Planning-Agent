@@ -28,6 +28,9 @@
     "golden:export": "npm run golden:export -w @spm/api --",
     "eval": "npm run eval -w @spm/api --",
     "dev:api": "npm run dev -w @spm/api",
+    "build:api": "tsc -b apps/api",
+    "start:api": "npm run start -w @spm/api",
+    "migrate:deploy": "npm run migrate:deploy -w @spm/api",
     "e2e": "playwright test -c e2e/playwright.config.ts"
   },
   "devDependencies": {
