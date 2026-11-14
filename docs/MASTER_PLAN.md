@@ -963,7 +963,7 @@ Other cases:
   - every edge satisfies `EF(u) ≤ ES(v)`
   - no sprint load exceeds C
   - every edge satisfies `sprint(u) < sprint(v)`, or equal sprints with `fin(u) ≤ start(v)`
-  - the strict-mode sprint count is ≥ the relaxed-mode count
+  - the strict-mode sprint count is ≥ the relaxed-mode count **in most cases only**. Property testing in Step 2 found this is not a theorem for greedy packing (a 4-task counterexample exists; about 1.4% of random DAGs). It is tested statistically (relaxed worse on at most 5% of DAGs).
 
 ### E2. Contract tests
 - Every recorded LLM response (fixtures) passes its stage schema. Mutated copies (a missing field, a wrong enum, a fake ID) are rejected with the expected issue.
