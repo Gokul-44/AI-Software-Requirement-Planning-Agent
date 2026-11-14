@@ -38,8 +38,8 @@ async function expectError(res: request.Response, status: number, code: string) 
   expect(body.error.request_id).toBe(res.headers['x-request-id']);
 }
 
-describe('POST /api/projects to a completed stage 3', () => {
-  it('returns 202, then RunStatus reports stages 1-3 and the data is persisted', async () => {
+describe('POST /api/projects to a finished plan', () => {
+  it('returns 202, then RunStatus reports all 8 stages and the plan is persisted', async () => {
     const { app, repo, pipeline } = setup();
     const created = await request(app).post('/api/projects').send({ idea_text: FOOD });
     expect(created.status).toBe(202);
@@ -52,18 +52,22 @@ describe('POST /api/projects to a completed stage 3', () => {
     const status: RunStatus = RunStatusSchema.parse(res.body);
     expect(status.run_id).toBe(run_id);
     expect(status.status).toBe('succeeded');
-    expect(status.current_stage).toBe(3);
+    expect(status.current_stage).toBe(8);
     expect(status.error).toBeNull();
     expect(status.cycle).toBeNull();
     expect(status.stages).toHaveLength(8);
-    expect(status.stages.slice(0, 3).map((s) => [s.name, s.status])).toEqual([
+    expect(status.stages.map((s) => [s.name, s.status])).toEqual([
       ['requirements', 'succeeded'],
       ['stories', 'succeeded'],
       ['tasks', 'succeeded'],
+      ['estimates', 'succeeded'],
+      ['dependencies', 'succeeded'],
+      ['schedule', 'succeeded'],
+      ['risks', 'succeeded'],
+      ['assemble', 'succeeded'],
     ]);
-    expect(status.stages.slice(3).every((s) => s.status === 'pending')).toBe(true);
     expect(status.stages[2]?.attempts).toBeGreaterThanOrEqual(2);
-    expect(status.issues_count).toEqual({ error: 0, warning: 0 });
+    expect(status.issues_count.error).toBe(0);
 
     const core = await repo.loadCore(run_id);
     expect(core.requirements.length).toBeGreaterThanOrEqual(5);
@@ -71,11 +75,21 @@ describe('POST /api/projects to a completed stage 3', () => {
     expect(core.stories.length).toBeGreaterThan(core.epics.length);
     expect(core.tasks.length).toBeGreaterThan(core.stories.length);
     expect(core.tasks[0]?.code).toBe('T-001');
+    expect(core.tasks.every((t) => t.points !== null && t.hours !== null)).toBe(true);
+    expect(core.dependencies.length).toBeGreaterThan(0);
 
     const run = await repo.getRun(run_id);
     expect(run?.llmProvider).toBe('mock');
-    expect(run?.promptVersions).toEqual({ '1': 'v1', '2': 'v1', '3': 'v1' });
+    expect(run?.promptVersions).toEqual({
+      '1': 'v1',
+      '2': 'v1',
+      '3': 'v1',
+      '4': 'v1',
+      '5': 'v1',
+      '7': 'v1',
+    });
     expect(run?.inputTokens).toBeGreaterThan(0);
+    expect(run?.plan).not.toBeNull();
 
     const list = await request(app).get('/api/projects?limit=5');
     expect(list.status).toBe(200);

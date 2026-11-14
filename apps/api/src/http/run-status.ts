@@ -37,7 +37,7 @@ export async function buildRunStatus(repo: Repository, run: RunRow): Promise<Run
     current_stage: run.currentStage,
     stages: stages.map(stageEntry),
     issues_count: issues,
-    cycle: null,
+    cycle: run.cycle,
     error: run.error,
   };
 }

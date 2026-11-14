@@ -1,7 +1,10 @@
 import type {
   Config,
+  CycleInfo,
   IssueKind,
   Layer,
+  Plan,
+  Points,
   Priority,
   RequirementCategory,
   RequirementType,
@@ -18,7 +21,12 @@ export type RunStatusValue = 'queued' | 'running' | 'needs_resolution' | 'succee
 export interface RunRow {
   id: string;
   projectId: string;
+  parentRunId: string | null;
   ideaText: string;
+  projectCreatedAt: Date;
+  isGolden: boolean;
+  /** Set while the run waits in `needs_resolution`. */
+  cycle: CycleInfo | null;
   status: RunStatusValue;
   currentStage: number;
   config: Config;
@@ -85,6 +93,22 @@ export interface TaskRow {
   title: string;
   description: string;
   layer: Layer;
+  /** Filled by stage 4 (null or absent before). */
+  points?: Points | null;
+  hours?: number | null;
+  rationale?: string | null;
+}
+export interface EstimateRow {
+  code: string;
+  points: Points;
+  hours: number;
+  rationale: string;
+}
+export interface DependencyRow {
+  from: string;
+  to: string;
+  source: 'llm' | 'repair' | 'user';
+  reason: string | null;
 }
 export interface IssueDraft {
   stage: number;
@@ -106,6 +130,17 @@ export interface NewRunInput {
   promptVersions: Record<string, string>;
 }
 
+/** A new run inside an existing project (a re-run), linked to the run it came from. */
+export interface RerunInput extends Omit<NewRunInput, 'ideaText'> {
+  projectId: string;
+  parentRunId: string;
+}
+
+export interface GoldenRunRow {
+  runId: string;
+  ideaText: string;
+}
+
 export interface RunPatch {
   status?: RunStatusValue;
   currentStage?: number;
@@ -115,6 +150,7 @@ export interface RunPatch {
   outputTokens?: number;
   error?: StageError | null;
   plan?: unknown;
+  cycle?: CycleInfo | null;
   finishedAt?: Date | null;
 }
 
@@ -139,6 +175,8 @@ export interface Repository {
   readonly cache: StageCacheStore;
   ping(): Promise<void>;
   createProjectWithRun(input: NewRunInput): Promise<{ projectId: string; runId: string }>;
+  /** Creates a run in an existing project, with all eight stage rows pending. */
+  createRerun(input: RerunInput): Promise<string>;
   getRun(runId: string): Promise<RunRow | null>;
   updateRun(runId: string, patch: RunPatch): Promise<void>;
   getStages(runId: string): Promise<StageRow[]>;
@@ -151,6 +189,23 @@ export interface Repository {
   saveRequirements(runId: string, rows: RequirementRow[]): Promise<void>;
   saveStoryTree(runId: string, epics: EpicRow[], stories: StoryRow[]): Promise<void>;
   saveTasks(runId: string, rows: TaskRow[]): Promise<void>;
+  /** Stage 4: writes points, hours and rationale onto the run's existing tasks. */
+  saveEstimates(runId: string, rows: EstimateRow[]): Promise<void>;
+  /** Stage 5: replaces the run's dependency edges. */
+  saveDependencies(runId: string, rows: DependencyRow[]): Promise<void>;
+  /**
+   * Stage 8: replaces every normalised row of the run (requirements ... plan_issues) from the
+   * assembled plan, sets the runs.plan snapshot and marks the run succeeded, all in ONE
+   * transaction. A reader never sees a succeeded run without its plan.
+   */
+  savePlan(runId: string, plan: Plan): Promise<void>;
+  /**
+   * Re-run support: copies what stages 1..`uptoStage` produced (and the run summary) from one
+   * run into another, so those stages need no LLM call and keep user decisions.
+   */
+  cloneRunData(fromRunId: string, toRunId: string, uptoStage: number): Promise<void>;
+  listGoldenRuns(): Promise<GoldenRunRow[]>;
+  markGolden(runId: string): Promise<void>;
   /** Deletes the run's issues of `stage` and later, then inserts `issues` (codes continue I-001...). */
   replaceIssuesFromStage(runId: string, stage: number, issues: IssueDraft[]): Promise<void>;
   loadCore(runId: string): Promise<{
@@ -158,6 +213,7 @@ export interface Repository {
     epics: EpicRow[];
     stories: StoryRow[];
     tasks: TaskRow[];
+    dependencies: DependencyRow[];
     issues: IssueRow[];
   }>;
 }

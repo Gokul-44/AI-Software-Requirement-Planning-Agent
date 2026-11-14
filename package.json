@@ -21,7 +21,8 @@
     "typecheck": "tsc -b tsconfig.json",
     "lint": "eslint . && prettier --check .",
     "format": "prettier --write .",
-    "dev:web": "npm run dev -w @spm/web"
+    "dev:web": "npm run dev -w @spm/web",
+    "golden:record": "npm run golden:record -w @spm/api --"
   },
   "devDependencies": {
     "@eslint/js": "^10.0.1",

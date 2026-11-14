@@ -25,7 +25,7 @@ const EnvSchema = z.object({
   GEMINI_API_KEY: optionalString,
   GEMINI_MODEL: optionalString,
   GEMINI_THINKING: z.enum(['minimal', 'low', 'medium', 'high']).default('low'),
-  GEMINI_TIMEOUT_MS: optionalInt(240_000, 1000),
+  GEMINI_TIMEOUT_MS: optionalInt(360_000, 1000),
   /** Minimum gap between two LLM calls: 60000 / free-tier RPM, rounded up with some margin. */
   LLM_MIN_INTERVAL_MS: optionalInt(6500),
   /** Provider and model that recorded the stage_cache entries the replay provider serves. */

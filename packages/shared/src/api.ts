@@ -127,6 +127,8 @@ export const ProjectListResponseSchema = z.array(ProjectListItemSchema);
 export const RerunRequestSchema = z.strictObject({
   from_stage: z.number().int().min(1).max(8),
   config: ConfigPatchSchema.optional(),
+  /** Needed when the server runs with DEMO_ACCESS_CODE, as for a new project. */
+  access_code: z.string().optional(),
 });
 export type RerunRequest = z.infer<typeof RerunRequestSchema>;
 

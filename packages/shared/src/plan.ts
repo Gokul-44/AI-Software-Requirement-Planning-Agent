@@ -59,6 +59,7 @@ export const ISSUE_KINDS = [
   'suspicious_edge',
   'duplicate_task_suspect',
   'risk_rejected',
+  'missing_estimate',
 ] as const;
 export const IssueKind = z.enum(ISSUE_KINDS);
 export type IssueKind = z.infer<typeof IssueKind>;
@@ -240,3 +241,4 @@ export type PlanTask = z.infer<typeof PlanTaskSchema>;
 export type PlanStory = z.infer<typeof PlanStorySchema>;
 export type PlanRequirement = z.infer<typeof PlanRequirementSchema>;
 export type PlanDependency = z.infer<typeof PlanDependencySchema>;
+export type PlanRisk = z.infer<typeof PlanRiskSchema>;

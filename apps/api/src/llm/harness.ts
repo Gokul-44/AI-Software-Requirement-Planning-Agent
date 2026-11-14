@@ -48,6 +48,8 @@ export interface StageCallSpec<T> {
   semantic?: (value: T) => string[];
   mode?: 'extract' | 'creative';
   maxOutputTokens: number;
+  /** Re-run support: ignore a cached answer and ask the model again (the new answer is cached only if the key is new). */
+  bypassCache?: boolean;
 }
 
 export interface StageCallResult<T> {
@@ -98,7 +100,7 @@ export function createHarness(opts: HarnessOptions): Harness {
       input: spec.input,
     });
 
-    const hit = await cache.get(cacheKey);
+    const hit = spec.bypassCache ? null : await cache.get(cacheKey);
     if (hit) {
       const checked = check(spec, hit.output);
       if (checked.ok) {

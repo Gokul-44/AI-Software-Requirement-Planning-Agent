@@ -1,11 +1,16 @@
 import { z } from 'zod';
 import {
   EpicId,
+  Layer,
   Priority,
   RequirementId,
   RequirementType,
+  Severity3,
+  SignalId,
+  SignalKind,
   StoryId,
   StoriesOutputSchema,
+  TaskId,
 } from '@spm/shared';
 
 /**
@@ -71,3 +76,66 @@ export const CoverageStoriesOutputSchema = z.strictObject({
     .max(12),
 });
 export type CoverageStoriesOutput = z.infer<typeof CoverageStoriesOutputSchema>;
+
+// ---------------------------------------------------------------- stage 4
+
+/** Estimation input (B3.3): code, title, layer and the story's "I want" (at most 120 characters). */
+export const Stage4InputSchema = z.object({
+  tasks: z.array(z.object({ id: TaskId, title: z.string(), layer: Layer, story: z.string() })),
+});
+export type Stage4Input = z.infer<typeof Stage4InputSchema>;
+
+// ---------------------------------------------------------------- stage 5
+
+const DependencyTaskSchema = z.object({
+  id: TaskId,
+  title: z.string(),
+  layer: Layer,
+  story_id: StoryId,
+  epic_id: EpicId,
+});
+export type DependencyTask = z.infer<typeof DependencyTaskSchema>;
+
+/**
+ * scope "all": every task, one call (80 tasks or fewer). "epic": the tasks of one epic
+ * (pass A above 80 tasks). "cross": every task, only edges between epics (pass B).
+ */
+export const DependencyScope = z.enum(['all', 'epic', 'cross']);
+export type DependencyScope = z.infer<typeof DependencyScope>;
+
+export const Stage5InputSchema = z.object({
+  scope: DependencyScope,
+  tasks: z.array(DependencyTaskSchema),
+  epics: z.array(z.object({ id: EpicId, title: z.string() })),
+});
+export type Stage5Input = z.infer<typeof Stage5InputSchema>;
+
+/** Cycle repair (B1 Issue 3): only the tasks and the edges inside each SCC. */
+export const Stage5RepairInputSchema = z.object({
+  groups: z.array(
+    z.object({
+      tasks: z.array(z.object({ id: TaskId, title: z.string(), layer: Layer })),
+      dependencies: z.array(z.object({ task_id: TaskId, depends_on: z.array(TaskId) })),
+    }),
+  ),
+});
+export type Stage5RepairInput = z.infer<typeof Stage5RepairInputSchema>;
+
+// ---------------------------------------------------------------- stage 7
+
+export const Stage7InputSchema = z.object({
+  summary: z.string(),
+  signals: z.array(
+    z.object({
+      id: SignalId,
+      kind: SignalKind,
+      severity: Severity3,
+      message: z.string(),
+      value: z.number(),
+      task_ids: z.array(TaskId),
+    }),
+  ),
+  /** Titles of the tasks the signals name. */
+  task_titles: z.record(z.string(), z.string()),
+});
+export type Stage7Input = z.infer<typeof Stage7InputSchema>;

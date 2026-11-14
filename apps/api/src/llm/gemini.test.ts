@@ -1,6 +1,14 @@
 import { describe, expect, it } from 'vitest';
 import { ApiError } from '@google/genai';
-import { RequirementsOutputSchema, StoriesOutputSchema, toJsonSchema } from '@spm/shared';
+import {
+  DependenciesOutputSchema,
+  EstimatesOutputSchema,
+  RequirementsOutputSchema,
+  RisksOutputSchema,
+  StoriesOutputSchema,
+  TasksOutputSchema,
+  toJsonSchema,
+} from '@spm/shared';
 import {
   classifyError,
   isDailyQuota,
@@ -40,12 +48,29 @@ function keywords(node: unknown, out = new Set<string>()): Set<string> {
 
 describe('toGeminiSchema', () => {
   it('drops keywords Gemini rejects and keeps structure', () => {
-    for (const schema of [RequirementsOutputSchema, StoriesOutputSchema]) {
+    for (const schema of [
+      RequirementsOutputSchema,
+      StoriesOutputSchema,
+      TasksOutputSchema,
+      EstimatesOutputSchema,
+      DependenciesOutputSchema,
+      RisksOutputSchema,
+    ]) {
       const used = keywords(toGeminiSchema(toJsonSchema(schema)));
       for (const bad of KEYWORDS_GEMINI_REJECTS) expect(used.has(bad)).toBe(false);
       expect(used.has('required')).toBe(true);
       expect(used.has('additionalProperties')).toBe(true);
     }
+  });
+
+  it('turns the numeric points enum into a described integer (stage 4)', () => {
+    const out = toGeminiSchema(toJsonSchema(EstimatesOutputSchema)) as {
+      properties: { estimates: { items: { properties: { points: Record<string, unknown> } } } };
+    };
+    const points = out.properties.estimates.items.properties.points;
+    expect(points['enum']).toBeUndefined();
+    expect(points['type']).toBe('integer');
+    expect(points['description']).toContain('1, 2, 3, 5, 8, 13');
   });
 
   it('keeps property names that look like keywords and hints the length limit', () => {

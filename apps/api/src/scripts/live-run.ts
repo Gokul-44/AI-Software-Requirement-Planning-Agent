@@ -1,5 +1,5 @@
 import { pino } from 'pino';
-import { DEFAULT_CONFIG } from '@spm/shared';
+import { DEFAULT_CONFIG, PlanSchema } from '@spm/shared';
 import { loadConfig } from '../config.js';
 import { PgRepository, createPool } from '../db/pg-repository.js';
 import { createLlmClient } from '../llm/factory.js';
@@ -8,9 +8,10 @@ import { Pipeline } from '../pipeline/orchestrator.js';
 import { PROMPT_VERSIONS } from '../prompts/index.js';
 
 /**
- * One real run of stages 1-3 with the configured provider, stored in the database.
+ * One full run (stages 1-8) with the configured provider, stored in the database.
  * Usage: npm run live-run -w @spm/api -- "I want an online food delivery app"
- * Prints counts, attempts and time per stage. Never prints keys or connection strings.
+ * Prints counts, attempts and time per stage, then the plan numbers. Never prints keys or
+ * connection strings.
  */
 const idea = process.argv[2] ?? 'I want an online food delivery app';
 const config = loadConfig();
@@ -18,6 +19,7 @@ const logger = pino({ level: config.LOG_LEVEL });
 if (!config.DATABASE_URL) throw new Error('DATABASE_URL is not set.');
 
 const pool = createPool({ connectionString: config.DATABASE_URL, max: 3 });
+pool.on('error', (err) => logger.error({ err }, 'idle database client error'));
 const repo = new PgRepository(pool);
 const llm = createLlmClient(config, repo.cache, logger);
 const pipeline = new Pipeline({
@@ -42,15 +44,27 @@ const totalMs = Date.now() - started;
 
 const run = await repo.getRun(runId);
 const core = await repo.loadCore(runId);
-const stages = (await repo.getStages(runId)).slice(0, 3);
+const stages = await repo.getStages(runId);
 console.log(`run ${runId} status=${run?.status}`);
 if (run?.error) console.log('error:', JSON.stringify(run.error));
 console.log(
-  `counts: requirements=${core.requirements.length} epics=${core.epics.length} stories=${core.stories.length} tasks=${core.tasks.length} issues=${core.issues.length}`,
+  `counts: requirements=${core.requirements.length} epics=${core.epics.length} stories=${core.stories.length} tasks=${core.tasks.length} edges=${core.dependencies.length} issues=${core.issues.length}`,
 );
 for (const s of stages) {
   console.log(
     `stage ${s.stage}: status=${s.status} attempts=${s.attempts} time=${((s.latencyMs ?? 0) / 1000).toFixed(1)}s tokens_in=${s.inputTokens} tokens_out=${s.outputTokens}`,
+  );
+}
+if (run?.cycle) console.log(`cycle waiting: ${JSON.stringify(run.cycle)}`);
+const parsed = PlanSchema.safeParse(run?.plan);
+if (parsed.success) {
+  const plan = parsed.data;
+  const count = (kind: string) => plan.issues.filter((i) => i.kind === kind).length;
+  console.log(
+    `plan: tasks=${plan.tasks.length} edges=${plan.dependencies.length} critical_tasks=${plan.schedule.tasks.filter((t) => t.critical).length} cpm_days=${plan.schedule.cpm.duration_days} cpm_hours=${plan.schedule.cpm.duration_hours} sprints=${plan.schedule.capacity_plan.sprint_count} capacity_days=${plan.schedule.capacity_plan.duration_days}`,
+  );
+  console.log(
+    `signals=${plan.signals.length} risks=${plan.risks.length} (template=${plan.risks.filter((r) => r.origin === 'template').length}) issues=${plan.issues.length} cycles_repaired=${count('cycle_repaired')} suspicious_edges=${count('suspicious_edge')} unknown_refs=${count('unknown_reference')} risk_rejected=${count('risk_rejected')}`,
   );
 }
 console.log(

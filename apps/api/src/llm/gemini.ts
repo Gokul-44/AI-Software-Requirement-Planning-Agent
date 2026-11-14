@@ -149,14 +149,23 @@ export function toGeminiSchema(schema: unknown): unknown {
   return convert(schema);
 }
 
+function isNumberList(value: unknown): value is number[] {
+  return Array.isArray(value) && value.length > 0 && value.every((v) => typeof v === 'number');
+}
+
 function convert(node: unknown): unknown {
   if (Array.isArray(node)) return node.map(convert);
   if (node === null || typeof node !== 'object') return node;
   const src = node as Record<string, unknown>;
   const out: Record<string, unknown> = {};
+  let numberChoices: number[] | null = null;
   for (const [key, value] of Object.entries(src)) {
     if (key === 'const') {
       out['enum'] = [value];
+    } else if (key === 'enum' && isNumberList(value)) {
+      // Numeric enums are not reliably accepted for structured output: describe them instead.
+      // Zod still enforces the exact set after parsing.
+      numberChoices = value;
     } else if (key === 'properties' && value !== null && typeof value === 'object') {
       // Keys of `properties` are property names, not keywords: keep them all.
       out[key] = Object.fromEntries(
@@ -171,6 +180,10 @@ function convert(node: unknown): unknown {
     }
   }
   const hints: string[] = [];
+  if (numberChoices !== null) {
+    hints.push(`Must be exactly one of: ${numberChoices.join(', ')}.`);
+    if (out['type'] === 'number' && numberChoices.every(Number.isInteger)) out['type'] = 'integer';
+  }
   const maxLength = src['maxLength'];
   if (typeof maxLength === 'number') hints.push(`At most ${maxLength} characters.`);
   // Array bounds are hints too: nested minItems/maxItems made Gemini 3.6 Flash answer 400
