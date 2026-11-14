@@ -4,6 +4,7 @@
     { "path": "packages/shared" },
     { "path": "packages/shared/tsconfig.test.json" },
     { "path": "packages/scheduler" },
+    { "path": "packages/scheduler/tsconfig.test.json" },
     { "path": "packages/exporters" },
     { "path": "apps/api" },
     { "path": "apps/web" }
