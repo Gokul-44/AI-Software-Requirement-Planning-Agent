@@ -9,8 +9,10 @@ coverage/
 playwright-report/
 test-results/
 blob-report/
-.claude/settings.local.json
 .DS_Store
 Thumbs.db
 *.log
 .neon
+.cl[a]ude/
+.local/
+.playwright-mcp/
