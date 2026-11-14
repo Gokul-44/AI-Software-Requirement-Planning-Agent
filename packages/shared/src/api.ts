@@ -102,7 +102,7 @@ export type RunStatus = z.infer<typeof RunStatusSchema>;
 export const IDEA_TEXT_MAX = 2000;
 
 export const CreateProjectRequestSchema = z.strictObject({
-  idea_text: z.string().trim().min(3).max(IDEA_TEXT_MAX),
+  idea_text: z.string().trim().min(10).max(IDEA_TEXT_MAX),
   /** Partial overrides; the server applies defaults and the C/H invariants (INVALID_CONFIG). */
   config: ConfigPatchSchema.optional(),
   access_code: z.string().optional(),
