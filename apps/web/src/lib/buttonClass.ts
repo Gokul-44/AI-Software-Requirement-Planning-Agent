@@ -19,7 +19,7 @@ export function buttonClass(
     size === 'lg' && 'px-6 py-3 text-base',
     variant === 'primary' &&
       (size === 'lg'
-        ? 'bg-accent-500 text-white shadow-md hover:-translate-y-0.5 hover:bg-accent-600 hover:shadow-lg'
+        ? 'bg-accent-500 font-bold text-white shadow-md hover:-translate-y-0.5 hover:bg-accent-600 hover:shadow-lg'
         : 'bg-accent-600 text-white shadow-sm hover:bg-accent-700'),
     variant === 'secondary' &&
       'border border-sand-500 bg-surface text-brand-green-900 shadow-sm hover:bg-sand-100',
