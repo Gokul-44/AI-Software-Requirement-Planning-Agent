@@ -2,6 +2,7 @@ export type {
   ApiError as ApiErrorBody,
   Config,
   ConfigPatch,
+  CycleInfo,
   CreateProjectRequest,
   CreateProjectResponse,
   DemoGoldenItem,
@@ -12,6 +13,9 @@ export type {
   PlanStory,
   PlanTask,
   ProjectListItem,
+  RerunRequest,
+  ResolveCycleRequest,
+  RunCreatedResponse,
   RunStatus,
   Signal,
 } from '@spm/shared';

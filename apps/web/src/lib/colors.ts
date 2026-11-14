@@ -1,42 +1,46 @@
-/** Epic colours, assigned in epic order. Chosen to stay distinct from the critical-path red. */
-export const EPIC_COLORS = [
-  '#2563eb', // blue
-  '#7c3aed', // violet
-  '#0d9488', // teal
-  '#d97706', // amber
-  '#db2777', // pink
-  '#4d7c0f', // olive
-  '#0891b2', // cyan
-  '#64748b', // slate
-];
+/**
+ * Chart and badge colours. Every value is a design token from src/index.css (docs/DESIGN.md):
+ * no hex values live here. Purple (accent) is reserved for the critical path, so epic colours are
+ * tints and shades of the forest green and the sand beige only.
+ */
+export const EPIC_COLORS = Array.from({ length: 8 }, (_, i) => `var(--color-epic-${i + 1})`);
 
-export const CRITICAL_COLOR = '#dc2626';
+/** The critical path is the one thing drawn in the accent colour. */
+export const CRITICAL_COLOR = 'var(--color-accent-500)';
+/** Outline for critical bars and nodes: dark enough to separate purple from the sand. */
+export const CRITICAL_STROKE = 'var(--color-accent-800)';
+export const INK_COLOR = 'var(--color-brand-green-950)';
+export const MUTED_EDGE = 'var(--color-sand-600)';
+export const GRID_COLOR = 'var(--color-sand-400)';
 
 export function epicColor(index: number): string {
-  return EPIC_COLORS[index % EPIC_COLORS.length] ?? '#64748b';
+  return EPIC_COLORS[index % EPIC_COLORS.length] ?? EPIC_COLORS[0] ?? 'var(--color-sand-600)';
 }
 
+/** Layer badges: brand neutrals only, told apart by lightness and the label itself. */
 export const LAYER_STYLES: Record<string, string> = {
-  frontend: 'bg-sky-50 text-sky-700 ring-sky-200',
-  backend: 'bg-indigo-50 text-indigo-700 ring-indigo-200',
-  database: 'bg-amber-50 text-amber-800 ring-amber-200',
-  devops: 'bg-slate-100 text-slate-700 ring-slate-300',
-  testing: 'bg-emerald-50 text-emerald-700 ring-emerald-200',
-  design: 'bg-pink-50 text-pink-700 ring-pink-200',
-  integration: 'bg-violet-50 text-violet-700 ring-violet-200',
+  frontend: 'bg-brand-green-100 text-brand-green-800 ring-brand-green-200',
+  backend: 'bg-brand-green-800 text-brand-green-50 ring-brand-green-800',
+  database: 'bg-sand-300 text-sand-900 ring-sand-400',
+  devops: 'bg-sand-100 text-sand-800 ring-sand-400',
+  testing: 'bg-brand-green-50 text-brand-green-700 ring-brand-green-300',
+  design: 'bg-sand-200 text-sand-800 ring-sand-400',
+  integration: 'bg-brand-green-200 text-brand-green-900 ring-brand-green-300',
 };
 
+/** Status colours stay separate from the brand: red high/error, amber medium/warning, green low. */
 export const SEVERITY_STYLES: Record<string, string> = {
-  high: 'bg-red-50 text-red-700 ring-red-200',
-  medium: 'bg-amber-50 text-amber-800 ring-amber-200',
-  low: 'bg-slate-100 text-slate-600 ring-slate-300',
-  error: 'bg-red-50 text-red-700 ring-red-200',
-  warning: 'bg-amber-50 text-amber-800 ring-amber-200',
-  info: 'bg-sky-50 text-sky-700 ring-sky-200',
+  high: 'bg-red-50 text-red-800 ring-red-200',
+  medium: 'bg-amber-50 text-amber-900 ring-amber-200',
+  low: 'bg-emerald-50 text-emerald-800 ring-emerald-200',
+  error: 'bg-red-50 text-red-800 ring-red-200',
+  warning: 'bg-amber-50 text-amber-900 ring-amber-200',
+  info: 'bg-sand-100 text-sand-800 ring-sand-400',
 };
 
+/** Priority is not a status, so it uses brand neutrals (a darker fill means more important). */
 export const PRIORITY_STYLES: Record<string, string> = {
-  must: 'bg-red-50 text-red-700 ring-red-200',
-  should: 'bg-amber-50 text-amber-800 ring-amber-200',
-  could: 'bg-slate-100 text-slate-600 ring-slate-300',
+  must: 'bg-brand-green-900 text-brand-green-50 ring-brand-green-900',
+  should: 'bg-brand-green-100 text-brand-green-800 ring-brand-green-200',
+  could: 'bg-sand-100 text-sand-800 ring-sand-400',
 };

@@ -48,3 +48,9 @@ export const CAPACITY_BOUND_RATIO = 1.5;
 export function capacityRatio(capacityDays: number, cpmDays: number): number | null {
   return cpmDays > 0 ? capacityDays / cpmDays : null;
 }
+
+/** Elapsed time as m:ss. */
+export function formatClock(ms: number): string {
+  const total = Math.floor(Math.max(0, ms) / 1000);
+  return `${Math.floor(total / 60)}:${String(total % 60).padStart(2, '0')}`;
+}

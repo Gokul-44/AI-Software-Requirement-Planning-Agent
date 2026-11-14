@@ -8,6 +8,9 @@ import type {
   ExportKind,
   Plan,
   ProjectListItem,
+  RerunRequest,
+  ResolveCycleRequest,
+  RunCreatedResponse,
   RunStatus,
 } from './types';
 
@@ -19,6 +22,10 @@ export interface PlanApi {
   createProject(req: CreateProjectRequest): Promise<CreateProjectResponse>;
   getRun(runId: string): Promise<RunStatus>;
   getPlan(runId: string): Promise<Plan>;
+  /** POST /runs/:id/rerun: a new run that reuses the stages before `from_stage`. */
+  rerun(runId: string, req: RerunRequest): Promise<RunCreatedResponse>;
+  /** POST /runs/:id/resolve-cycle: remove the chosen edges and resume the run. */
+  resolveCycle(runId: string, req: ResolveCycleRequest): Promise<RunCreatedResponse>;
   exportPlan(plan: Plan, kind: ExportKind): Promise<ExportFile>;
 }
 

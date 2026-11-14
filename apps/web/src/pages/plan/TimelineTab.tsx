@@ -30,7 +30,7 @@ export function TimelineTab() {
         <div
           role="group"
           aria-label="Timeline view"
-          className="flex rounded-lg border border-slate-300 bg-white p-0.5 shadow-sm"
+          className="flex rounded-full border border-sand-400 bg-surface p-0.5 shadow-sm"
         >
           {MODES.map((m) => (
             <button
@@ -39,10 +39,10 @@ export function TimelineTab() {
               aria-pressed={mode === m.id}
               onClick={() => setMode(m.id)}
               className={clsx(
-                'rounded-md px-4 py-1.5 text-sm',
+                'rounded-full px-4 py-1.5 text-sm',
                 mode === m.id
-                  ? 'bg-brand-600 font-medium text-white'
-                  : 'text-slate-600 hover:bg-slate-100',
+                  ? 'bg-accent-600 font-medium text-white'
+                  : 'text-muted hover:bg-sand-200',
               )}
             >
               {m.label}
@@ -50,25 +50,19 @@ export function TimelineTab() {
           ))}
         </div>
         {whatIf.isScenario ? (
-          <Badge className="bg-brand-50 text-brand-700 ring-brand-200">
+          <Badge className="bg-accent-50 text-accent-700 ring-accent-200">
             Showing what-if scenario: {plural(team, 'dev')}
           </Badge>
         ) : null}
       </div>
 
-      <Card
-        className={
-          mode === 'sprint'
-            ? 'border-brand-200 bg-brand-50/40'
-            : 'border-violet-200 bg-violet-50/40'
-        }
-      >
+      <Card className={mode === 'sprint' ? 'bg-brand-green-50' : 'bg-sand-100'}>
         {mode === 'sprint' ? (
           <>
-            <div className="text-sm font-semibold text-slate-900">
+            <div className="text-sm font-semibold text-text">
               Sprint plan: what a team of {plural(team, 'developer')} can actually deliver
             </div>
-            <p className="mt-1 text-sm text-slate-700">
+            <p className="mt-1 text-sm text-brand-green-800">
               Tasks are packed into sprints by priority within the capacity of{' '}
               {schedule.capacity_plan.capacity_points_per_sprint} points and{' '}
               {schedule.capacity_plan.hours_per_sprint} focus hours per sprint, so this plan takes{' '}
@@ -76,16 +70,16 @@ export function TimelineTab() {
                 {plural(schedule.capacity_plan.sprint_count, 'sprint')} (about{' '}
                 {formatDays(planDays)} working days)
               </strong>
-              . The purple dashed line marks the CPM minimum of {formatDays(cpmDays)} days, which is
-              the earliest finish if everyone could work in parallel.
+              . The dashed line marks the CPM minimum of {formatDays(cpmDays)} days, which is the
+              earliest finish if everyone could work in parallel.
             </p>
           </>
         ) : (
           <>
-            <div className="text-sm font-semibold text-slate-900">
+            <div className="text-sm font-semibold text-text">
               CPM: the dependency-limited lower bound, with unlimited people
             </div>
-            <p className="mt-1 text-sm text-slate-700">
+            <p className="mt-1 text-sm text-brand-green-800">
               Every task starts as soon as its dependencies finish, no matter how many people that
               needs at once. The project cannot be shorter than{' '}
               <strong>{formatDays(cpmDays)} working days</strong>. Faded bars show slack: how far a
@@ -100,14 +94,14 @@ export function TimelineTab() {
 
       <Legend
         items={[
-          { color: CRITICAL_COLOR, label: 'Critical path (zero slack, same colour in both views)' },
+          { color: CRITICAL_COLOR, label: 'Critical path (zero slack, purple in both views)' },
           ...plan.epics.map((e) => ({ color: index.colorOfEpic(e.id), label: e.title })),
         ]}
       />
 
       <Gantt schedule={schedule} mode={mode} />
 
-      <p className="text-xs text-slate-400">
+      <p className="text-xs text-muted">
         Times are working hours from the project start, shown as working days of{' '}
         {plan.run.config.focus_hours_per_day} focus hours. Bars inside a sprint show relative order
         only: no individual developer is assigned.

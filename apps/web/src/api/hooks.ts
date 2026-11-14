@@ -1,11 +1,15 @@
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
 import { api } from './client';
-import type { CreateProjectRequest } from './types';
+import type { CreateProjectRequest, RerunRequest, ResolveCycleRequest } from './types';
 
 /** Run polling interval, MASTER_PLAN D-11. */
 export const POLL_INTERVAL_MS = 2000;
 
 export const useGolden = () => useQuery({ queryKey: ['golden'], queryFn: () => api.listGolden() });
+
+/** One golden plan, for the stats on the demo cards. */
+export const useGoldenPlan = (runId: string) =>
+  useQuery({ queryKey: ['plan', runId], queryFn: () => api.getPlan(runId), staleTime: Infinity });
 
 export const useProjects = () =>
   useQuery({ queryKey: ['projects'], queryFn: () => api.listProjects() });
@@ -39,6 +43,27 @@ export function useCreateProject() {
     mutationFn: (req: CreateProjectRequest) => api.createProject(req),
     onSuccess: () => {
       void client.invalidateQueries({ queryKey: ['projects'] });
+    },
+  });
+}
+
+export function useRerun(runId: string) {
+  const client = useQueryClient();
+  return useMutation({
+    mutationFn: (req: RerunRequest) => api.rerun(runId, req),
+    onSuccess: () => {
+      void client.invalidateQueries({ queryKey: ['projects'] });
+    },
+  });
+}
+
+export function useResolveCycle(runId: string) {
+  const client = useQueryClient();
+  return useMutation({
+    mutationFn: (req: ResolveCycleRequest) => api.resolveCycle(runId, req),
+    onSuccess: () => {
+      // Polling resumes: the run is `running` again.
+      void client.invalidateQueries({ queryKey: ['run', runId] });
     },
   });
 }

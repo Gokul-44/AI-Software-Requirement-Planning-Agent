@@ -6,8 +6,8 @@ import { CriticalBadge, IdChip, LayerBadge, PriorityBadge, SeverityBadge } from 
 function Row({ label, children }: { label: string; children: React.ReactNode }) {
   return (
     <div className="flex items-baseline justify-between gap-3 py-1.5 text-sm">
-      <dt className="text-slate-500">{label}</dt>
-      <dd className="text-right font-medium text-slate-800 tabular-nums">{children}</dd>
+      <dt className="text-muted">{label}</dt>
+      <dd className="text-right font-medium text-text tabular-nums">{children}</dd>
     </div>
   );
 }
@@ -21,7 +21,7 @@ export function TaskDetails({ taskId }: { taskId: string }) {
     () => whatIf.schedule.tasks.find((t) => t.task_id === taskId)?.sprint,
     [whatIf.schedule, taskId],
   );
-  if (!task) return <p className="text-sm text-slate-500">Task {taskId} was not found.</p>;
+  if (!task) return <p className="text-sm text-muted">Task {taskId} was not found.</p>;
 
   const story = index.stories.get(task.story_id);
   const epic = index.epicOfTask.get(task.id);
@@ -46,13 +46,13 @@ export function TaskDetails({ taskId }: { taskId: string }) {
     <div className="space-y-5">
       <div>
         <div className="flex flex-wrap items-center gap-2">
-          <span className="font-mono text-sm font-semibold text-slate-500">{task.id}</span>
+          <span className="font-mono text-sm font-semibold text-muted">{task.id}</span>
           <LayerBadge layer={task.layer} />
           {sched?.critical ? <CriticalBadge /> : null}
         </div>
-        <h3 className="mt-1.5 text-lg leading-snug font-semibold text-slate-900">{task.title}</h3>
+        <h3 className="mt-1.5 text-lg leading-snug font-semibold text-text">{task.title}</h3>
         {epic ? (
-          <p className="mt-1 flex items-center gap-1.5 text-xs text-slate-500">
+          <p className="mt-1 flex items-center gap-1.5 text-xs text-muted">
             <span
               className="inline-block h-2.5 w-2.5 rounded-sm"
               style={{ background: index.colorOfEpic(epic.id) }}
@@ -63,28 +63,28 @@ export function TaskDetails({ taskId }: { taskId: string }) {
         ) : null}
       </div>
 
-      <p className="text-sm text-slate-700">{task.description}</p>
+      <p className="text-sm text-brand-green-800">{task.description}</p>
 
       <section>
-        <h4 className="text-xs font-semibold tracking-wide text-slate-500 uppercase">Estimate</h4>
-        <dl className="divide-y divide-slate-100">
+        <h4 className="text-xs font-semibold tracking-wide text-muted uppercase">Estimate</h4>
+        <dl className="divide-y divide-sand-200">
           <Row label="Story points">{task.points}</Row>
           <Row label="Hours">
             {task.hours} h
-            <span className="ml-1 font-normal text-slate-400">
+            <span className="ml-1 font-normal text-muted">
               ({formatDays(hoursToDays(task.hours, perDay))} d)
             </span>
           </Row>
         </dl>
-        <p className="mt-1 text-xs text-slate-500">{task.estimate_rationale}</p>
+        <p className="mt-1 text-xs text-muted">{task.estimate_rationale}</p>
       </section>
 
       {sched ? (
         <section>
-          <h4 className="text-xs font-semibold tracking-wide text-slate-500 uppercase">
+          <h4 className="text-xs font-semibold tracking-wide text-muted uppercase">
             Schedule (CPM, unlimited people)
           </h4>
-          <dl className="divide-y divide-slate-100">
+          <dl className="divide-y divide-sand-200">
             <Row label="Earliest start / finish">
               {sched.es} h → {sched.ef} h
             </Row>
@@ -92,7 +92,9 @@ export function TaskDetails({ taskId }: { taskId: string }) {
               {sched.ls} h → {sched.lf} h
             </Row>
             <Row label="Slack">
-              <span className={sched.slack === 0 ? 'text-red-600' : ''}>{sched.slack} h</span>
+              <span className={sched.slack === 0 ? 'font-semibold text-accent-700' : ''}>
+                {sched.slack} h
+              </span>
             </Row>
             <Row label="Downstream tasks">{sched.descendants}</Row>
             <Row label={whatIf.isScenario ? 'Sprint (what-if scenario)' : 'Sprint (capacity plan)'}>
@@ -103,36 +105,36 @@ export function TaskDetails({ taskId }: { taskId: string }) {
       ) : null}
 
       <section>
-        <h4 className="mb-1.5 text-xs font-semibold tracking-wide text-slate-500 uppercase">
+        <h4 className="mb-1.5 text-xs font-semibold tracking-wide text-muted uppercase">
           Depends on
         </h4>
         {preds.length > 0 ? (
           <div className="flex flex-wrap gap-1.5">{preds.map(chip)}</div>
         ) : (
-          <p className="text-sm text-slate-400">No predecessors: can start immediately.</p>
+          <p className="text-sm text-muted">No predecessors: can start immediately.</p>
         )}
-        <h4 className="mt-3 mb-1.5 text-xs font-semibold tracking-wide text-slate-500 uppercase">
+        <h4 className="mt-3 mb-1.5 text-xs font-semibold tracking-wide text-muted uppercase">
           Blocks
         </h4>
         {succs.length > 0 ? (
           <div className="flex flex-wrap gap-1.5">{succs.map(chip)}</div>
         ) : (
-          <p className="text-sm text-slate-400">Nothing depends on this task.</p>
+          <p className="text-sm text-muted">Nothing depends on this task.</p>
         )}
       </section>
 
       {reqs.length > 0 ? (
         <section>
-          <h4 className="mb-1.5 text-xs font-semibold tracking-wide text-slate-500 uppercase">
+          <h4 className="mb-1.5 text-xs font-semibold tracking-wide text-muted uppercase">
             Traces to
           </h4>
           <ul className="space-y-1.5">
             {reqs.map((r) => (
               <li key={r.id} className="flex items-start gap-2 text-sm">
-                <span className="mt-0.5 shrink-0 font-mono text-xs font-medium whitespace-nowrap text-slate-500">
+                <span className="mt-0.5 shrink-0 font-mono text-xs font-medium whitespace-nowrap text-muted">
                   {r.id}
                 </span>
-                <span className="text-slate-700">{r.text}</span>
+                <span className="text-brand-green-800">{r.text}</span>
                 <PriorityBadge priority={r.priority} />
               </li>
             ))}
@@ -142,12 +144,12 @@ export function TaskDetails({ taskId }: { taskId: string }) {
 
       {signals.length > 0 ? (
         <section>
-          <h4 className="mb-1.5 text-xs font-semibold tracking-wide text-slate-500 uppercase">
+          <h4 className="mb-1.5 text-xs font-semibold tracking-wide text-muted uppercase">
             Risk signals
           </h4>
           <ul className="space-y-1.5">
             {signals.map((s) => (
-              <li key={s.id} className="flex items-start gap-2 text-sm text-slate-700">
+              <li key={s.id} className="flex items-start gap-2 text-sm text-brand-green-800">
                 <SeverityBadge severity={s.severity} />
                 <span>{s.message}</span>
               </li>

@@ -55,7 +55,7 @@ export function RequirementsTab() {
       <div className="grid gap-4 md:grid-cols-2">
         <Card>
           <div className="flex items-baseline justify-between text-sm">
-            <span className="font-medium text-slate-700">Requirements with a story</span>
+            <span className="font-medium text-brand-green-800">Requirements with a story</span>
             <span className="font-semibold tabular-nums">
               {coverage.requirements_with_story} / {coverage.requirements_total} ({pct(storyRatio)})
             </span>
@@ -70,7 +70,7 @@ export function RequirementsTab() {
         </Card>
         <Card>
           <div className="flex items-baseline justify-between text-sm">
-            <span className="font-medium text-slate-700">Requirements with a task</span>
+            <span className="font-medium text-brand-green-800">Requirements with a task</span>
             <span className="font-semibold tabular-nums">
               {coverage.requirements_with_task} / {coverage.requirements_total} ({pct(taskRatio)})
             </span>
@@ -83,20 +83,20 @@ export function RequirementsTab() {
 
       <div className="flex flex-wrap items-end justify-between gap-3">
         <div className="flex flex-wrap items-end gap-3">
-          <label className="flex flex-col gap-1 text-xs font-medium text-slate-600">
+          <label className="flex flex-col gap-1 text-xs font-medium text-muted">
             Search
             <input
               type="search"
               value={query}
               onChange={(e) => setQuery(e.target.value)}
               placeholder="Requirement text or ID"
-              className="w-64 rounded-lg border border-slate-300 bg-white px-2.5 py-1.5 text-sm font-normal shadow-sm"
+              className="w-64 rounded-lg border border-sand-400 bg-surface px-2.5 py-1.5 text-sm font-normal shadow-sm"
             />
           </label>
           <div
             role="group"
             aria-label="Filter requirements"
-            className="flex rounded-lg border border-slate-300 bg-white p-0.5 shadow-sm"
+            className="flex rounded-lg border border-sand-400 bg-surface p-0.5 shadow-sm"
           >
             {(
               [
@@ -112,8 +112,8 @@ export function RequirementsTab() {
                 className={clsx(
                   'rounded-md px-3 py-1 text-sm',
                   filter === v
-                    ? 'bg-brand-600 font-medium text-white'
-                    : 'text-slate-600 hover:bg-slate-100',
+                    ? 'bg-accent-600 font-medium text-white'
+                    : 'text-muted hover:bg-sand-200',
                 )}
               >
                 {label}
@@ -139,7 +139,7 @@ export function RequirementsTab() {
         </EmptyState>
       ) : (
         <Card padded={false}>
-          <ul className="divide-y divide-slate-100">
+          <ul className="divide-y divide-sand-200">
             {reqs.map((r) => {
               const expanded = open.has(r.id);
               const noStory = r.story_ids.length === 0;
@@ -156,7 +156,7 @@ export function RequirementsTab() {
                       aria-expanded={expanded}
                       aria-label={`${expanded ? 'Collapse' : 'Expand'} ${r.id}`}
                       disabled={stories.length === 0}
-                      className="mt-0.5 flex h-6 w-6 shrink-0 items-center justify-center rounded text-slate-500 hover:bg-slate-100 disabled:opacity-30"
+                      className="mt-0.5 flex h-6 w-6 shrink-0 items-center justify-center rounded text-muted hover:bg-sand-200 disabled:opacity-30"
                     >
                       <span
                         className={clsx('transition-transform', expanded && 'rotate-90')}
@@ -167,11 +167,9 @@ export function RequirementsTab() {
                     </button>
                     <div className="min-w-0 flex-1">
                       <div className="flex flex-wrap items-center gap-2">
-                        <span className="font-mono text-xs font-semibold text-slate-500">
-                          {r.id}
-                        </span>
+                        <span className="font-mono text-xs font-semibold text-muted">{r.id}</span>
                         <PriorityBadge priority={r.priority} />
-                        <Badge className="bg-slate-50 text-slate-600 ring-slate-200">
+                        <Badge className="bg-sand-100 text-muted ring-sand-300">
                           {r.type === 'functional'
                             ? 'functional'
                             : `non-functional${r.category ? ` · ${r.category}` : ''}`}
@@ -190,9 +188,9 @@ export function RequirementsTab() {
                           </Badge>
                         )}
                       </div>
-                      <p className="mt-1 text-sm text-slate-800">{r.text}</p>
+                      <p className="mt-1 text-sm text-text">{r.text}</p>
                       {noStory ? (
-                        <p className="mt-1 text-xs text-red-600">
+                        <p className="mt-1 text-xs text-red-700">
                           Nothing in the plan implements this requirement. Add a story for it or
                           drop it deliberately.
                         </p>
@@ -201,7 +199,7 @@ export function RequirementsTab() {
                   </div>
 
                   {expanded ? (
-                    <ul className="border-t border-slate-100 bg-slate-50/60 py-2 pr-5 pl-14">
+                    <ul className="border-t border-sand-200 bg-sand-100/60 py-2 pr-5 pl-14">
                       {stories.map((s) => {
                         const tasks = s.task_ids
                           .filter((tid) => index.tasks.get(tid)?.requirement_ids.includes(r.id))
@@ -210,12 +208,12 @@ export function RequirementsTab() {
                         return (
                           <li key={s.id} className="py-2">
                             <div className="flex flex-wrap items-center gap-2 text-sm">
-                              <span className="font-mono text-xs font-semibold text-slate-500">
+                              <span className="font-mono text-xs font-semibold text-muted">
                                 {s.id}
                               </span>
-                              <span className="font-medium text-slate-800">{storyHeadline(s)}</span>
+                              <span className="font-medium text-text">{storyHeadline(s)}</span>
                               <PriorityBadge priority={s.priority} />
-                              <span className="text-xs text-slate-400">
+                              <span className="text-xs text-muted">
                                 {index.epics.get(s.epic_id)?.title}
                               </span>
                             </div>
@@ -224,7 +222,7 @@ export function RequirementsTab() {
                                 No task traces from this story to {r.id}.
                               </p>
                             ) : (
-                              <ul className="mt-1.5 space-y-1 border-l-2 border-slate-200 pl-4">
+                              <ul className="mt-1.5 space-y-1 border-l-2 border-border pl-4">
                                 {tasks.map((t) => (
                                   <li
                                     key={t.id}
@@ -235,9 +233,9 @@ export function RequirementsTab() {
                                       critical={index.criticalIds.has(t.id)}
                                       onClick={() => selectTask(t.id)}
                                     />
-                                    <span className="text-slate-700">{t.title}</span>
+                                    <span className="text-brand-green-800">{t.title}</span>
                                     <LayerBadge layer={t.layer} />
-                                    <span className="text-xs text-slate-400">
+                                    <span className="text-xs text-muted">
                                       {t.points} pt · sprint {sprintOf.get(t.id) ?? '?'}
                                     </span>
                                   </li>
@@ -255,7 +253,7 @@ export function RequirementsTab() {
           </ul>
         </Card>
       )}
-      <p className="text-xs text-slate-400">
+      <p className="text-xs text-muted">
         Requirement → story → task links are derived by code from the story-level references and
         checked in both directions.
       </p>

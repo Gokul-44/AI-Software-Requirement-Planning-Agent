@@ -34,7 +34,7 @@ export function IssuesTab() {
   return (
     <div className="space-y-4">
       <div className="flex flex-wrap items-end justify-between gap-3">
-        <p className="max-w-3xl text-sm text-slate-600">
+        <p className="max-w-3xl text-sm text-muted">
           Defects the checks found in the AI output and how they were handled. Nothing is dropped
           silently.
         </p>
@@ -49,23 +49,23 @@ export function IssuesTab() {
         <EmptyState title="No issues with this severity" />
       ) : (
         <Card padded={false}>
-          <ul className="divide-y divide-slate-100">
+          <ul className="divide-y divide-sand-200">
             {issues.map((i) => (
               <li key={i.id} className="px-5 py-4">
                 <div className="flex flex-wrap items-center gap-2">
-                  <span className="font-mono text-xs font-semibold text-slate-500">{i.id}</span>
+                  <span className="font-mono text-xs font-semibold text-muted">{i.id}</span>
                   <SeverityBadge severity={i.severity} />
-                  <Badge className="bg-slate-50 text-slate-600 ring-slate-200">
+                  <Badge className="bg-sand-100 text-muted ring-sand-300">
                     {titleCase(i.kind)}
                   </Badge>
-                  <span className="text-xs text-slate-400">
+                  <span className="text-xs text-muted">
                     Stage {i.stage} · {STAGE_NAMES[i.stage] ?? ''}
                   </span>
                 </div>
-                <p className="mt-1.5 text-sm text-slate-800">{i.message}</p>
+                <p className="mt-1.5 text-sm text-text">{i.message}</p>
                 {i.resolution ? (
-                  <p className="mt-1 text-sm text-slate-500">
-                    <span className="font-medium text-slate-600">Resolution:</span> {i.resolution}
+                  <p className="mt-1 text-sm text-muted">
+                    <span className="font-medium text-muted">Resolution:</span> {i.resolution}
                   </p>
                 ) : null}
                 {i.refs.length > 0 ? (

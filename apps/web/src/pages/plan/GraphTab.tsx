@@ -12,10 +12,11 @@ import {
 } from '@xyflow/react';
 import type { Edge, Node, NodeProps } from '@xyflow/react';
 import clsx from 'clsx';
+import { Maximize2, X } from 'lucide-react';
 import { memo, useEffect, useMemo, useState } from 'react';
 import { TaskDetails } from '../../components/TaskDetails';
 import { Button, EmptyState, Legend } from '../../components/ui';
-import { CRITICAL_COLOR } from '../../lib/colors';
+import { CRITICAL_COLOR, GRID_COLOR, INK_COLOR, MUTED_EDGE } from '../../lib/colors';
 import { NODE_HEIGHT, NODE_WIDTH, isCriticalEdge, layoutGraph } from '../../lib/graphLayout';
 import { usePlan } from './context';
 
@@ -34,43 +35,38 @@ const TaskNodeView = memo(function TaskNodeView({ data }: NodeProps<TaskNode>) {
   return (
     <div
       className={clsx(
-        'rounded-lg border-2 bg-white px-2.5 py-1.5 shadow-sm transition-shadow',
-        data.critical ? 'border-red-600 bg-red-50' : 'border-slate-200',
-        data.selected && 'ring-2 ring-brand-500 ring-offset-1',
+        'rounded-xl border-2 bg-surface px-2.5 py-1.5 shadow-sm transition-shadow',
+        data.critical ? 'border-accent-600 bg-accent-50' : 'border-border',
+        data.selected && 'ring-2 ring-accent-500 ring-offset-1',
       )}
       style={{
         width: NODE_WIDTH,
         height: NODE_HEIGHT,
         borderLeftWidth: 6,
         borderLeftColor: data.critical ? CRITICAL_COLOR : data.color,
-        ...(data.critical ? {} : { borderTopColor: '#e2e8f0' }),
       }}
     >
-      <Handle
-        type="target"
-        position={Position.Left}
-        className="!h-2 !w-2 !border-0 !bg-slate-400"
-      />
+      <Handle type="target" position={Position.Left} className="!h-2 !w-2 !border-0 !bg-sand-600" />
       <div className="flex items-center justify-between gap-2">
         <span
           className={clsx(
             'font-mono text-[11px] font-semibold',
-            data.critical ? 'text-red-700' : 'text-slate-500',
+            data.critical ? 'text-accent-800' : 'text-muted',
           )}
         >
           {data.taskId}
         </span>
-        <span className="text-[11px] text-slate-500">
+        <span className="text-[11px] text-muted">
           {data.layer} · {data.points} pt
         </span>
       </div>
-      <div className="mt-0.5 line-clamp-2 text-xs leading-snug font-medium text-slate-900">
+      <div className="mt-0.5 line-clamp-2 text-xs leading-snug font-medium text-text">
         {data.title}
       </div>
       <Handle
         type="source"
         position={Position.Right}
-        className="!h-2 !w-2 !border-0 !bg-slate-400"
+        className="!h-2 !w-2 !border-0 !bg-sand-600"
       />
     </div>
   );
@@ -125,7 +121,7 @@ function GraphInner() {
       const critical = a && b ? isCriticalEdge(a, b) : false;
       const touchesSelected =
         selectedTaskId !== null && (d.from === selectedTaskId || d.to === selectedTaskId);
-      const color = critical ? CRITICAL_COLOR : touchesSelected ? '#4f46e5' : '#94a3b8';
+      const color = critical ? CRITICAL_COLOR : touchesSelected ? INK_COLOR : MUTED_EDGE;
       return {
         id: `${d.from}->${d.to}`,
         source: d.from,
@@ -153,16 +149,17 @@ function GraphInner() {
     <div className="space-y-3">
       <div className="flex flex-wrap items-center justify-between gap-3">
         <div className="flex flex-wrap items-center gap-4">
-          <label className="flex items-center gap-2 text-sm text-slate-700">
+          <label className="flex items-center gap-2 text-sm text-brand-green-800">
             <input
               type="checkbox"
               checked={criticalOnly}
               onChange={(e) => setCriticalOnly(e.target.checked)}
-              className="h-4 w-4 rounded border-slate-300 accent-red-600"
+              className="h-4 w-4 rounded border-sand-400 accent-accent-600"
             />
             Critical path only ({criticalCount} tasks)
           </label>
           <Button size="sm" onClick={() => void fitView({ padding: 0.12, duration: 300 })}>
+            <Maximize2 className="h-3.5 w-3.5" aria-hidden="true" />
             Fit view
           </Button>
         </div>
@@ -175,7 +172,7 @@ function GraphInner() {
       </div>
 
       <div
-        className="relative overflow-hidden rounded-xl border border-slate-200 bg-white shadow-sm"
+        className="relative overflow-hidden rounded-2xl border border-border bg-surface shadow-card"
         style={{ height: 'clamp(480px, calc(100vh - 290px), 820px)' }}
       >
         <ReactFlow
@@ -192,16 +189,18 @@ function GraphInner() {
           onNodeClick={(_, node) => selectTask(node.id)}
           onPaneClick={() => selectTask(null)}
         >
-          <Background variant={BackgroundVariant.Dots} gap={18} size={1} color="#cbd5e1" />
+          <Background variant={BackgroundVariant.Dots} gap={18} size={1} color={GRID_COLOR} />
           <Controls showInteractive={false} />
           {selectedTaskId ? null : (
             <MiniMap
               pannable
+              className="!hidden sm:!block"
               zoomable
               nodeColor={(n) =>
                 (n.data as TaskNodeData).critical ? CRITICAL_COLOR : (n.data as TaskNodeData).color
               }
               nodeStrokeWidth={0}
+              bgColor="var(--color-sand-100)"
             />
           )}
         </ReactFlow>
@@ -209,12 +208,13 @@ function GraphInner() {
         {selectedTaskId ? (
           <aside
             aria-label="Task details"
-            className="spm-slide-in absolute top-0 right-0 bottom-0 hidden w-[360px] flex-col border-l border-slate-200 bg-white shadow-xl lg:flex"
+            className="spm-slide-in absolute top-0 right-0 bottom-0 hidden w-[360px] flex-col border-l border-border bg-surface shadow-lift lg:flex"
           >
-            <div className="flex items-center justify-between border-b border-slate-100 px-4 py-2">
-              <span className="text-sm font-semibold text-slate-700">Task details</span>
+            <div className="flex items-center justify-between border-b border-sand-200 px-4 py-2">
+              <span className="text-sm font-semibold text-brand-green-800">Task details</span>
               <Button size="sm" variant="ghost" onClick={() => selectTask(null)}>
-                Close ✕
+                <X className="h-3.5 w-3.5" aria-hidden="true" />
+                Close
               </Button>
             </div>
             <div className="flex-1 overflow-y-auto px-4 py-4">
@@ -222,9 +222,9 @@ function GraphInner() {
             </div>
           </aside>
         ) : (
-          <div className="pointer-events-none absolute top-3 left-3 rounded-lg border border-slate-200 bg-white/90 px-3 py-2 text-xs text-slate-600 shadow-sm">
-            <span className="font-medium text-slate-800">Click a node</span> for its estimate,
-            schedule and dependencies. Arrows point to the tasks that wait.
+          <div className="pointer-events-none absolute top-3 left-3 rounded-xl border border-border bg-surface/90 px-3 py-2 text-xs text-muted shadow-sm">
+            <span className="font-medium text-text">Click a node</span> for its estimate, schedule
+            and dependencies. Arrows point to the tasks that wait.
           </div>
         )}
       </div>

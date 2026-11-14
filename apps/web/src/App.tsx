@@ -1,7 +1,8 @@
-import { Link, Navigate, Route, Routes } from 'react-router-dom';
+import { Navigate, Route, Routes } from 'react-router-dom';
 import { AppShell } from './components/AppShell';
-import { EmptyState } from './components/ui';
+import { HistoryPage } from './pages/History';
 import { HomePage } from './pages/Home';
+import { NotFoundPage } from './pages/NotFound';
 import { RunProgressPage } from './pages/RunProgress';
 import { PlanPage } from './pages/plan/PlanPage';
 import { GraphTab } from './pages/plan/GraphTab';
@@ -19,6 +20,7 @@ export function App() {
     <Routes>
       <Route element={<AppShell />}>
         <Route index element={<HomePage />} />
+        <Route path="history" element={<HistoryPage />} />
         <Route path="runs/:runId" element={<RunProgressPage />} />
         <Route path="runs/:runId/plan" element={<PlanPage />}>
           <Route index element={<Navigate to="overview" replace />} />
@@ -32,16 +34,7 @@ export function App() {
           <Route path="risks" element={<RisksTab />} />
           <Route path="issues" element={<IssuesTab />} />
         </Route>
-        <Route
-          path="*"
-          element={
-            <EmptyState title="Page not found" icon="?">
-              <Link className="text-brand-600 underline" to="/">
-                Back to the home page
-              </Link>
-            </EmptyState>
-          }
-        />
+        <Route path="*" element={<NotFoundPage />} />
       </Route>
     </Routes>
   );

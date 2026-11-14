@@ -1,39 +1,140 @@
+@import '@fontsource-variable/inter';
 @import 'tailwindcss';
 @import '@xyflow/react/dist/style.css';
 
-@theme {
-  --font-sans: 'Inter', 'Segoe UI', system-ui, -apple-system, 'Helvetica Neue', Arial, sans-serif;
+/*
+ * Design tokens. Every colour in the app is defined here, once (docs/DESIGN.md explains the rules).
+ *
+ *   Forest Green  #1F3D2B  brand-green-900  brand and dark surfaces (header, hero, footer)
+ *   Sand Beige    #E8DCC4  sand-300         warm light surfaces (page, cards, sections)
+ *   Electric Purple #8B5CF6 accent-500      the ONLY accent (primary actions, focus, critical path)
+ *
+ * Status colours (red, amber, green) are the Tailwind defaults and stay separate from the brand.
+ * `static` keeps every variable in the stylesheet so SVG and canvas code can use var(--color-*).
+ */
+@theme static {
+  --font-sans: 'Inter Variable', 'Inter', 'Segoe UI', system-ui, -apple-system, Arial, sans-serif;
   --font-mono: ui-monospace, 'Cascadia Code', 'SFMono-Regular', Menlo, Consolas, monospace;
-  --color-brand-50: #eef2ff;
-  --color-brand-100: #e0e7ff;
-  --color-brand-200: #c7d2fe;
-  --color-brand-500: #6366f1;
-  --color-brand-600: #4f46e5;
-  --color-brand-700: #4338ca;
-  --color-crit: #dc2626;
+
+  --color-brand-green-50: #f2f8f5;
+  --color-brand-green-100: #e4f0e9;
+  --color-brand-green-200: #c9e0d3;
+  --color-brand-green-300: #a2c8b0;
+  --color-brand-green-400: #75a98a;
+  --color-brand-green-500: #4c8a66;
+  --color-brand-green-600: #3b6f51;
+  --color-brand-green-700: #2f5a41;
+  --color-brand-green-800: #264a35;
+  --color-brand-green-900: #1f3d2b;
+  --color-brand-green-950: #142a1d;
+
+  --color-sand-50: #fbf8f2;
+  --color-sand-100: #f5efe2;
+  --color-sand-200: #eee5d3;
+  --color-sand-300: #e8dcc4;
+  --color-sand-400: #d6c5a3;
+  --color-sand-500: #bba77e;
+  --color-sand-600: #9a8660;
+  --color-sand-700: #786745;
+  --color-sand-800: #574b33;
+  --color-sand-900: #3b3323;
+
+  --color-accent-50: #f5f3ff;
+  --color-accent-100: #ede9fe;
+  --color-accent-200: #ddd6fe;
+  --color-accent-300: #c4b5fd;
+  --color-accent-400: #a78bfa;
+  --color-accent-500: #8b5cf6;
+  --color-accent-600: #7c3aed;
+  --color-accent-700: #6d28d9;
+  --color-accent-800: #5b21b6;
+  --color-accent-900: #4c1d95;
+
+  /* Semantic neutrals (made from the brand colours). */
+  --color-surface: #fdfbf7;
+  --color-page: var(--color-sand-100);
+  --color-border: var(--color-sand-300);
+  --color-text: var(--color-brand-green-950);
+  --color-muted: #4a6354;
+
+  /* Epic colours for charts: mid and dark shades of green and sand only (white labels stay readable), never purple. */
+  --color-epic-1: var(--color-brand-green-700);
+  --color-epic-2: var(--color-sand-700);
+  --color-epic-3: var(--color-brand-green-500);
+  --color-epic-4: var(--color-sand-900);
+  --color-epic-5: var(--color-brand-green-900);
+  --color-epic-6: var(--color-sand-600);
+  --color-epic-7: var(--color-brand-green-600);
+  --color-epic-8: var(--color-sand-800);
+
+  --shadow-card: 0 1px 2px rgb(20 42 29 / 0.05), 0 6px 20px -8px rgb(20 42 29 / 0.14);
+  --shadow-lift: 0 2px 4px rgb(20 42 29 / 0.06), 0 16px 32px -12px rgb(20 42 29 / 0.24);
+  --shadow-glass: 0 20px 50px -20px rgb(0 0 0 / 0.5);
 }
 
 html,
 body,
 #root {
-  height: 100%;
+  min-height: 100%;
+}
+
+html {
+  scroll-behavior: smooth;
 }
 
 body {
   margin: 0;
-  background: #f6f7fb;
-  color: #0f172a;
+  background: var(--color-page);
+  color: var(--color-text);
   font-family: var(--font-sans);
   font-size: 14px;
   line-height: 1.5;
   -webkit-font-smoothing: antialiased;
+  overflow-x: hidden;
+}
+
+h1,
+h2,
+h3 {
+  letter-spacing: -0.02em;
 }
 
 /* Keyboard focus ring everywhere, hidden for mouse users. */
 :focus-visible {
-  outline: 2px solid var(--color-brand-500);
+  outline: 2px solid var(--color-accent-500);
   outline-offset: 2px;
-  border-radius: 4px;
+  border-radius: 6px;
+}
+
+::selection {
+  background: var(--color-accent-200);
+  color: var(--color-brand-green-950);
+}
+
+/* Hero: forest green, a soft purple glow and a faint dot texture. */
+.spm-hero {
+  position: relative;
+  isolation: isolate;
+  background:
+    radial-gradient(60rem 28rem at 78% -8%, rgb(139 92 246 / 0.34), transparent 60%),
+    radial-gradient(40rem 24rem at 6% 112%, rgb(139 92 246 / 0.16), transparent 60%),
+    var(--color-brand-green-900);
+}
+.spm-hero::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  z-index: -1;
+  background-image: radial-gradient(rgb(232 220 196 / 0.16) 1px, transparent 1px);
+  background-size: 22px 22px;
+  mask-image: linear-gradient(to bottom, black 30%, transparent 95%);
+}
+
+.spm-glass {
+  background: rgb(232 220 196 / 0.07);
+  border: 1px solid rgb(232 220 196 / 0.18);
+  backdrop-filter: blur(14px);
+  box-shadow: var(--shadow-glass);
 }
 
 @keyframes spm-pulse {
@@ -49,6 +150,26 @@ body {
   animation: spm-pulse 1.4s ease-in-out infinite;
 }
 
+@keyframes spm-shimmer {
+  from {
+    background-position: 200% 0;
+  }
+  to {
+    background-position: -200% 0;
+  }
+}
+.spm-skeleton {
+  border-radius: 8px;
+  background: linear-gradient(
+    90deg,
+    var(--color-sand-200) 25%,
+    var(--color-sand-100) 50%,
+    var(--color-sand-200) 75%
+  );
+  background-size: 200% 100%;
+  animation: spm-shimmer 1.6s linear infinite;
+}
+
 @keyframes spm-slide-in {
   from {
     transform: translateX(24px);
@@ -60,12 +181,55 @@ body {
   }
 }
 .spm-slide-in {
-  animation: spm-slide-in 0.16s ease-out;
+  animation: spm-slide-in 0.18s ease-out;
+}
+
+@keyframes spm-fade-up {
+  from {
+    transform: translateY(8px);
+    opacity: 0;
+  }
+  to {
+    transform: none;
+    opacity: 1;
+  }
+}
+.spm-fade-up {
+  animation: spm-fade-up 0.4s ease-out both;
+}
+.spm-fade-in {
+  animation: spm-fade-up 0.22s ease-out both;
+}
+
+.spm-lift {
+  transition:
+    transform 0.2s ease,
+    box-shadow 0.2s ease,
+    border-color 0.2s ease;
+}
+.spm-lift:hover {
+  transform: translateY(-3px);
+  box-shadow: var(--shadow-lift);
+}
+
+/* Tables and wide content scroll inside their own box on phones. */
+.spm-scroll-x {
+  overflow-x: auto;
+  -webkit-overflow-scrolling: touch;
 }
 
 @media (prefers-reduced-motion: reduce) {
-  .spm-pulse,
-  .spm-slide-in {
-    animation: none;
+  html {
+    scroll-behavior: auto;
+  }
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.001ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.001ms !important;
+  }
+  .spm-lift:hover {
+    transform: none;
   }
 }

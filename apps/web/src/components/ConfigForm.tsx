@@ -22,7 +22,7 @@ function NumberField({
 }) {
   return (
     <div>
-      <label htmlFor={id} className="block text-xs font-medium text-slate-700">
+      <label htmlFor={id} className="block text-xs font-medium text-brand-green-800">
         {label}
       </label>
       <input
@@ -35,16 +35,16 @@ function NumberField({
         aria-describedby={error ? `${id}-err` : undefined}
         onChange={(e) => onChange(e.target.value)}
         className={clsx(
-          'mt-1 w-full rounded-lg border bg-white px-2.5 py-1.5 text-sm tabular-nums shadow-sm',
-          error ? 'border-red-400 ring-1 ring-red-200' : 'border-slate-300',
+          'mt-1 w-full rounded-lg border bg-surface px-2.5 py-1.5 text-sm tabular-nums shadow-sm',
+          error ? 'border-red-400 ring-1 ring-red-200' : 'border-sand-400',
         )}
       />
       {error ? (
-        <p id={`${id}-err`} className="mt-1 text-xs text-red-600">
+        <p id={`${id}-err`} className="mt-1 text-xs text-red-700">
           {error}
         </p>
       ) : hint ? (
-        <p className="mt-1 text-xs text-slate-400">{hint}</p>
+        <p className="mt-1 text-xs text-muted">{hint}</p>
       ) : null}
     </div>
   );
@@ -55,7 +55,7 @@ function Invariant({ ok, children }: { ok: boolean | null; children: string }) {
     <li
       className={clsx(
         'flex items-center gap-1.5 text-xs',
-        ok === null ? 'text-slate-400' : ok ? 'text-emerald-700' : 'font-medium text-red-600',
+        ok === null ? 'text-muted' : ok ? 'text-emerald-700' : 'font-medium text-red-700',
       )}
     >
       <span aria-hidden="true">{ok === null ? '·' : ok ? '✓' : '✗'}</span>
@@ -118,8 +118,8 @@ export function ConfigForm({
       </div>
 
       <div>
-        <div className="text-xs font-medium text-slate-700">Points to hours</div>
-        <p className="text-xs text-slate-400">
+        <div className="text-xs font-medium text-brand-green-800">Points to hours</div>
+        <p className="text-xs text-muted">
           A calibration knob, not learned from data. Default is 4 hours per point.
         </p>
         <div className="mt-2 grid grid-cols-3 gap-3 sm:grid-cols-6">
@@ -137,7 +137,7 @@ export function ConfigForm({
       </div>
 
       <fieldset>
-        <legend className="text-xs font-medium text-slate-700">Sprint packing</legend>
+        <legend className="text-xs font-medium text-brand-green-800">Sprint packing</legend>
         <div className="mt-2 grid gap-3 sm:grid-cols-2">
           {(
             [
@@ -158,8 +158,8 @@ export function ConfigForm({
               className={clsx(
                 'flex cursor-pointer gap-3 rounded-lg border p-3 text-sm',
                 values.pack_mode === mode
-                  ? 'border-brand-500 bg-brand-50'
-                  : 'border-slate-200 bg-white hover:bg-slate-50',
+                  ? 'border-accent-500 bg-accent-50'
+                  : 'border-border bg-surface hover:bg-sand-100',
               )}
             >
               <input
@@ -171,15 +171,15 @@ export function ConfigForm({
                 className="mt-1"
               />
               <span>
-                <span className="block font-medium text-slate-800">{title}</span>
-                <span className="block text-xs text-slate-500">{text}</span>
+                <span className="block font-medium text-text">{title}</span>
+                <span className="block text-xs text-muted">{text}</span>
               </span>
             </label>
           ))}
         </div>
       </fieldset>
 
-      <div className="flex flex-wrap items-start justify-between gap-3 rounded-lg bg-slate-50 p-3">
+      <div className="flex flex-wrap items-start justify-between gap-3 rounded-lg bg-sand-100 p-3">
         <ul className="space-y-1" aria-label="Capacity rules">
           <Invariant ok={invariants.capacityOk}>
             {`Capacity C = ${derived.capacity ?? '?'} points per sprint must be at least 13`}

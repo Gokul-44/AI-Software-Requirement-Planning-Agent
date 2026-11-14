@@ -33,7 +33,7 @@ export function StoriesTab() {
           <option value="should">Should</option>
           <option value="could">Could</option>
         </Select>
-        <span className="pb-2 text-sm text-slate-500">
+        <span className="pb-2 text-sm text-muted">
           {total} of {plan.stories.length} stories
         </span>
       </div>
@@ -53,11 +53,11 @@ export function StoriesTab() {
                   style={{ background: color }}
                 />
                 <div>
-                  <h2 id={`epic-${e.id}`} className="text-base font-semibold text-slate-900">
-                    <span className="mr-2 font-mono text-xs text-slate-500">{e.id}</span>
+                  <h2 id={`epic-${e.id}`} className="text-base font-semibold text-text">
+                    <span className="mr-2 font-mono text-xs text-muted">{e.id}</span>
                     {e.title}
                   </h2>
-                  <p className="text-sm text-slate-500">{e.description}</p>
+                  <p className="text-sm text-muted">{e.description}</p>
                 </div>
               </div>
               <div className="grid gap-4 lg:grid-cols-2">
@@ -71,38 +71,36 @@ export function StoriesTab() {
                   return (
                     <div
                       key={s.id}
-                      className="flex flex-col gap-3 rounded-xl border border-l-4 border-slate-200 bg-white p-5 shadow-sm"
+                      className="flex flex-col gap-3 rounded-xl border border-l-4 border-border bg-surface p-5 shadow-sm"
                       style={{ borderLeftColor: color }}
                     >
                       <div className="flex flex-wrap items-center gap-2">
-                        <span className="font-mono text-xs font-semibold text-slate-500">
-                          {s.id}
-                        </span>
+                        <span className="font-mono text-xs font-semibold text-muted">{s.id}</span>
                         <PriorityBadge priority={s.priority} />
-                        <span className="ml-auto text-xs text-slate-500">
+                        <span className="ml-auto text-xs text-muted">
                           {s.task_ids.length} tasks · {points} pts
                         </span>
                       </div>
-                      <p className="text-sm leading-relaxed text-slate-800">
+                      <p className="text-sm leading-relaxed text-text">
                         As a <strong>{s.as_a}</strong>, I want {s.i_want}, so that {s.so_that}.
                       </p>
                       <div>
-                        <div className="text-xs font-semibold tracking-wide text-slate-500 uppercase">
+                        <div className="text-xs font-semibold tracking-wide text-muted uppercase">
                           Acceptance criteria
                         </div>
-                        <ul className="mt-1 list-disc space-y-1 pl-5 text-sm text-slate-700 marker:text-slate-300">
+                        <ul className="mt-1 list-disc space-y-1 pl-5 text-sm text-brand-green-800 marker:text-sand-600">
                           {s.acceptance_criteria.map((c) => (
                             <li key={c}>{c}</li>
                           ))}
                         </ul>
                       </div>
-                      <div className="mt-auto flex flex-wrap items-center gap-x-4 gap-y-2 border-t border-slate-100 pt-3">
+                      <div className="mt-auto flex flex-wrap items-center gap-x-4 gap-y-2 border-t border-sand-200 pt-3">
                         <div className="flex flex-wrap items-center gap-1.5">
-                          <span className="text-xs text-slate-500">Requirements</span>
+                          <span className="text-xs text-muted">Requirements</span>
                           {s.requirement_ids.map((r) => (
                             <span
                               key={r}
-                              className="rounded bg-slate-100 px-1.5 py-0.5 font-mono text-xs text-slate-700"
+                              className="rounded bg-sand-200 px-1.5 py-0.5 font-mono text-xs text-brand-green-800"
                               title={index.requirements.get(r)?.text}
                             >
                               {r}
@@ -110,7 +108,7 @@ export function StoriesTab() {
                           ))}
                         </div>
                         <div className="flex flex-wrap items-center gap-1.5">
-                          <span className="text-xs text-slate-500">Tasks</span>
+                          <span className="text-xs text-muted">Tasks</span>
                           {s.task_ids.map((t) => (
                             <IdChip
                               key={t}

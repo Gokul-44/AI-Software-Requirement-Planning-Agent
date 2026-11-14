@@ -1,7 +1,12 @@
 import clsx from 'clsx';
-import type { ButtonHTMLAttributes, ReactNode } from 'react';
-import { LAYER_STYLES, PRIORITY_STYLES, SEVERITY_STYLES } from '../lib/colors';
-import { errorCode, errorMessage } from '../api/errors';
+import { AlertTriangle, Inbox, Sparkles } from 'lucide-react';
+import type { ButtonHTMLAttributes, CSSProperties, ReactNode } from 'react';
+import { Link } from 'react-router-dom';
+import { useGolden } from '../api/hooks';
+import { buttonClass } from '../lib/buttonClass';
+import type { ButtonSize, ButtonVariant } from '../lib/buttonClass';
+import { friendlyError } from '../lib/friendlyError';
+import { CRITICAL_COLOR, LAYER_STYLES, PRIORITY_STYLES, SEVERITY_STYLES } from '../lib/colors';
 
 export function Card({
   children,
@@ -15,8 +20,8 @@ export function Card({
   return (
     <div
       className={clsx(
-        'rounded-xl border border-slate-200 bg-white shadow-sm',
-        padded && 'p-5',
+        'rounded-2xl border border-border bg-surface shadow-card',
+        padded && 'p-5 sm:p-6',
         className,
       )}
     >
@@ -35,10 +40,10 @@ export function SectionTitle({
   right?: ReactNode;
 }) {
   return (
-    <div className="mb-3 flex flex-wrap items-end justify-between gap-2">
+    <div className="mb-4 flex flex-wrap items-end justify-between gap-2">
       <div>
-        <h2 className="text-base font-semibold text-slate-900">{title}</h2>
-        {hint ? <p className="mt-0.5 text-sm text-slate-500">{hint}</p> : null}
+        <h2 className="text-base font-semibold text-text sm:text-lg">{title}</h2>
+        {hint ? <p className="mt-0.5 text-sm text-muted">{hint}</p> : null}
       </div>
       {right}
     </div>
@@ -58,8 +63,8 @@ export function Badge({
     <span
       title={title}
       className={clsx(
-        'inline-flex items-center gap-1 rounded-full px-2 py-0.5 text-xs font-medium whitespace-nowrap ring-1 ring-inset',
-        className ?? 'bg-slate-100 text-slate-700 ring-slate-200',
+        'inline-flex items-center gap-1 rounded-full px-2.5 py-0.5 text-xs font-medium whitespace-nowrap ring-1 ring-inset',
+        className ?? 'bg-sand-100 text-brand-green-800 ring-sand-400',
       )}
     >
       {children}
@@ -80,7 +85,7 @@ export const SeverityBadge = ({ severity }: { severity: string }) => (
 export function CriticalBadge({ title }: { title?: string }) {
   return (
     <Badge
-      className="bg-red-600 text-white ring-red-600"
+      className="bg-accent-700 text-white ring-accent-700"
       title={title ?? 'On the critical path: zero slack'}
     >
       critical
@@ -88,6 +93,7 @@ export function CriticalBadge({ title }: { title?: string }) {
   );
 }
 
+/** KPI tile. `tone` colours the value with a status colour; "brand" uses the accent. */
 export function Stat({
   label,
   value,
@@ -95,6 +101,7 @@ export function Stat({
   note,
   tone = 'default',
   title,
+  icon,
 }: {
   label: string;
   value: ReactNode;
@@ -102,30 +109,38 @@ export function Stat({
   note?: ReactNode;
   tone?: 'default' | 'good' | 'warn' | 'bad' | 'brand';
   title?: string;
+  icon?: ReactNode;
 }) {
   const toneClass = {
-    default: 'text-slate-900',
+    default: 'text-text',
     good: 'text-emerald-700',
     warn: 'text-amber-700',
     bad: 'text-red-700',
-    brand: 'text-brand-700',
+    brand: 'text-accent-700',
   }[tone];
   return (
     <div
       title={title}
-      className="flex flex-col rounded-xl border border-slate-200 bg-white p-4 shadow-sm"
+      className="spm-lift flex flex-col rounded-2xl border border-border bg-surface p-4 shadow-card sm:p-5"
     >
-      <div className="text-xs font-medium tracking-wide text-slate-500 uppercase">{label}</div>
+      <div className="flex items-center justify-between gap-2">
+        <div className="text-xs font-medium tracking-wide text-muted uppercase">{label}</div>
+        {icon ? (
+          <span className="flex h-7 w-7 items-center justify-center rounded-lg bg-brand-green-100 text-brand-green-800">
+            {icon}
+          </span>
+        ) : null}
+      </div>
       <div
         className={clsx(
-          'mt-1 flex items-baseline gap-1.5 text-3xl font-semibold tabular-nums',
+          'mt-2 flex items-baseline gap-1.5 text-3xl font-semibold tracking-tight tabular-nums',
           toneClass,
         )}
       >
         {value}
-        {unit ? <span className="text-sm font-medium text-slate-500">{unit}</span> : null}
+        {unit ? <span className="text-sm font-medium text-muted">{unit}</span> : null}
       </div>
-      {note ? <div className="mt-1 text-xs text-slate-500">{note}</div> : null}
+      {note ? <div className="mt-1 text-xs text-muted">{note}</div> : null}
     </div>
   );
 }
@@ -136,40 +151,52 @@ export function Button({
   className,
   ...props
 }: ButtonHTMLAttributes<HTMLButtonElement> & {
-  variant?: 'primary' | 'secondary' | 'ghost' | 'danger';
-  size?: 'sm' | 'md';
+  variant?: ButtonVariant;
+  size?: ButtonSize;
 }) {
+  return <button type="button" {...props} className={buttonClass(variant, size, className)} />;
+}
+
+/** A loading placeholder block. Used instead of spinners. */
+export function Skeleton({ className, style }: { className?: string; style?: CSSProperties }) {
+  return <div aria-hidden="true" style={style} className={clsx('spm-skeleton', className)} />;
+}
+
+export function SkeletonCard({ lines = 3 }: { lines?: number }) {
   return (
-    <button
-      type="button"
-      {...props}
-      className={clsx(
-        'inline-flex items-center justify-center gap-1.5 rounded-lg font-medium transition-colors focus-visible:outline-2 disabled:cursor-not-allowed disabled:opacity-50',
-        size === 'sm' ? 'px-2.5 py-1 text-xs' : 'px-3.5 py-2 text-sm',
-        variant === 'primary' && 'bg-brand-600 text-white shadow-sm hover:bg-brand-700',
-        variant === 'secondary' &&
-          'border border-slate-300 bg-white text-slate-700 shadow-sm hover:bg-slate-50',
-        variant === 'ghost' && 'text-slate-600 hover:bg-slate-100',
-        variant === 'danger' && 'bg-red-600 text-white hover:bg-red-700',
-        className,
-      )}
-    />
+    <div className="rounded-2xl border border-border bg-surface p-5 shadow-card">
+      <Skeleton className="h-5 w-1/3" />
+      <div className="mt-4 space-y-2.5">
+        {Array.from({ length: lines }, (_, i) => (
+          <Skeleton key={i} className={clsx('h-3.5', i === lines - 1 ? 'w-2/3' : 'w-full')} />
+        ))}
+      </div>
+    </div>
   );
 }
 
+/** A text label with a shimmering bar, for small inline waits. */
 export function Spinner({ label = 'Loading' }: { label?: string }) {
   return (
-    <div role="status" className="flex items-center gap-2 text-sm text-slate-500">
-      <span className="inline-block h-4 w-4 animate-spin rounded-full border-2 border-slate-300 border-t-brand-600" />
-      {label}
-    </div>
+    <span role="status" className="inline-flex items-center gap-2 text-sm text-muted">
+      <Skeleton className="h-3 w-10" />
+      {label}…
+    </span>
   );
 }
 
 export function PageLoading({ label = 'Loading' }: { label?: string }) {
   return (
-    <div className="flex min-h-[40vh] items-center justify-center">
-      <Spinner label={label} />
+    <div role="status" aria-label={label} className="space-y-5">
+      <Skeleton className="h-8 w-1/2" />
+      <div className="grid gap-4 sm:grid-cols-2 xl:grid-cols-4">
+        <SkeletonCard lines={2} />
+        <SkeletonCard lines={2} />
+        <SkeletonCard lines={2} />
+        <SkeletonCard lines={2} />
+      </div>
+      <SkeletonCard lines={5} />
+      <span className="sr-only">{label}</span>
     </div>
   );
 }
@@ -177,43 +204,83 @@ export function PageLoading({ label = 'Loading' }: { label?: string }) {
 export function EmptyState({
   title,
   children,
-  icon = '∅',
+  icon,
+  action,
 }: {
   title: string;
   children?: ReactNode;
-  icon?: string;
+  icon?: ReactNode;
+  action?: ReactNode;
 }) {
   return (
-    <div className="flex flex-col items-center justify-center rounded-xl border border-dashed border-slate-300 bg-white px-6 py-12 text-center">
-      <div className="mb-2 flex h-10 w-10 items-center justify-center rounded-full bg-slate-100 text-lg text-slate-500">
-        {icon}
+    <div className="flex flex-col items-center justify-center rounded-2xl border border-dashed border-sand-500 bg-surface px-6 py-12 text-center">
+      <div className="mb-3 flex h-12 w-12 items-center justify-center rounded-full bg-brand-green-100 text-brand-green-800">
+        {icon ?? <Inbox className="h-6 w-6" aria-hidden="true" />}
       </div>
-      <div className="font-medium text-slate-800">{title}</div>
-      {children ? <div className="mt-1 max-w-md text-sm text-slate-500">{children}</div> : null}
+      <div className="text-base font-semibold text-text">{title}</div>
+      {children ? <div className="mt-1 max-w-md text-sm text-muted">{children}</div> : null}
+      {action ? <div className="mt-4">{action}</div> : null}
     </div>
+  );
+}
+
+/** "Open a golden demo plan": opens the first recorded plan, or the home page demo gallery. */
+export function GoldenDemoButton({ size = 'md' }: { size?: ButtonSize }) {
+  const golden = useGolden();
+  const first = golden.data?.[0];
+  return (
+    <Link
+      to={first ? `/runs/${first.run_id}/plan` : '/#demos'}
+      className={buttonClass('primary', size)}
+    >
+      <Sparkles className="h-4 w-4" aria-hidden="true" />
+      Open a golden demo plan
+    </Link>
   );
 }
 
 export function ErrorState({
   error,
   onRetry,
-  title = 'Something went wrong',
+  title,
 }: {
   error: unknown;
   onRetry?: () => void;
+  /** Overrides the friendly title (the friendly message is kept). */
   title?: string;
 }) {
-  const code = errorCode(error);
+  const f = friendlyError(error);
+  const requestId =
+    typeof error === 'object' && error !== null && 'requestId' in error
+      ? (error as { requestId: string | null }).requestId
+      : null;
   return (
-    <div role="alert" className="rounded-xl border border-red-200 bg-red-50 p-5">
-      <div className="font-semibold text-red-800">{title}</div>
-      <p className="mt-1 text-sm text-red-700">{errorMessage(error)}</p>
-      {code ? <p className="mt-1 font-mono text-xs text-red-500">{code}</p> : null}
-      {onRetry ? (
-        <Button className="mt-3" size="sm" onClick={onRetry}>
-          Try again
-        </Button>
-      ) : null}
+    <div role="alert" className="rounded-2xl border border-red-200 bg-red-50 p-5 sm:p-6">
+      <div className="flex items-start gap-3">
+        <span className="mt-0.5 flex h-8 w-8 shrink-0 items-center justify-center rounded-full bg-red-100 text-red-700">
+          <AlertTriangle className="h-4.5 w-4.5" aria-hidden="true" />
+        </span>
+        <div className="min-w-0">
+          <div className="font-semibold text-red-900">{title ?? f.title}</div>
+          <p className="mt-1 text-sm text-red-900">{f.message}</p>
+          {f.code ? (
+            <p className="mt-1.5 font-mono text-xs text-red-800">
+              {f.code}
+              {requestId ? ` · request ${requestId}` : ''}
+            </p>
+          ) : null}
+          {onRetry || f.offerGolden ? (
+            <div className="mt-4 flex flex-wrap gap-2">
+              {f.offerGolden ? <GoldenDemoButton size="sm" /> : null}
+              {onRetry ? (
+                <Button size="sm" onClick={onRetry}>
+                  Try again
+                </Button>
+              ) : null}
+            </div>
+          ) : null}
+        </div>
+      </div>
     </div>
   );
 }
@@ -233,8 +300,8 @@ export function IdChip({
   const base =
     'inline-flex items-center rounded-md px-1.5 py-0.5 font-mono text-xs font-medium ring-1 ring-inset';
   const tone = critical
-    ? 'bg-red-50 text-red-700 ring-red-200'
-    : 'bg-slate-100 text-slate-700 ring-slate-200';
+    ? 'bg-accent-50 text-accent-800 ring-accent-300'
+    : 'bg-sand-200 text-brand-green-800 ring-sand-400';
   if (!onClick) return <span className={clsx(base, tone)}>{id}</span>;
   return (
     <button
@@ -244,7 +311,7 @@ export function IdChip({
       className={clsx(
         base,
         tone,
-        'cursor-pointer transition-colors hover:bg-brand-50 hover:text-brand-700 hover:ring-brand-200',
+        'cursor-pointer transition-colors hover:bg-accent-100 hover:text-accent-900 hover:ring-accent-300',
       )}
     >
       {id}
@@ -252,17 +319,20 @@ export function IdChip({
   );
 }
 
+/** A meter. Green is good, amber a warning, red a problem (status colours, never the accent). */
 export function ProgressBar({
   value,
   danger,
   warn,
   label,
+  className,
 }: {
   /** 0..1 (may exceed 1). */
   value: number;
   danger?: boolean;
   warn?: boolean;
   label?: string;
+  className?: string;
 }) {
   const width = Math.min(100, Math.max(0, value * 100));
   return (
@@ -272,12 +342,12 @@ export function ProgressBar({
       aria-valuenow={Math.round(value * 100)}
       aria-valuemin={0}
       aria-valuemax={100}
-      className="h-2.5 w-full overflow-hidden rounded-full bg-slate-100"
+      className={clsx('h-2.5 w-full overflow-hidden rounded-full bg-sand-200', className)}
     >
       <div
         className={clsx(
-          'h-full rounded-full transition-all',
-          danger ? 'bg-red-500' : warn ? 'bg-amber-500' : 'bg-emerald-500',
+          'h-full rounded-full transition-all duration-500',
+          danger ? 'bg-red-600' : warn ? 'bg-amber-500' : 'bg-emerald-600',
         )}
         style={{ width: `${width}%` }}
       />
@@ -299,12 +369,12 @@ export function Select({
   className?: string;
 }) {
   return (
-    <label className={clsx('flex flex-col gap-1 text-xs font-medium text-slate-600', className)}>
+    <label className={clsx('flex flex-col gap-1 text-xs font-medium text-muted', className)}>
       {label}
       <select
         value={value}
         onChange={(e) => onChange(e.target.value)}
-        className="rounded-lg border border-slate-300 bg-white px-2.5 py-1.5 text-sm font-normal text-slate-800 shadow-sm"
+        className="rounded-lg border border-sand-400 bg-surface px-2.5 py-1.5 text-sm font-normal text-text shadow-sm"
       >
         {children}
       </select>
@@ -314,10 +384,16 @@ export function Select({
 
 export function Legend({ items }: { items: { color: string; label: string }[] }) {
   return (
-    <ul className="flex flex-wrap items-center gap-x-4 gap-y-1 text-xs text-slate-600">
+    <ul className="flex flex-wrap items-center gap-x-4 gap-y-1 text-xs text-brand-green-800">
       {items.map((i) => (
         <li key={i.label} className="flex items-center gap-1.5">
-          <span className="inline-block h-2.5 w-2.5 rounded-sm" style={{ background: i.color }} />
+          <span
+            className={clsx(
+              'inline-block h-2.5 w-2.5 rounded-sm',
+              i.color === CRITICAL_COLOR && 'ring-1 ring-accent-800',
+            )}
+            style={{ background: i.color }}
+          />
           {i.label}
         </li>
       ))}

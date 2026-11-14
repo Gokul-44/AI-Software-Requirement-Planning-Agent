@@ -16,6 +16,14 @@ const EnvSchema = z.object({
   NODE_ENV: z.enum(['development', 'test', 'production']).default('development'),
   PORT: optionalInt(3001, 1),
   LOG_LEVEL: z.enum(['fatal', 'error', 'warn', 'info', 'debug', 'trace', 'silent']).default('info'),
+  /**
+   * Keep runs in memory instead of Postgres (nothing is persisted; DATABASE_URL is not needed).
+   * For local development and browser QA, so test runs never touch the real database.
+   */
+  USE_MEMORY_DB: z.preprocess(
+    (v) => (typeof v === 'string' ? ['1', 'true', 'yes'].includes(v.trim().toLowerCase()) : v),
+    z.boolean().default(false),
+  ),
   /** Pooled Neon connection string (the running API). Never logged. */
   DATABASE_URL: optionalString,
   /** Direct connection string, used by migrations only. Never logged. */
