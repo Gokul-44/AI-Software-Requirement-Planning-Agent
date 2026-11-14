@@ -5,11 +5,11 @@
 **Turn a one-line software idea into a traceable, schedule-consistent project plan**
 
 [![CI](https://github.com/Gokul-44/AI-Software-Requirement-Planning-Agent/actions/workflows/ci.yml/badge.svg)](https://github.com/Gokul-44/AI-Software-Requirement-Planning-Agent/actions/workflows/ci.yml)
-[![Live demo](https://img.shields.io/badge/live%20demo-open-8B5CF6)](https://YOUR-VERCEL-URL.vercel.app) <!-- TODO: live demo URL -->
+[![Live demo](https://img.shields.io/badge/live%20demo-open-8B5CF6)](https://ai-software-requirement-planning-ag-two.vercel.app)
 [![Node](https://img.shields.io/badge/node-%E2%89%A5%2022.12-1F3D2B?logo=node.js&logoColor=white)](.nvmrc)
 [![TypeScript](https://img.shields.io/badge/TypeScript-6-3178C6?logo=typescript&logoColor=white)](tsconfig.base.json)
 
-[Live demo](https://YOUR-VERCEL-URL.vercel.app) <!-- TODO: live demo URL --> · [Docs](docs/README.md) · [Report a bug](https://github.com/Gokul-44/AI-Software-Requirement-Planning-Agent/issues/new?template=bug_report.md)
+[Live demo](https://ai-software-requirement-planning-ag-two.vercel.app) · [Docs](docs/README.md) · [Report a bug](https://github.com/Gokul-44/AI-Software-Requirement-Planning-Agent/issues/new?template=bug_report.md)
 
 <img src="docs/assets/screenshots/readme-landing.png" alt="The Planning Agent home page" width="860">
 
@@ -198,10 +198,10 @@ All four members worked together on every part of the project: planning, design,
 
 | Avatar                                                                                                                                  | Name                   | GitHub                                                                         |
 | --------------------------------------------------------------------------------------------------------------------------------------- | ---------------------- | ------------------------------------------------------------------------------ |
+| <a href="https://github.com/add-username"><img src="https://github.com/add-username.png" width="80"></a> <!-- TODO: GitHub username --> | Akshay Kumar Tapraniya | [add-username](https://github.com/add-username) <!-- TODO: GitHub username --> |
 | <a href="https://github.com/Gokul-44"><img src="https://github.com/Gokul-44.png" width="80"></a>                                        | Gokul Faleja           | [Gokul-44](https://github.com/Gokul-44)                                        |
 | <a href="https://github.com/add-username"><img src="https://github.com/add-username.png" width="80"></a> <!-- TODO: GitHub username --> | Saransh Sarang Naik    | [add-username](https://github.com/add-username) <!-- TODO: GitHub username --> |
-| <a href="https://github.com/add-username"><img src="https://github.com/add-username.png" width="80"></a> <!-- TODO: GitHub username --> | Akshay Kumar Tapraniya | [add-username](https://github.com/add-username) <!-- TODO: GitHub username --> |
-| <a href="https://github.com/add-username"><img src="https://github.com/add-username.png" width="80"></a> <!-- TODO: GitHub username --> | Shreya Tiwari          | [add-username](https://github.com/add-username) <!-- TODO: GitHub username --> |
+| <a href="https://github.com/Shreya-1511-tiwari"><img src="https://github.com/Shreya-1511-tiwari.png" width="80"></a>                    | Shreya Tiwari          | [Shreya-1511-tiwari](https://github.com/Shreya-1511-tiwari)                    |
 
 ## Academic note
 
