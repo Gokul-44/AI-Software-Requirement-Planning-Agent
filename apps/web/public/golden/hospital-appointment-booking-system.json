@@ -1,0 +1,1711 @@
+{
+  "schema_version": "1.0",
+  "project": {
+    "id": "a6905c88-e5cd-4f7e-8911-032ed68c064a",
+    "idea_text": "Hospital appointment booking system",
+    "created_at": "2026-11-14T16:45:23.344Z"
+  },
+  "run": {
+    "id": "3fe93fc5-bd7f-4d07-a843-fc1daea7db88",
+    "status": "succeeded",
+    "created_at": "2026-11-14T16:45:23.344Z",
+    "finished_at": "2026-11-14T16:47:07.870Z",
+    "llm": {
+      "provider": "gemini",
+      "model": "gemini-3.5-flash-lite",
+      "prompt_versions": {
+        "1": "v1",
+        "2": "v1",
+        "3": "v2",
+        "4": "v1",
+        "5": "v1",
+        "7": "v1"
+      }
+    },
+    "config": {
+      "team_size": 4,
+      "velocity_points_per_person": 10,
+      "sprint_length_days": 10,
+      "focus_hours_per_day": 6,
+      "points_to_hours": {
+        "1": 4,
+        "2": 8,
+        "3": 12,
+        "5": 20,
+        "8": 32,
+        "13": 52
+      },
+      "pack_mode": "relaxed"
+    },
+    "usage": {
+      "input_tokens": 14472,
+      "output_tokens": 9247,
+      "est_cost_usd": 0,
+      "duration_ms": 104526
+    }
+  },
+  "summary": "A hospital appointment booking system that allows patients to schedule, reschedule, and view medical appointments online while enabling hospital staff and administrators to manage schedules and patient records.",
+  "assumptions": [
+    "The system will support patients and hospital staff via web and mobile browsers.",
+    "Authentication will be handled via standard email and password with optional two-factor authentication.",
+    "Payment processing for consultations is out of scope for the initial MVP.",
+    "Integration with existing Electronic Health Record systems is assumed to use standard FHIR APIs."
+  ],
+  "requirements": [
+    {
+      "id": "R-001",
+      "type": "functional",
+      "category": null,
+      "text": "Patients can create an account and log in securely using their email address.",
+      "priority": "must",
+      "story_ids": [
+        "S-001"
+      ],
+      "task_ids": [
+        "T-001",
+        "T-002",
+        "T-003",
+        "T-004"
+      ]
+    },
+    {
+      "id": "R-002",
+      "type": "functional",
+      "category": null,
+      "text": "Patients can search for available doctors by specialty and date.",
+      "priority": "must",
+      "story_ids": [
+        "S-002"
+      ],
+      "task_ids": [
+        "T-005",
+        "T-006",
+        "T-007",
+        "T-008"
+      ]
+    },
+    {
+      "id": "R-003",
+      "type": "functional",
+      "category": null,
+      "text": "Patients can book an available appointment slot with a selected doctor.",
+      "priority": "must",
+      "story_ids": [
+        "S-003"
+      ],
+      "task_ids": [
+        "T-009",
+        "T-010",
+        "T-011",
+        "T-012"
+      ]
+    },
+    {
+      "id": "R-004",
+      "type": "functional",
+      "category": null,
+      "text": "Patients can view their upcoming and past appointments.",
+      "priority": "must",
+      "story_ids": [
+        "S-004"
+      ],
+      "task_ids": [
+        "T-013",
+        "T-014",
+        "T-015"
+      ]
+    },
+    {
+      "id": "R-005",
+      "type": "functional",
+      "category": null,
+      "text": "Patients can cancel or reschedule an existing appointment up to 24 hours in advance.",
+      "priority": "should",
+      "story_ids": [
+        "S-005"
+      ],
+      "task_ids": [
+        "T-016",
+        "T-017",
+        "T-018"
+      ]
+    },
+    {
+      "id": "R-006",
+      "type": "functional",
+      "category": null,
+      "text": "Administrators can add, update, or deactivate doctor profiles and working schedules.",
+      "priority": "must",
+      "story_ids": [
+        "S-006"
+      ],
+      "task_ids": [
+        "T-019",
+        "T-020",
+        "T-021",
+        "T-022"
+      ]
+    },
+    {
+      "id": "R-007",
+      "type": "functional",
+      "category": null,
+      "text": "The system sends an email notification to the patient upon successful appointment booking.",
+      "priority": "should",
+      "story_ids": [
+        "S-003"
+      ],
+      "task_ids": [
+        "T-009",
+        "T-010",
+        "T-011",
+        "T-012"
+      ]
+    },
+    {
+      "id": "R-008",
+      "type": "non_functional",
+      "category": "security",
+      "text": "All patient health data must be encrypted at rest and in transit using industry-standard protocols.",
+      "priority": "must",
+      "story_ids": [
+        "S-007"
+      ],
+      "task_ids": [
+        "T-023",
+        "T-024",
+        "T-025"
+      ]
+    },
+    {
+      "id": "R-009",
+      "type": "non_functional",
+      "category": "performance",
+      "text": "95% of search and booking pages must load in under 2 seconds.",
+      "priority": "must",
+      "story_ids": [
+        "S-008"
+      ],
+      "task_ids": [
+        "T-026",
+        "T-027",
+        "T-028"
+      ]
+    },
+    {
+      "id": "R-010",
+      "type": "non_functional",
+      "category": "reliability",
+      "text": "The system must maintain an uptime availability of at least 99.9% during standard operating hours.",
+      "priority": "must",
+      "story_ids": [
+        "S-009"
+      ],
+      "task_ids": [
+        "T-029",
+        "T-030",
+        "T-031"
+      ]
+    },
+    {
+      "id": "R-011",
+      "type": "non_functional",
+      "category": "usability",
+      "text": "The user interface must comply with WCAG 2.1 AA accessibility standards.",
+      "priority": "should",
+      "story_ids": [
+        "S-010"
+      ],
+      "task_ids": [
+        "T-032",
+        "T-033",
+        "T-034"
+      ]
+    }
+  ],
+  "epics": [
+    {
+      "id": "E-001",
+      "title": "Patient Account Management",
+      "description": "Enables patients to securely register, log in, and manage their personal accounts.",
+      "story_ids": [
+        "S-001"
+      ]
+    },
+    {
+      "id": "E-002",
+      "title": "Appointment Scheduling",
+      "description": "Allows patients to search for doctors, book appointments, view history, and manage changes.",
+      "story_ids": [
+        "S-002",
+        "S-003",
+        "S-004",
+        "S-005"
+      ]
+    },
+    {
+      "id": "E-003",
+      "title": "Administration and Staff Management",
+      "description": "Allows administrators to manage doctor profiles, schedules, and working hours.",
+      "story_ids": [
+        "S-006"
+      ]
+    },
+    {
+      "id": "E-004",
+      "title": "Platform and Quality",
+      "description": "Ensures security, performance, uptime, accessibility, and notifications for the system.",
+      "story_ids": [
+        "S-007",
+        "S-008",
+        "S-009",
+        "S-010"
+      ]
+    }
+  ],
+  "stories": [
+    {
+      "id": "S-001",
+      "epic_id": "E-001",
+      "as_a": "Patient",
+      "i_want": "to create an account and log in securely using my email address",
+      "so_that": "I can access my personal medical appointments and data safely",
+      "acceptance_criteria": [
+        "Given I am on the registration page, when I submit valid email and password, then my account is created.",
+        "Given I have an account, when I enter correct credentials, then I am successfully logged in."
+      ],
+      "priority": "must",
+      "requirement_ids": [
+        "R-001"
+      ],
+      "task_ids": [
+        "T-001",
+        "T-002",
+        "T-003",
+        "T-004"
+      ]
+    },
+    {
+      "id": "S-002",
+      "epic_id": "E-002",
+      "as_a": "Patient",
+      "i_want": "to search for available doctors by specialty and date",
+      "so_that": "I can find the right medical professional for my needs",
+      "acceptance_criteria": [
+        "Given I am logged in, when I select a specialty and date, then I see a list of available doctors.",
+        "Given no doctors are available, when I search, then an appropriate message is displayed."
+      ],
+      "priority": "must",
+      "requirement_ids": [
+        "R-002"
+      ],
+      "task_ids": [
+        "T-005",
+        "T-006",
+        "T-007",
+        "T-008"
+      ]
+    },
+    {
+      "id": "S-003",
+      "epic_id": "E-002",
+      "as_a": "Patient",
+      "i_want": "to book an available appointment slot with a selected doctor",
+      "so_that": "I can secure a time for my medical consultation",
+      "acceptance_criteria": [
+        "Given I view a doctor profile, when I select an open slot and confirm, then the appointment is booked.",
+        "Given a slot is already taken, when I try to book it, then an error is shown."
+      ],
+      "priority": "must",
+      "requirement_ids": [
+        "R-003",
+        "R-007"
+      ],
+      "task_ids": [
+        "T-009",
+        "T-010",
+        "T-011",
+        "T-012"
+      ]
+    },
+    {
+      "id": "S-004",
+      "epic_id": "E-002",
+      "as_a": "Patient",
+      "i_want": "to view my upcoming and past appointments",
+      "so_that": "I can keep track of my medical schedule",
+      "acceptance_criteria": [
+        "Given I navigate to my dashboard, when I view appointments, then I see both upcoming and past visits clearly separated.",
+        "Given I have no appointments, when I check the view, then an empty state message appears."
+      ],
+      "priority": "must",
+      "requirement_ids": [
+        "R-004"
+      ],
+      "task_ids": [
+        "T-013",
+        "T-014",
+        "T-015"
+      ]
+    },
+    {
+      "id": "S-005",
+      "epic_id": "E-002",
+      "as_a": "Patient",
+      "i_want": "to cancel or reschedule an existing appointment up to 24 hours in advance",
+      "so_that": "I can adjust my schedule when unexpected conflicts arise",
+      "acceptance_criteria": [
+        "Given my appointment is more than 24 hours away, when I choose to reschedule or cancel, then the action succeeds.",
+        "Given my appointment is less than 24 hours away, when I try to cancel, then the system prevents it."
+      ],
+      "priority": "should",
+      "requirement_ids": [
+        "R-005"
+      ],
+      "task_ids": [
+        "T-016",
+        "T-017",
+        "T-018"
+      ]
+    },
+    {
+      "id": "S-006",
+      "epic_id": "E-003",
+      "as_a": "Administrator",
+      "i_want": "to add, update, or deactivate doctor profiles and working schedules",
+      "so_that": "patients always see accurate availability and staff information",
+      "acceptance_criteria": [
+        "Given I am logged in as admin, when I fill out a new doctor profile, then it is successfully created.",
+        "Given an existing doctor profile, when I update their working hours, then the schedule reflects the changes immediately."
+      ],
+      "priority": "must",
+      "requirement_ids": [
+        "R-006"
+      ],
+      "task_ids": [
+        "T-019",
+        "T-020",
+        "T-021",
+        "T-022"
+      ]
+    },
+    {
+      "id": "S-007",
+      "epic_id": "E-004",
+      "as_a": "Platform Operator",
+      "i_want": "all patient health data to be encrypted at rest and in transit",
+      "so_that": "sensitive medical information remains secure and compliant",
+      "acceptance_criteria": [
+        "Given data is stored in the database, when checked, then it uses industry-standard encryption at rest.",
+        "Given data is transmitted over the network, when intercepted, then it is encrypted using TLS standards."
+      ],
+      "priority": "must",
+      "requirement_ids": [
+        "R-008"
+      ],
+      "task_ids": [
+        "T-023",
+        "T-024",
+        "T-025"
+      ]
+    },
+    {
+      "id": "S-008",
+      "epic_id": "E-004",
+      "as_a": "Platform Operator",
+      "i_want": "95% of search and booking pages to load in under 2 seconds",
+      "so_that": "users experience a fast and responsive application",
+      "acceptance_criteria": [
+        "Given a user performs a search action, when measured under normal load, then response time is under 2 seconds.",
+        "Given analytics are reviewed, when checking page performance, then 95% compliance is maintained."
+      ],
+      "priority": "must",
+      "requirement_ids": [
+        "R-009"
+      ],
+      "task_ids": [
+        "T-026",
+        "T-027",
+        "T-028"
+      ]
+    },
+    {
+      "id": "S-009",
+      "epic_id": "E-004",
+      "as_a": "Platform Operator",
+      "i_want": "the system to maintain uptime availability of at least 99.9% during operating hours",
+      "so_that": "patients and staff can rely on the service without disruption",
+      "acceptance_criteria": [
+        "Given standard operating hours, when uptime is monitored, then availability meets or exceeds 99.9%.",
+        "Given an unexpected outage occurs, when detected, then automated alerts notify the operations team."
+      ],
+      "priority": "must",
+      "requirement_ids": [
+        "R-010"
+      ],
+      "task_ids": [
+        "T-029",
+        "T-030",
+        "T-031"
+      ]
+    },
+    {
+      "id": "S-010",
+      "epic_id": "E-004",
+      "as_a": "Platform Operator",
+      "i_want": "the user interface to comply with WCAG 2.1 AA accessibility standards",
+      "so_that": "users with disabilities can use the booking system effectively",
+      "acceptance_criteria": [
+        "Given an accessibility audit tool is run, when scanning pages, then all WCAG 2.1 AA rules pass.",
+        "Given a user navigates via keyboard only, when using core flows, then all elements are reachable and operable."
+      ],
+      "priority": "should",
+      "requirement_ids": [
+        "R-011"
+      ],
+      "task_ids": [
+        "T-032",
+        "T-033",
+        "T-034"
+      ]
+    }
+  ],
+  "tasks": [
+    {
+      "id": "T-001",
+      "story_id": "S-001",
+      "title": "Create patients table and schema",
+      "description": "Create the database schema and migration for patient accounts including secure password hashes and email fields.",
+      "layer": "database",
+      "points": 2,
+      "hours": 8,
+      "estimate_rationale": "Create simple database table and schema for patients.",
+      "requirement_ids": [
+        "R-001"
+      ]
+    },
+    {
+      "id": "T-002",
+      "story_id": "S-001",
+      "title": "Implement register-user endpoint",
+      "description": "Build backend registration and authentication endpoints handling valid email and password inputs securely.",
+      "layer": "backend",
+      "points": 3,
+      "hours": 12,
+      "estimate_rationale": "Implement user registration backend endpoint with security.",
+      "requirement_ids": [
+        "R-001"
+      ]
+    },
+    {
+      "id": "T-003",
+      "story_id": "S-001",
+      "title": "Build registration and login UI",
+      "description": "Create frontend views and forms for patient registration and login with validation matching acceptance criteria.",
+      "layer": "frontend",
+      "points": 3,
+      "hours": 12,
+      "estimate_rationale": "Build registration and login UI screens with form validation.",
+      "requirement_ids": [
+        "R-001"
+      ]
+    },
+    {
+      "id": "T-004",
+      "story_id": "S-001",
+      "title": "Test patient authentication flow",
+      "description": "Write end-to-end tests covering patient account creation and secure login functionality.",
+      "layer": "testing",
+      "points": 2,
+      "hours": 8,
+      "estimate_rationale": "Write automated tests for the patient authentication flow.",
+      "requirement_ids": [
+        "R-001"
+      ]
+    },
+    {
+      "id": "T-005",
+      "story_id": "S-002",
+      "title": "Create doctors and availability tables",
+      "description": "Create the database schema and migration for doctors, specialties, and available appointment slots.",
+      "layer": "database",
+      "points": 2,
+      "hours": 8,
+      "estimate_rationale": "Create doctors and availability tables with proper relations.",
+      "requirement_ids": [
+        "R-002"
+      ]
+    },
+    {
+      "id": "T-006",
+      "story_id": "S-002",
+      "title": "Implement search-doctors endpoint",
+      "description": "Implement the backend endpoint to filter and retrieve available doctors by specialty and date.",
+      "layer": "backend",
+      "points": 3,
+      "hours": 12,
+      "estimate_rationale": "Implement doctor search endpoint with specialty and date filters.",
+      "requirement_ids": [
+        "R-002"
+      ]
+    },
+    {
+      "id": "T-007",
+      "story_id": "S-002",
+      "title": "Build doctor search interface",
+      "description": "Create the frontend view for patients to select specialties and dates, displaying the doctor list or empty state.",
+      "layer": "frontend",
+      "points": 3,
+      "hours": 12,
+      "estimate_rationale": "Build doctor search interface with filter controls and results list.",
+      "requirement_ids": [
+        "R-002"
+      ]
+    },
+    {
+      "id": "T-008",
+      "story_id": "S-002",
+      "title": "Test doctor search functionality",
+      "description": "Add unit and integration tests for searching doctors by specialty and date.",
+      "layer": "testing",
+      "points": 2,
+      "hours": 8,
+      "estimate_rationale": "Test doctor search functionality across various filter combinations.",
+      "requirement_ids": [
+        "R-002"
+      ]
+    },
+    {
+      "id": "T-009",
+      "story_id": "S-003",
+      "title": "Create appointments table",
+      "description": "Create the database schema and migration for storing patient appointments.",
+      "layer": "database",
+      "points": 2,
+      "hours": 8,
+      "estimate_rationale": "Create appointments table with foreign keys and constraints.",
+      "requirement_ids": [
+        "R-003",
+        "R-007"
+      ]
+    },
+    {
+      "id": "T-010",
+      "story_id": "S-003",
+      "title": "Implement create-appointment endpoint",
+      "description": "Implement the backend endpoint to book an available appointment slot, preventing double-booking.",
+      "layer": "backend",
+      "points": 3,
+      "hours": 12,
+      "estimate_rationale": "Implement create-appointment endpoint with slot validation.",
+      "requirement_ids": [
+        "R-003",
+        "R-007"
+      ]
+    },
+    {
+      "id": "T-011",
+      "story_id": "S-003",
+      "title": "Build appointment booking interface",
+      "description": "Create the frontend components allowing patients to select a slot and confirm the booking with error handling.",
+      "layer": "frontend",
+      "points": 3,
+      "hours": 12,
+      "estimate_rationale": "Build appointment booking interface with calendar and time slots.",
+      "requirement_ids": [
+        "R-003",
+        "R-007"
+      ]
+    },
+    {
+      "id": "T-012",
+      "story_id": "S-003",
+      "title": "Test appointment booking workflow",
+      "description": "Add tests to verify successful bookings and proper error handling for taken slots.",
+      "layer": "testing",
+      "points": 2,
+      "hours": 8,
+      "estimate_rationale": "Test appointment booking workflow including edge cases.",
+      "requirement_ids": [
+        "R-003",
+        "R-007"
+      ]
+    },
+    {
+      "id": "T-013",
+      "story_id": "S-004",
+      "title": "Implement get-appointments endpoint",
+      "description": "Implement the backend endpoint to retrieve upcoming and past appointments for the logged-in patient.",
+      "layer": "backend",
+      "points": 2,
+      "hours": 8,
+      "estimate_rationale": "Implement get-appointments endpoint with history filtering.",
+      "requirement_ids": [
+        "R-004"
+      ]
+    },
+    {
+      "id": "T-014",
+      "story_id": "S-004",
+      "title": "Build patient dashboard appointments view",
+      "description": "Create the frontend dashboard view separating upcoming and past visits with proper empty states.",
+      "layer": "frontend",
+      "points": 3,
+      "hours": 12,
+      "estimate_rationale": "Build patient dashboard to display upcoming and past appointments.",
+      "requirement_ids": [
+        "R-004"
+      ]
+    },
+    {
+      "id": "T-015",
+      "story_id": "S-004",
+      "title": "Test patient appointment dashboard",
+      "description": "Add tests for displaying upcoming and past appointments and empty states.",
+      "layer": "testing",
+      "points": 2,
+      "hours": 8,
+      "estimate_rationale": "Test patient appointment dashboard views and data rendering.",
+      "requirement_ids": [
+        "R-004"
+      ]
+    },
+    {
+      "id": "T-016",
+      "story_id": "S-005",
+      "title": "Implement update-appointment and cancel-appointment endpoints",
+      "description": "Implement backend endpoints to modify or cancel appointments, enforcing the 24-hour advance rule.",
+      "layer": "backend",
+      "points": 3,
+      "hours": 12,
+      "estimate_rationale": "Implement update and cancel appointment endpoints with business rules.",
+      "requirement_ids": [
+        "R-005"
+      ]
+    },
+    {
+      "id": "T-017",
+      "story_id": "S-005",
+      "title": "Build appointment rescheduling and cancellation UI",
+      "description": "Create frontend controls and validation messages for modifying or cancelling appointments based on time rules.",
+      "layer": "frontend",
+      "points": 3,
+      "hours": 12,
+      "estimate_rationale": "Build UI for rescheduling and canceling existing appointments.",
+      "requirement_ids": [
+        "R-005"
+      ]
+    },
+    {
+      "id": "T-018",
+      "story_id": "S-005",
+      "title": "Test appointment modification rules",
+      "description": "Add tests to verify that cancellations and reschedules succeed or fail correctly based on the 24-hour window.",
+      "layer": "testing",
+      "points": 2,
+      "hours": 8,
+      "estimate_rationale": "Test appointment modification time window rules.",
+      "requirement_ids": [
+        "R-005"
+      ]
+    },
+    {
+      "id": "T-019",
+      "story_id": "S-006",
+      "title": "Create doctors and schedules tables",
+      "description": "Create database schema and migrations for doctor profiles and working schedules.",
+      "layer": "database",
+      "points": 2,
+      "hours": 8,
+      "estimate_rationale": "Create database tables for doctor profiles and working schedules.",
+      "requirement_ids": [
+        "R-006"
+      ]
+    },
+    {
+      "id": "T-020",
+      "story_id": "S-006",
+      "title": "Implement create-doctor and update-doctor endpoints",
+      "description": "Build backend endpoints to add new doctor profiles, update details, and modify working hours.",
+      "layer": "backend",
+      "points": 3,
+      "hours": 12,
+      "estimate_rationale": "Implement endpoints for managing doctor profiles and schedules.",
+      "requirement_ids": [
+        "R-006"
+      ]
+    },
+    {
+      "id": "T-021",
+      "story_id": "S-006",
+      "title": "Build doctor management UI",
+      "description": "Develop frontend interface for administrators to add, update, and deactivate doctor profiles and schedules.",
+      "layer": "frontend",
+      "points": 3,
+      "hours": 12,
+      "estimate_rationale": "Build doctor management UI for admin operations.",
+      "requirement_ids": [
+        "R-006"
+      ]
+    },
+    {
+      "id": "T-022",
+      "story_id": "S-006",
+      "title": "Test doctor profile and schedule management",
+      "description": "Write integration and unit tests covering doctor creation, profile updates, and schedule changes.",
+      "layer": "testing",
+      "points": 2,
+      "hours": 8,
+      "estimate_rationale": "Test doctor profile and schedule management features.",
+      "requirement_ids": [
+        "R-006"
+      ]
+    },
+    {
+      "id": "T-023",
+      "story_id": "S-007",
+      "title": "Configure database encryption at rest",
+      "description": "Implement industry-standard encryption at rest for all database instances containing patient health data.",
+      "layer": "database",
+      "points": 2,
+      "hours": 8,
+      "estimate_rationale": "Configure database encryption at rest using cloud settings.",
+      "requirement_ids": [
+        "R-008"
+      ]
+    },
+    {
+      "id": "T-024",
+      "story_id": "S-007",
+      "title": "Enforce TLS for data in transit",
+      "description": "Configure server and network layers to enforce TLS standards for all data transmitted across the network.",
+      "layer": "devops",
+      "points": 2,
+      "hours": 8,
+      "estimate_rationale": "Enforce TLS configuration across the infrastructure.",
+      "requirement_ids": [
+        "R-008"
+      ]
+    },
+    {
+      "id": "T-025",
+      "story_id": "S-007",
+      "title": "Test encryption compliance",
+      "description": "Run automated checks and penetration tests to verify data encryption both at rest and in transit.",
+      "layer": "testing",
+      "points": 2,
+      "hours": 8,
+      "estimate_rationale": "Test encryption compliance for data at rest and in transit.",
+      "requirement_ids": [
+        "R-008"
+      ]
+    },
+    {
+      "id": "T-026",
+      "story_id": "S-008",
+      "title": "Optimize page load performance",
+      "description": "Refactor frontend assets and backend queries to ensure search and booking pages load under 2 seconds.",
+      "layer": "frontend",
+      "points": 5,
+      "hours": 20,
+      "estimate_rationale": "Optimize frontend page load performance across critical paths.",
+      "requirement_ids": [
+        "R-009"
+      ]
+    },
+    {
+      "id": "T-027",
+      "story_id": "S-008",
+      "title": "Implement performance monitoring",
+      "description": "Set up application performance monitoring to track response times and maintain 95% compliance.",
+      "layer": "devops",
+      "points": 2,
+      "hours": 8,
+      "estimate_rationale": "Implement application performance monitoring tools.",
+      "requirement_ids": [
+        "R-009"
+      ]
+    },
+    {
+      "id": "T-028",
+      "story_id": "S-008",
+      "title": "Test page load speed under load",
+      "description": "Execute load testing scenarios to measure and verify that search and booking response times stay under 2 seconds.",
+      "layer": "testing",
+      "points": 3,
+      "hours": 12,
+      "estimate_rationale": "Execute load testing to verify page load speeds under stress.",
+      "requirement_ids": [
+        "R-009"
+      ]
+    },
+    {
+      "id": "T-029",
+      "story_id": "S-009",
+      "title": "Configure high availability infrastructure",
+      "description": "Set up redundant services and auto-scaling to maintain 99.9% uptime availability during operating hours.",
+      "layer": "devops",
+      "points": 5,
+      "hours": 20,
+      "estimate_rationale": "Configure high availability infrastructure and failover mechanisms.",
+      "requirement_ids": [
+        "R-010"
+      ]
+    },
+    {
+      "id": "T-030",
+      "story_id": "S-009",
+      "title": "Implement uptime monitoring and alerts",
+      "description": "Configure automated health checks and alerting integration to notify operations team of unexpected outages.",
+      "layer": "integration",
+      "points": 3,
+      "hours": 12,
+      "estimate_rationale": "Implement uptime monitoring and critical alerting integrations.",
+      "requirement_ids": [
+        "R-010"
+      ]
+    },
+    {
+      "id": "T-031",
+      "story_id": "S-009",
+      "title": "Verify disaster recovery and failover",
+      "description": "Test failover procedures and outage detection mechanisms to ensure uptime requirements are met.",
+      "layer": "testing",
+      "points": 3,
+      "hours": 12,
+      "estimate_rationale": "Verify disaster recovery procedures and failover handling.",
+      "requirement_ids": [
+        "R-010"
+      ]
+    },
+    {
+      "id": "T-032",
+      "story_id": "S-010",
+      "title": "Design accessible UI components",
+      "description": "Update UI designs, color contrasts, and component specs to comply with WCAG 2.1 AA accessibility standards.",
+      "layer": "design",
+      "points": 2,
+      "hours": 8,
+      "estimate_rationale": "Design accessible UI components adhering to WCAG guidelines.",
+      "requirement_ids": [
+        "R-011"
+      ]
+    },
+    {
+      "id": "T-033",
+      "story_id": "S-010",
+      "title": "Implement keyboard navigation and ARIA",
+      "description": "Develop frontend components ensuring full keyboard navigability and correct ARIA attributes for accessibility.",
+      "layer": "frontend",
+      "points": 3,
+      "hours": 12,
+      "estimate_rationale": "Implement keyboard navigation and ARIA attributes in frontend.",
+      "requirement_ids": [
+        "R-011"
+      ]
+    },
+    {
+      "id": "T-034",
+      "story_id": "S-010",
+      "title": "Run accessibility audit and testing",
+      "description": "Execute automated accessibility scanning tools and manual keyboard audits to verify WCAG 2.1 AA compliance.",
+      "layer": "testing",
+      "points": 2,
+      "hours": 8,
+      "estimate_rationale": "Run accessibility audit and fix identified issues.",
+      "requirement_ids": [
+        "R-011"
+      ]
+    }
+  ],
+  "dependencies": [
+    {
+      "from": "T-001",
+      "to": "T-002",
+      "type": "FS",
+      "source": "llm",
+      "reason": "Backend endpoint requires the patient table and schema to exist."
+    },
+    {
+      "from": "T-002",
+      "to": "T-003",
+      "type": "FS",
+      "source": "llm",
+      "reason": "Frontend registration UI calls the register-user endpoint."
+    },
+    {
+      "from": "T-003",
+      "to": "T-004",
+      "type": "FS",
+      "source": "llm",
+      "reason": "Testing the authentication flow requires the full UI and backend to be built."
+    },
+    {
+      "from": "T-005",
+      "to": "T-006",
+      "type": "FS",
+      "source": "llm",
+      "reason": "Backend search endpoint needs the doctors and availability tables."
+    },
+    {
+      "from": "T-005",
+      "to": "T-010",
+      "type": "FS",
+      "source": "llm",
+      "reason": "Create-appointment endpoint needs appointments and doctor tables."
+    },
+    {
+      "from": "T-006",
+      "to": "T-007",
+      "type": "FS",
+      "source": "llm",
+      "reason": "Frontend doctor search interface calls the search-doctors endpoint."
+    },
+    {
+      "from": "T-007",
+      "to": "T-008",
+      "type": "FS",
+      "source": "llm",
+      "reason": "Testing doctor search functionality requires the search interface and backend."
+    },
+    {
+      "from": "T-009",
+      "to": "T-010",
+      "type": "FS",
+      "source": "llm",
+      "reason": "Create-appointment endpoint needs appointments and doctor tables."
+    },
+    {
+      "from": "T-009",
+      "to": "T-013",
+      "type": "FS",
+      "source": "llm",
+      "reason": "Get-appointments endpoint queries the appointments table."
+    },
+    {
+      "from": "T-009",
+      "to": "T-016",
+      "type": "FS",
+      "source": "llm",
+      "reason": "Update and cancel appointment endpoints modify the appointments table."
+    },
+    {
+      "from": "T-010",
+      "to": "T-011",
+      "type": "FS",
+      "source": "llm",
+      "reason": "Appointment booking UI calls the create-appointment endpoint."
+    },
+    {
+      "from": "T-011",
+      "to": "T-012",
+      "type": "FS",
+      "source": "llm",
+      "reason": "Testing the booking workflow requires the booking interface."
+    },
+    {
+      "from": "T-013",
+      "to": "T-014",
+      "type": "FS",
+      "source": "llm",
+      "reason": "Patient dashboard appointments view calls the get-appointments endpoint."
+    },
+    {
+      "from": "T-014",
+      "to": "T-015",
+      "type": "FS",
+      "source": "llm",
+      "reason": "Testing the patient appointment dashboard requires the UI view."
+    },
+    {
+      "from": "T-016",
+      "to": "T-017",
+      "type": "FS",
+      "source": "llm",
+      "reason": "Rescheduling and cancellation UI calls the update/cancel endpoints."
+    },
+    {
+      "from": "T-017",
+      "to": "T-018",
+      "type": "FS",
+      "source": "llm",
+      "reason": "Testing appointment modification rules requires the UI and backend."
+    },
+    {
+      "from": "T-019",
+      "to": "T-020",
+      "type": "FS",
+      "source": "llm",
+      "reason": "Create and update doctor endpoints require the doctors and schedules tables."
+    },
+    {
+      "from": "T-020",
+      "to": "T-021",
+      "type": "FS",
+      "source": "llm",
+      "reason": "Doctor management UI calls the doctor management endpoints."
+    },
+    {
+      "from": "T-021",
+      "to": "T-022",
+      "type": "FS",
+      "source": "llm",
+      "reason": "Testing doctor profile and schedule management requires the management UI."
+    },
+    {
+      "from": "T-023",
+      "to": "T-025",
+      "type": "FS",
+      "source": "llm",
+      "reason": "Testing encryption compliance requires database encryption and TLS to be configured."
+    },
+    {
+      "from": "T-024",
+      "to": "T-025",
+      "type": "FS",
+      "source": "llm",
+      "reason": "Testing encryption compliance requires database encryption and TLS to be configured."
+    },
+    {
+      "from": "T-026",
+      "to": "T-028",
+      "type": "FS",
+      "source": "llm",
+      "reason": "Testing page load speed requires performance optimizations and monitoring."
+    },
+    {
+      "from": "T-027",
+      "to": "T-028",
+      "type": "FS",
+      "source": "llm",
+      "reason": "Testing page load speed requires performance optimizations and monitoring."
+    },
+    {
+      "from": "T-029",
+      "to": "T-030",
+      "type": "FS",
+      "source": "llm",
+      "reason": "Uptime monitoring and alerts require high availability infrastructure to be in place."
+    },
+    {
+      "from": "T-029",
+      "to": "T-031",
+      "type": "FS",
+      "source": "llm",
+      "reason": "Verifying disaster recovery requires HA infrastructure and monitoring setup."
+    },
+    {
+      "from": "T-030",
+      "to": "T-031",
+      "type": "FS",
+      "source": "llm",
+      "reason": "Verifying disaster recovery requires HA infrastructure and monitoring setup."
+    },
+    {
+      "from": "T-032",
+      "to": "T-033",
+      "type": "FS",
+      "source": "llm",
+      "reason": "Implementing keyboard navigation and ARIA requires accessible UI component designs."
+    },
+    {
+      "from": "T-033",
+      "to": "T-034",
+      "type": "FS",
+      "source": "llm",
+      "reason": "Running accessibility audits and testing requires the implemented accessible components."
+    }
+  ],
+  "schedule": {
+    "unit": "hours",
+    "cpm": {
+      "duration_hours": 44,
+      "duration_days": 7.5,
+      "critical_path": [
+        "T-029",
+        "T-030",
+        "T-031"
+      ]
+    },
+    "capacity_plan": {
+      "sprint_count": 3,
+      "duration_days": 30,
+      "capacity_points_per_sprint": 40,
+      "hours_per_sprint": 60
+    },
+    "tasks": [
+      {
+        "task_id": "T-001",
+        "es": 0,
+        "ef": 8,
+        "ls": 4,
+        "lf": 12,
+        "slack": 4,
+        "critical": false,
+        "sprint": 1,
+        "planned_start": 0,
+        "planned_finish": 8,
+        "descendants": 3
+      },
+      {
+        "task_id": "T-002",
+        "es": 8,
+        "ef": 20,
+        "ls": 12,
+        "lf": 24,
+        "slack": 4,
+        "critical": false,
+        "sprint": 1,
+        "planned_start": 8,
+        "planned_finish": 20,
+        "descendants": 2
+      },
+      {
+        "task_id": "T-003",
+        "es": 20,
+        "ef": 32,
+        "ls": 24,
+        "lf": 36,
+        "slack": 4,
+        "critical": false,
+        "sprint": 1,
+        "planned_start": 20,
+        "planned_finish": 32,
+        "descendants": 1
+      },
+      {
+        "task_id": "T-004",
+        "es": 32,
+        "ef": 40,
+        "ls": 36,
+        "lf": 44,
+        "slack": 4,
+        "critical": false,
+        "sprint": 2,
+        "planned_start": 60,
+        "planned_finish": 68,
+        "descendants": 0
+      },
+      {
+        "task_id": "T-005",
+        "es": 0,
+        "ef": 8,
+        "ls": 4,
+        "lf": 12,
+        "slack": 4,
+        "critical": false,
+        "sprint": 1,
+        "planned_start": 0,
+        "planned_finish": 8,
+        "descendants": 6
+      },
+      {
+        "task_id": "T-006",
+        "es": 8,
+        "ef": 20,
+        "ls": 12,
+        "lf": 24,
+        "slack": 4,
+        "critical": false,
+        "sprint": 1,
+        "planned_start": 8,
+        "planned_finish": 20,
+        "descendants": 2
+      },
+      {
+        "task_id": "T-007",
+        "es": 20,
+        "ef": 32,
+        "ls": 24,
+        "lf": 36,
+        "slack": 4,
+        "critical": false,
+        "sprint": 1,
+        "planned_start": 20,
+        "planned_finish": 32,
+        "descendants": 1
+      },
+      {
+        "task_id": "T-008",
+        "es": 32,
+        "ef": 40,
+        "ls": 36,
+        "lf": 44,
+        "slack": 4,
+        "critical": false,
+        "sprint": 2,
+        "planned_start": 60,
+        "planned_finish": 68,
+        "descendants": 0
+      },
+      {
+        "task_id": "T-009",
+        "es": 0,
+        "ef": 8,
+        "ls": 4,
+        "lf": 12,
+        "slack": 4,
+        "critical": false,
+        "sprint": 1,
+        "planned_start": 0,
+        "planned_finish": 8,
+        "descendants": 9
+      },
+      {
+        "task_id": "T-010",
+        "es": 8,
+        "ef": 20,
+        "ls": 12,
+        "lf": 24,
+        "slack": 4,
+        "critical": false,
+        "sprint": 1,
+        "planned_start": 8,
+        "planned_finish": 20,
+        "descendants": 2
+      },
+      {
+        "task_id": "T-011",
+        "es": 20,
+        "ef": 32,
+        "ls": 24,
+        "lf": 36,
+        "slack": 4,
+        "critical": false,
+        "sprint": 2,
+        "planned_start": 60,
+        "planned_finish": 72,
+        "descendants": 1
+      },
+      {
+        "task_id": "T-012",
+        "es": 32,
+        "ef": 40,
+        "ls": 36,
+        "lf": 44,
+        "slack": 4,
+        "critical": false,
+        "sprint": 2,
+        "planned_start": 72,
+        "planned_finish": 80,
+        "descendants": 0
+      },
+      {
+        "task_id": "T-013",
+        "es": 8,
+        "ef": 16,
+        "ls": 16,
+        "lf": 24,
+        "slack": 8,
+        "critical": false,
+        "sprint": 2,
+        "planned_start": 60,
+        "planned_finish": 68,
+        "descendants": 2
+      },
+      {
+        "task_id": "T-014",
+        "es": 16,
+        "ef": 28,
+        "ls": 24,
+        "lf": 36,
+        "slack": 8,
+        "critical": false,
+        "sprint": 2,
+        "planned_start": 68,
+        "planned_finish": 80,
+        "descendants": 1
+      },
+      {
+        "task_id": "T-015",
+        "es": 28,
+        "ef": 36,
+        "ls": 36,
+        "lf": 44,
+        "slack": 8,
+        "critical": false,
+        "sprint": 2,
+        "planned_start": 80,
+        "planned_finish": 88,
+        "descendants": 0
+      },
+      {
+        "task_id": "T-016",
+        "es": 8,
+        "ef": 20,
+        "ls": 12,
+        "lf": 24,
+        "slack": 4,
+        "critical": false,
+        "sprint": 1,
+        "planned_start": 8,
+        "planned_finish": 20,
+        "descendants": 2
+      },
+      {
+        "task_id": "T-017",
+        "es": 20,
+        "ef": 32,
+        "ls": 24,
+        "lf": 36,
+        "slack": 4,
+        "critical": false,
+        "sprint": 2,
+        "planned_start": 60,
+        "planned_finish": 72,
+        "descendants": 1
+      },
+      {
+        "task_id": "T-018",
+        "es": 32,
+        "ef": 40,
+        "ls": 36,
+        "lf": 44,
+        "slack": 4,
+        "critical": false,
+        "sprint": 2,
+        "planned_start": 72,
+        "planned_finish": 80,
+        "descendants": 0
+      },
+      {
+        "task_id": "T-019",
+        "es": 0,
+        "ef": 8,
+        "ls": 4,
+        "lf": 12,
+        "slack": 4,
+        "critical": false,
+        "sprint": 1,
+        "planned_start": 0,
+        "planned_finish": 8,
+        "descendants": 3
+      },
+      {
+        "task_id": "T-020",
+        "es": 8,
+        "ef": 20,
+        "ls": 12,
+        "lf": 24,
+        "slack": 4,
+        "critical": false,
+        "sprint": 1,
+        "planned_start": 8,
+        "planned_finish": 20,
+        "descendants": 2
+      },
+      {
+        "task_id": "T-021",
+        "es": 20,
+        "ef": 32,
+        "ls": 24,
+        "lf": 36,
+        "slack": 4,
+        "critical": false,
+        "sprint": 2,
+        "planned_start": 60,
+        "planned_finish": 72,
+        "descendants": 1
+      },
+      {
+        "task_id": "T-022",
+        "es": 32,
+        "ef": 40,
+        "ls": 36,
+        "lf": 44,
+        "slack": 4,
+        "critical": false,
+        "sprint": 2,
+        "planned_start": 72,
+        "planned_finish": 80,
+        "descendants": 0
+      },
+      {
+        "task_id": "T-023",
+        "es": 0,
+        "ef": 8,
+        "ls": 28,
+        "lf": 36,
+        "slack": 28,
+        "critical": false,
+        "sprint": 3,
+        "planned_start": 120,
+        "planned_finish": 128,
+        "descendants": 1
+      },
+      {
+        "task_id": "T-024",
+        "es": 0,
+        "ef": 8,
+        "ls": 28,
+        "lf": 36,
+        "slack": 28,
+        "critical": false,
+        "sprint": 3,
+        "planned_start": 120,
+        "planned_finish": 128,
+        "descendants": 1
+      },
+      {
+        "task_id": "T-025",
+        "es": 8,
+        "ef": 16,
+        "ls": 36,
+        "lf": 44,
+        "slack": 28,
+        "critical": false,
+        "sprint": 3,
+        "planned_start": 128,
+        "planned_finish": 136,
+        "descendants": 0
+      },
+      {
+        "task_id": "T-026",
+        "es": 0,
+        "ef": 20,
+        "ls": 12,
+        "lf": 32,
+        "slack": 12,
+        "critical": false,
+        "sprint": 2,
+        "planned_start": 60,
+        "planned_finish": 80,
+        "descendants": 1
+      },
+      {
+        "task_id": "T-027",
+        "es": 0,
+        "ef": 8,
+        "ls": 24,
+        "lf": 32,
+        "slack": 24,
+        "critical": false,
+        "sprint": 2,
+        "planned_start": 60,
+        "planned_finish": 68,
+        "descendants": 1
+      },
+      {
+        "task_id": "T-028",
+        "es": 20,
+        "ef": 32,
+        "ls": 32,
+        "lf": 44,
+        "slack": 12,
+        "critical": false,
+        "sprint": 3,
+        "planned_start": 120,
+        "planned_finish": 132,
+        "descendants": 0
+      },
+      {
+        "task_id": "T-029",
+        "es": 0,
+        "ef": 20,
+        "ls": 0,
+        "lf": 20,
+        "slack": 0,
+        "critical": true,
+        "sprint": 1,
+        "planned_start": 0,
+        "planned_finish": 20,
+        "descendants": 2
+      },
+      {
+        "task_id": "T-030",
+        "es": 20,
+        "ef": 32,
+        "ls": 20,
+        "lf": 32,
+        "slack": 0,
+        "critical": true,
+        "sprint": 1,
+        "planned_start": 20,
+        "planned_finish": 32,
+        "descendants": 1
+      },
+      {
+        "task_id": "T-031",
+        "es": 32,
+        "ef": 44,
+        "ls": 32,
+        "lf": 44,
+        "slack": 0,
+        "critical": true,
+        "sprint": 1,
+        "planned_start": 32,
+        "planned_finish": 44,
+        "descendants": 0
+      },
+      {
+        "task_id": "T-032",
+        "es": 0,
+        "ef": 8,
+        "ls": 16,
+        "lf": 24,
+        "slack": 16,
+        "critical": false,
+        "sprint": 2,
+        "planned_start": 60,
+        "planned_finish": 68,
+        "descendants": 2
+      },
+      {
+        "task_id": "T-033",
+        "es": 8,
+        "ef": 20,
+        "ls": 24,
+        "lf": 36,
+        "slack": 16,
+        "critical": false,
+        "sprint": 2,
+        "planned_start": 68,
+        "planned_finish": 80,
+        "descendants": 1
+      },
+      {
+        "task_id": "T-034",
+        "es": 20,
+        "ef": 28,
+        "ls": 36,
+        "lf": 44,
+        "slack": 16,
+        "critical": false,
+        "sprint": 2,
+        "planned_start": 80,
+        "planned_finish": 88,
+        "descendants": 0
+      }
+    ],
+    "sprints": [
+      {
+        "number": 1,
+        "load_points": 40,
+        "capacity_points": 40,
+        "utilisation": 1,
+        "task_ids": [
+          "T-029",
+          "T-030",
+          "T-031",
+          "T-009",
+          "T-005",
+          "T-001",
+          "T-019",
+          "T-002",
+          "T-006",
+          "T-010",
+          "T-016",
+          "T-020",
+          "T-003",
+          "T-007"
+        ]
+      },
+      {
+        "number": 2,
+        "load_points": 40,
+        "capacity_points": 40,
+        "utilisation": 1,
+        "task_ids": [
+          "T-011",
+          "T-017",
+          "T-021",
+          "T-004",
+          "T-008",
+          "T-012",
+          "T-018",
+          "T-022",
+          "T-013",
+          "T-014",
+          "T-015",
+          "T-026",
+          "T-032",
+          "T-033",
+          "T-034",
+          "T-027"
+        ]
+      },
+      {
+        "number": 3,
+        "load_points": 9,
+        "capacity_points": 40,
+        "utilisation": 0.225,
+        "task_ids": [
+          "T-028",
+          "T-023",
+          "T-024",
+          "T-025"
+        ]
+      }
+    ]
+  },
+  "signals": [
+    {
+      "id": "SG-01",
+      "kind": "critical_path_length",
+      "severity": "low",
+      "value": 0.0882,
+      "threshold": null,
+      "task_ids": [
+        "T-029",
+        "T-030",
+        "T-031"
+      ],
+      "message": "CPM duration is 44 h (7.5 working days); 3 of 34 tasks (9%) are critical."
+    },
+    {
+      "id": "SG-02",
+      "kind": "sprint_overload",
+      "severity": "medium",
+      "value": 1,
+      "threshold": 0.98,
+      "task_ids": [
+        "T-029",
+        "T-030",
+        "T-031"
+      ],
+      "message": "2 of 3 sprints are packed to at least 98% of capacity, so there is no buffer for estimation error."
+    },
+    {
+      "id": "SG-03",
+      "kind": "capacity_bound",
+      "severity": "medium",
+      "value": 4.0909,
+      "threshold": 1.5,
+      "task_ids": [],
+      "message": "Capacity-feasible plan is 30 working days (3 sprints) against a CPM minimum of 7.5 working days: ratio 4.09x."
+    }
+  ],
+  "risks": [
+    {
+      "id": "RK-001",
+      "severity": "medium",
+      "title": "Capacity Constraint and High Sprint Load",
+      "description": "According to the capacity-plan, the capacity-feasible plan spans 30 working days across 3 sprints compared to a critical-path minimum of 7.5 working days, resulting in a ratio of 4.09x (SG-03). Furthermore, the sprint-load capacity data shows that 2 of 3 sprints are packed to at least 98% of capacity, leaving no buffer for estimation errors or unexpected delays (SG-02).",
+      "mitigation": "Reallocate tasks to reduce sprint utilization below 98%, and re-evaluate the dependency constraints driving the 4.09x schedule expansion.",
+      "signal_ids": [
+        "SG-02",
+        "SG-03"
+      ],
+      "origin": "llm"
+    },
+    {
+      "id": "RK-002",
+      "severity": "low",
+      "title": "Critical Path Vulnerability on Infrastructure Tasks",
+      "description": "The critical-path schedule indicates a duration of 44 hours (7.5 working days), with 3 out of 34 tasks (9%) identified as critical (SG-01). These tasks include configuring high availability infrastructure, implementing uptime monitoring, and verifying disaster recovery. Any slip in these critical tasks will directly impact the project timeline.",
+      "mitigation": "Closely monitor the critical path tasks and assign experienced personnel to ensure they complete within the 44-hour estimate.",
+      "signal_ids": [
+        "SG-01"
+      ],
+      "origin": "llm"
+    }
+  ],
+  "coverage": {
+    "requirements_total": 11,
+    "requirements_with_story": 11,
+    "requirements_with_task": 11,
+    "uncovered_requirement_ids": [],
+    "stories_without_tasks": []
+  },
+  "issues": []
+}

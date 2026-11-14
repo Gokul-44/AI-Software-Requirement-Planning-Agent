@@ -26,10 +26,13 @@
     "dev:web": "npm run dev -w @spm/web",
     "golden:record": "npm run golden:record -w @spm/api --",
     "golden:export": "npm run golden:export -w @spm/api --",
-    "dev:api": "npm run dev -w @spm/api"
+    "eval": "npm run eval -w @spm/api --",
+    "dev:api": "npm run dev -w @spm/api",
+    "e2e": "playwright test -c e2e/playwright.config.ts"
   },
   "devDependencies": {
     "@eslint/js": "^10.0.1",
+    "@playwright/test": "^1.65.1",
     "@types/node": "^26.6.6",
     "eslint": "^10.15.0",
     "eslint-config-prettier": "^10.1.8",

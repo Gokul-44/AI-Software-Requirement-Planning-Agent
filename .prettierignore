@@ -9,3 +9,4 @@ playwright-report
 fixtures/test-plan.food-delivery.json
 apps/web/public/golden
 neon.ts
+eval/results

@@ -36,6 +36,8 @@ const EnvSchema = z.object({
   GEMINI_TIMEOUT_MS: optionalInt(360_000, 1000),
   /** Minimum gap between two LLM calls: 60000 / free-tier RPM, rounded up with some margin. */
   LLM_MIN_INTERVAL_MS: optionalInt(6500),
+  /** Retries after the first try for a 429/5xx/network error; the server's retry delay is waited out each time. */
+  LLM_MAX_RETRIES: optionalInt(3),
   /** Provider and model that recorded the stage_cache entries the replay provider serves. */
   REPLAY_SOURCE_PROVIDER: optionalString,
   REPLAY_SOURCE_MODEL: optionalString,

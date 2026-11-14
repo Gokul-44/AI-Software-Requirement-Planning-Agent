@@ -91,6 +91,30 @@ describe('error handling', () => {
     expect(parseRetryDelayMs('nothing')).toBeUndefined();
   });
 
+  it('names the quota and the retry delay in the message', () => {
+    const body = JSON.stringify({
+      error: {
+        message: 'You exceeded your current quota.',
+        details: [
+          {
+            violations: [
+              {
+                quotaMetric:
+                  'generativelanguage.googleapis.com/generate_content_free_tier_requests',
+                quotaId: 'GenerateRequestsPerMinutePerProjectPerModel-FreeTier',
+              },
+            ],
+          },
+          { retryDelay: '34s' },
+        ],
+      },
+    });
+    const err = classifyError(new ApiError({ message: body, status: 429 }));
+    expect(err).toBeInstanceOf(LlmTransientError);
+    expect(err.message).toContain('GenerateRequestsPerMinutePerProjectPerModel-FreeTier');
+    expect(err.message).toContain('retry in 34s');
+  });
+
   it('classifies statuses', () => {
     const api = (status: number, message: string) => new ApiError({ message, status });
     expect(classifyError(api(429, 'Please retry in 10s'))).toMatchObject({ retryAfterMs: 10_000 });

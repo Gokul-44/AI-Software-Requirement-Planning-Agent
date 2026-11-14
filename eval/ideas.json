@@ -1,0 +1,35 @@
+[
+  { "id": 1, "slug": "food-delivery", "idea": "Online food delivery app" },
+  {
+    "id": 2,
+    "slug": "college-lms",
+    "idea": "Learning management system for a college"
+  },
+  { "id": 3, "slug": "hospital-booking", "idea": "Hospital appointment booking" },
+  {
+    "id": 4,
+    "slug": "handmade-store",
+    "idea": "E-commerce store for handmade goods"
+  },
+  { "id": 5, "slug": "chat-app", "idea": "Real-time chat app" },
+  { "id": 6, "slug": "library-system", "idea": "Library management system" },
+  {
+    "id": 7,
+    "slug": "expense-tracker",
+    "idea": "Personal expense tracker",
+    "note": "small scope"
+  },
+  { "id": 8, "slug": "event-ticketing", "idea": "Event ticketing platform" },
+  {
+    "id": 9,
+    "slug": "smart-home-iot",
+    "idea": "Smart-home IoT dashboard",
+    "note": "less familiar domain"
+  },
+  {
+    "id": 10,
+    "slug": "farmers-app",
+    "idea": "An app to help farmers",
+    "note": "deliberately vague"
+  }
+]

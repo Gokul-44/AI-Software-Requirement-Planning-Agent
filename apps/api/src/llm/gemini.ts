@@ -234,12 +234,36 @@ function withHint(status: number, retryAfterMs: number | undefined) {
 
 function summarise(message: string): string {
   try {
-    const parsed = JSON.parse(message) as { error?: { message?: string } };
-    if (parsed.error?.message) return parsed.error.message.slice(0, 300);
+    const parsed = JSON.parse(message) as {
+      error?: { message?: string; details?: Record<string, unknown>[] };
+    };
+    if (parsed.error?.message) {
+      return `${parsed.error.message.slice(0, 200)}${quotaDetail(parsed.error.details)}`;
+    }
   } catch {
     // not JSON
   }
   return message.slice(0, 300);
+}
+
+/**
+ * Which quota was hit and when to retry, from the error details (QuotaFailure and RetryInfo).
+ * Without it the message cannot tell the per-minute limit from the per-day limit.
+ */
+export function quotaDetail(details: readonly Record<string, unknown>[] | undefined): string {
+  const parts: string[] = [];
+  for (const detail of details ?? []) {
+    const violations = detail['violations'];
+    if (Array.isArray(violations)) {
+      for (const v of violations as Record<string, unknown>[]) {
+        const id = typeof v['quotaId'] === 'string' ? v['quotaId'] : null;
+        const metric = typeof v['quotaMetric'] === 'string' ? v['quotaMetric'] : null;
+        if (id || metric) parts.push(`quota ${id ?? ''} ${metric ? `(${metric})` : ''}`.trim());
+      }
+    }
+    if (typeof detail['retryDelay'] === 'string') parts.push(`retry in ${detail['retryDelay']}`);
+  }
+  return parts.length > 0 ? ` [${parts.join('; ')}]` : '';
 }
 
 /** Reads RetryInfo ("retryDelay": "34s") or the "Please retry in 34.5s" sentence. */

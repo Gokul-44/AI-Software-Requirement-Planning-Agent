@@ -1,0 +1,1046 @@
+{
+  "schema_version": "1.0",
+  "project": {
+    "id": "4b4204ae-5fc0-4aaa-a2e1-897ae6137642",
+    "idea_text": "An app to help farmers",
+    "created_at": "2026-11-14T16:47:27.817Z"
+  },
+  "run": {
+    "id": "615d3f9d-0970-4c0d-b516-55e0ba5ae5ea",
+    "status": "succeeded",
+    "created_at": "2026-11-14T16:47:27.817Z",
+    "finished_at": "2026-11-14T16:49:04.170Z",
+    "llm": {
+      "provider": "gemini",
+      "model": "gemini-3.5-flash-lite",
+      "prompt_versions": {
+        "1": "v1",
+        "2": "v1",
+        "3": "v2",
+        "4": "v1",
+        "5": "v1",
+        "7": "v1"
+      }
+    },
+    "config": {
+      "team_size": 4,
+      "velocity_points_per_person": 10,
+      "sprint_length_days": 10,
+      "focus_hours_per_day": 6,
+      "points_to_hours": {
+        "1": 4,
+        "2": 8,
+        "3": 12,
+        "5": 20,
+        "8": 32,
+        "13": 52
+      },
+      "pack_mode": "relaxed"
+    },
+    "usage": {
+      "input_tokens": 9453,
+      "output_tokens": 4542,
+      "est_cost_usd": 0,
+      "duration_ms": 96353
+    }
+  },
+  "summary": "A mobile application designed to help farmers manage their daily agricultural operations, track crop cycles, and monitor weather conditions.",
+  "assumptions": [
+    "The app will be available on both iOS and Android platforms.",
+    "Users will have intermittent internet connectivity in rural fields, requiring offline data caching."
+  ],
+  "requirements": [
+    {
+      "id": "R-001",
+      "type": "functional",
+      "category": null,
+      "text": "Users can create an account using their email address and secure password.",
+      "priority": "must",
+      "story_ids": [
+        "S-001"
+      ],
+      "task_ids": [
+        "T-001",
+        "T-002",
+        "T-003",
+        "T-004"
+      ]
+    },
+    {
+      "id": "R-002",
+      "type": "functional",
+      "category": null,
+      "text": "Users can add crop details including planting date, field location, and expected harvest time.",
+      "priority": "must",
+      "story_ids": [
+        "S-003"
+      ],
+      "task_ids": [
+        "T-007",
+        "T-008",
+        "T-009",
+        "T-010"
+      ]
+    },
+    {
+      "id": "R-003",
+      "type": "functional",
+      "category": null,
+      "text": "Users can log daily farm activities such as irrigation, fertilization, and pest control.",
+      "priority": "must",
+      "story_ids": [
+        "S-004"
+      ],
+      "task_ids": [
+        "T-011",
+        "T-012",
+        "T-013",
+        "T-014"
+      ]
+    },
+    {
+      "id": "R-004",
+      "type": "functional",
+      "category": null,
+      "text": "Users can view local weather forecasts based on their registered field locations.",
+      "priority": "should",
+      "story_ids": [
+        "S-005"
+      ],
+      "task_ids": [
+        "T-015",
+        "T-016",
+        "T-017"
+      ]
+    },
+    {
+      "id": "R-005",
+      "type": "non_functional",
+      "category": "performance",
+      "text": "95% of weather data requests complete in under 2000 ms.",
+      "priority": "should",
+      "story_ids": [
+        "S-006"
+      ],
+      "task_ids": [
+        "T-018",
+        "T-019"
+      ]
+    },
+    {
+      "id": "R-006",
+      "type": "non_functional",
+      "category": "security",
+      "text": "All user passwords must be securely hashed using modern cryptographic algorithms.",
+      "priority": "must",
+      "story_ids": [
+        "S-002"
+      ],
+      "task_ids": [
+        "T-005",
+        "T-006"
+      ]
+    }
+  ],
+  "epics": [
+    {
+      "id": "E-001",
+      "title": "User Authentication and Security",
+      "description": "Handles user registration and secure account management.",
+      "story_ids": [
+        "S-001",
+        "S-002"
+      ]
+    },
+    {
+      "id": "E-002",
+      "title": "Crop and Farm Management",
+      "description": "Enables farmers to track crops, field locations, and daily activities.",
+      "story_ids": [
+        "S-003",
+        "S-004"
+      ]
+    },
+    {
+      "id": "E-003",
+      "title": "Weather and Platform Quality",
+      "description": "Provides weather forecasts and ensures performance standards are met.",
+      "story_ids": [
+        "S-005",
+        "S-006"
+      ]
+    }
+  ],
+  "stories": [
+    {
+      "id": "S-001",
+      "epic_id": "E-001",
+      "as_a": "farmer",
+      "i_want": "to create an account using my email address and secure password",
+      "so_that": "I can access and protect my farm data",
+      "acceptance_criteria": [
+        "Given the registration screen, when I enter a valid email and strong password, then my account is created successfully.",
+        "Given an existing email, when I try to register again, then an error message is shown."
+      ],
+      "priority": "must",
+      "requirement_ids": [
+        "R-001"
+      ],
+      "task_ids": [
+        "T-001",
+        "T-002",
+        "T-003",
+        "T-004"
+      ]
+    },
+    {
+      "id": "S-002",
+      "epic_id": "E-001",
+      "as_a": "platform operator",
+      "i_want": "all user passwords to be securely hashed using modern cryptographic algorithms",
+      "so_that": "user credentials remain protected against breaches",
+      "acceptance_criteria": [
+        "Given a user password submission, when it is saved to the database, then it is hashed using a strong algorithm like bcrypt or Argon2.",
+        "Given stored passwords, when inspected directly, then plain text passwords are never visible."
+      ],
+      "priority": "must",
+      "requirement_ids": [
+        "R-006"
+      ],
+      "task_ids": [
+        "T-005",
+        "T-006"
+      ]
+    },
+    {
+      "id": "S-003",
+      "epic_id": "E-002",
+      "as_a": "farmer",
+      "i_want": "to add crop details including planting date, field location, and expected harvest time",
+      "so_that": "I can keep track of my crop cycles",
+      "acceptance_criteria": [
+        "Given the crop creation form, when I fill in planting date, location, and harvest time, then the crop is saved.",
+        "Given missing mandatory fields, when I submit, then validation errors are displayed."
+      ],
+      "priority": "must",
+      "requirement_ids": [
+        "R-002"
+      ],
+      "task_ids": [
+        "T-007",
+        "T-008",
+        "T-009",
+        "T-010"
+      ]
+    },
+    {
+      "id": "S-004",
+      "epic_id": "E-002",
+      "as_a": "farmer",
+      "i_want": "to log daily farm activities such as irrigation, fertilization, and pest control",
+      "so_that": "I can maintain a historical record of all field operations",
+      "acceptance_criteria": [
+        "Given the activity log interface, when I select an activity type and submit, then it is recorded against the specific crop.",
+        "Given past activity logs, when I view my crop details, then I can see the chronological list of activities."
+      ],
+      "priority": "must",
+      "requirement_ids": [
+        "R-003"
+      ],
+      "task_ids": [
+        "T-011",
+        "T-012",
+        "T-013",
+        "T-014"
+      ]
+    },
+    {
+      "id": "S-005",
+      "epic_id": "E-003",
+      "as_a": "farmer",
+      "i_want": "to view local weather forecasts based on my registered field locations",
+      "so_that": "I can plan my daily farming activities accordingly",
+      "acceptance_criteria": [
+        "Given a registered field location, when I open the weather section, then I see the local forecast.",
+        "Given an invalid location, when fetching weather, then a graceful fallback message is displayed."
+      ],
+      "priority": "should",
+      "requirement_ids": [
+        "R-004"
+      ],
+      "task_ids": [
+        "T-015",
+        "T-016",
+        "T-017"
+      ]
+    },
+    {
+      "id": "S-006",
+      "epic_id": "E-003",
+      "as_a": "platform operator",
+      "i_want": "95% of weather data requests to complete in under 2000 ms",
+      "so_that": "users receive timely weather information without noticeable delay",
+      "acceptance_criteria": [
+        "Given the weather API service, when load testing is executed, then 95% of responses return within 2000 ms.",
+        "Given slow network conditions, when requests exceed the threshold, then performance metrics log the event."
+      ],
+      "priority": "should",
+      "requirement_ids": [
+        "R-005"
+      ],
+      "task_ids": [
+        "T-018",
+        "T-019"
+      ]
+    }
+  ],
+  "tasks": [
+    {
+      "id": "T-001",
+      "story_id": "S-001",
+      "title": "Create users table schema",
+      "description": "Create the database migration for the users table storing email, hashed password, and timestamps.",
+      "layer": "database",
+      "points": 2,
+      "hours": 8,
+      "estimate_rationale": "Standard database table schema creation with indexes.",
+      "requirement_ids": [
+        "R-001"
+      ]
+    },
+    {
+      "id": "T-002",
+      "story_id": "S-001",
+      "title": "Implement register-user endpoint",
+      "description": "Build backend registration endpoint to validate inputs, handle duplicate emails, and create the user account.",
+      "layer": "backend",
+      "points": 3,
+      "hours": 12,
+      "estimate_rationale": "Single backend endpoint with input validation and creation logic.",
+      "requirement_ids": [
+        "R-001"
+      ]
+    },
+    {
+      "id": "T-003",
+      "story_id": "S-001",
+      "title": "Build user registration screen",
+      "description": "Create the frontend registration view with email and password inputs and error message display for existing emails.",
+      "layer": "frontend",
+      "points": 3,
+      "hours": 12,
+      "estimate_rationale": "Frontend form for registration with standard validation.",
+      "requirement_ids": [
+        "R-001"
+      ]
+    },
+    {
+      "id": "T-004",
+      "story_id": "S-001",
+      "title": "Write registration tests",
+      "description": "Implement automated tests for successful user creation and duplicate email error handling.",
+      "layer": "testing",
+      "points": 2,
+      "hours": 8,
+      "estimate_rationale": "Unit and integration tests for the registration flow.",
+      "requirement_ids": [
+        "R-001"
+      ]
+    },
+    {
+      "id": "T-005",
+      "story_id": "S-002",
+      "title": "Implement secure password hashing service",
+      "description": "Integrate bcrypt or Argon2 hashing utility to securely hash user passwords before storing them in the database.",
+      "layer": "backend",
+      "points": 2,
+      "hours": 8,
+      "estimate_rationale": "Implementation of standard password hashing service using bcrypt or argon2.",
+      "requirement_ids": [
+        "R-006"
+      ]
+    },
+    {
+      "id": "T-006",
+      "story_id": "S-002",
+      "title": "Write password security tests",
+      "description": "Add unit and integration tests to verify that plain text passwords are never stored or exposed in the database.",
+      "layer": "testing",
+      "points": 1,
+      "hours": 4,
+      "estimate_rationale": "Security tests verifying hash strength and proper implementation.",
+      "requirement_ids": [
+        "R-006"
+      ]
+    },
+    {
+      "id": "T-007",
+      "story_id": "S-003",
+      "title": "Create crops table and schema migration",
+      "description": "Create the database schema for crops including planting date, field location, and expected harvest time fields.",
+      "layer": "database",
+      "points": 2,
+      "hours": 8,
+      "estimate_rationale": "Database table and migration for crops with foreign keys.",
+      "requirement_ids": [
+        "R-002"
+      ]
+    },
+    {
+      "id": "T-008",
+      "story_id": "S-003",
+      "title": "Implement create-crop endpoint",
+      "description": "Build the backend endpoint to validate and store new crop details with mandatory field checks.",
+      "layer": "backend",
+      "points": 3,
+      "hours": 12,
+      "estimate_rationale": "Backend endpoint to handle crop creation.",
+      "requirement_ids": [
+        "R-002"
+      ]
+    },
+    {
+      "id": "T-009",
+      "story_id": "S-003",
+      "title": "Build crop creation form UI",
+      "description": "Create the frontend form for farmers to input planting date, location, and harvest time with validation error displays.",
+      "layer": "frontend",
+      "points": 3,
+      "hours": 12,
+      "estimate_rationale": "UI form for entering crop details and planting dates.",
+      "requirement_ids": [
+        "R-002"
+      ]
+    },
+    {
+      "id": "T-010",
+      "story_id": "S-003",
+      "title": "Test crop creation and validation",
+      "description": "Write automated tests for crop creation endpoint and frontend form validation rules.",
+      "layer": "testing",
+      "points": 2,
+      "hours": 8,
+      "estimate_rationale": "Tests covering crop creation and validation rules.",
+      "requirement_ids": [
+        "R-002"
+      ]
+    },
+    {
+      "id": "T-011",
+      "story_id": "S-004",
+      "title": "Create farm activities table and schema migration",
+      "description": "Create the database schema for logging daily farm activities linked to specific crops.",
+      "layer": "database",
+      "points": 2,
+      "hours": 8,
+      "estimate_rationale": "Database schema and migration for logging activities.",
+      "requirement_ids": [
+        "R-003"
+      ]
+    },
+    {
+      "id": "T-012",
+      "story_id": "S-004",
+      "title": "Implement create-activity endpoint",
+      "description": "Build the backend endpoint to record daily activities like irrigation, fertilization, and pest control against a crop.",
+      "layer": "backend",
+      "points": 3,
+      "hours": 12,
+      "estimate_rationale": "Backend endpoint for logging farm activities.",
+      "requirement_ids": [
+        "R-003"
+      ]
+    },
+    {
+      "id": "T-013",
+      "story_id": "S-004",
+      "title": "Build activity log interface",
+      "description": "Create the frontend view allowing farmers to log activities and view the chronological history for crop details.",
+      "layer": "frontend",
+      "points": 3,
+      "hours": 12,
+      "estimate_rationale": "Interface to display and create daily farm activity logs.",
+      "requirement_ids": [
+        "R-003"
+      ]
+    },
+    {
+      "id": "T-014",
+      "story_id": "S-004",
+      "title": "Test farm activity logging",
+      "description": "Write tests verifying activity logging and chronological list retrieval for crop operations.",
+      "layer": "testing",
+      "points": 2,
+      "hours": 8,
+      "estimate_rationale": "Tests for activity logging logic.",
+      "requirement_ids": [
+        "R-003"
+      ]
+    },
+    {
+      "id": "T-015",
+      "story_id": "S-005",
+      "title": "Implement weather forecast integration",
+      "description": "Integrate external weather service API to fetch local forecasts based on registered field locations and handle graceful fallbacks for invalid locations.",
+      "layer": "integration",
+      "points": 8,
+      "hours": 32,
+      "estimate_rationale": "Complex third-party external API integration with error handling and caching.",
+      "requirement_ids": [
+        "R-004"
+      ]
+    },
+    {
+      "id": "T-016",
+      "story_id": "S-005",
+      "title": "Implement get-weather endpoint",
+      "description": "Create backend endpoint to retrieve weather data for a given field location and return appropriate fallback messages.",
+      "layer": "backend",
+      "points": 3,
+      "hours": 12,
+      "estimate_rationale": "Backend endpoint to fetch and transform weather data.",
+      "requirement_ids": [
+        "R-004"
+      ]
+    },
+    {
+      "id": "T-017",
+      "story_id": "S-005",
+      "title": "Build weather section UI",
+      "description": "Develop the frontend weather section to display local forecasts for registered field locations and handle fallback message rendering.",
+      "layer": "frontend",
+      "points": 3,
+      "hours": 12,
+      "estimate_rationale": "Frontend weather widget and UI display.",
+      "requirement_ids": [
+        "R-004"
+      ]
+    },
+    {
+      "id": "T-018",
+      "story_id": "S-006",
+      "title": "Configure performance monitoring for weather API",
+      "description": "Set up monitoring and logging to track weather data request latencies and flag events exceeding the 2000 ms threshold.",
+      "layer": "devops",
+      "points": 2,
+      "hours": 8,
+      "estimate_rationale": "Devops task configuring APM and monitoring rules.",
+      "requirement_ids": [
+        "R-005"
+      ]
+    },
+    {
+      "id": "T-019",
+      "story_id": "S-006",
+      "title": "Execute load testing for weather requests",
+      "description": "Run automated load tests against the weather service to verify that 95% of responses complete in under 2000 ms.",
+      "layer": "testing",
+      "points": 3,
+      "hours": 12,
+      "estimate_rationale": "Load testing scripts and execution for performance benchmarks.",
+      "requirement_ids": [
+        "R-005"
+      ]
+    }
+  ],
+  "dependencies": [
+    {
+      "from": "T-001",
+      "to": "T-002",
+      "type": "FS",
+      "source": "llm",
+      "reason": "Backend endpoint needs the users table schema."
+    },
+    {
+      "from": "T-001",
+      "to": "T-005",
+      "type": "FS",
+      "source": "llm",
+      "reason": "Password hashing service integrates with the user model."
+    },
+    {
+      "from": "T-002",
+      "to": "T-003",
+      "type": "FS",
+      "source": "llm",
+      "reason": "Frontend registration screen calls the register endpoint."
+    },
+    {
+      "from": "T-003",
+      "to": "T-004",
+      "type": "FS",
+      "source": "llm",
+      "reason": "Registration tests need the UI and backend ready."
+    },
+    {
+      "from": "T-005",
+      "to": "T-006",
+      "type": "FS",
+      "source": "llm",
+      "reason": "Security tests require the hashing service implementation."
+    },
+    {
+      "from": "T-007",
+      "to": "T-008",
+      "type": "FS",
+      "source": "llm",
+      "reason": "Crop endpoint requires crops table schema."
+    },
+    {
+      "from": "T-007",
+      "to": "T-012",
+      "type": "FS",
+      "source": "llm",
+      "reason": "Activity endpoint needs the activities table and foreign keys to crops."
+    },
+    {
+      "from": "T-008",
+      "to": "T-009",
+      "type": "FS",
+      "source": "llm",
+      "reason": "Crop creation form UI calls the crop creation endpoint."
+    },
+    {
+      "from": "T-009",
+      "to": "T-010",
+      "type": "FS",
+      "source": "llm",
+      "reason": "Crop tests validate the end-to-end creation flow."
+    },
+    {
+      "from": "T-011",
+      "to": "T-012",
+      "type": "FS",
+      "source": "llm",
+      "reason": "Activity endpoint needs the activities table and foreign keys to crops."
+    },
+    {
+      "from": "T-012",
+      "to": "T-013",
+      "type": "FS",
+      "source": "llm",
+      "reason": "Activity log interface calls the activity endpoint."
+    },
+    {
+      "from": "T-013",
+      "to": "T-014",
+      "type": "FS",
+      "source": "llm",
+      "reason": "Activity tests require the activity log interface and backend."
+    },
+    {
+      "from": "T-015",
+      "to": "T-016",
+      "type": "FS",
+      "source": "llm",
+      "reason": "Weather endpoint relies on weather forecast integration."
+    },
+    {
+      "from": "T-016",
+      "to": "T-017",
+      "type": "FS",
+      "source": "llm",
+      "reason": "Weather UI calls the get-weather endpoint."
+    },
+    {
+      "from": "T-016",
+      "to": "T-018",
+      "type": "FS",
+      "source": "llm",
+      "reason": "Performance monitoring requires the weather endpoint to monitor."
+    },
+    {
+      "from": "T-018",
+      "to": "T-019",
+      "type": "FS",
+      "source": "llm",
+      "reason": "Load testing uses performance monitoring configuration."
+    }
+  ],
+  "schedule": {
+    "unit": "hours",
+    "cpm": {
+      "duration_hours": 64,
+      "duration_days": 10.5,
+      "critical_path": [
+        "T-015",
+        "T-016",
+        "T-018",
+        "T-019"
+      ]
+    },
+    "capacity_plan": {
+      "sprint_count": 2,
+      "duration_days": 20,
+      "capacity_points_per_sprint": 40,
+      "hours_per_sprint": 60
+    },
+    "tasks": [
+      {
+        "task_id": "T-001",
+        "es": 0,
+        "ef": 8,
+        "ls": 24,
+        "lf": 32,
+        "slack": 24,
+        "critical": false,
+        "sprint": 1,
+        "planned_start": 0,
+        "planned_finish": 8,
+        "descendants": 5
+      },
+      {
+        "task_id": "T-002",
+        "es": 8,
+        "ef": 20,
+        "ls": 32,
+        "lf": 44,
+        "slack": 24,
+        "critical": false,
+        "sprint": 1,
+        "planned_start": 8,
+        "planned_finish": 20,
+        "descendants": 2
+      },
+      {
+        "task_id": "T-003",
+        "es": 20,
+        "ef": 32,
+        "ls": 44,
+        "lf": 56,
+        "slack": 24,
+        "critical": false,
+        "sprint": 1,
+        "planned_start": 20,
+        "planned_finish": 32,
+        "descendants": 1
+      },
+      {
+        "task_id": "T-004",
+        "es": 32,
+        "ef": 40,
+        "ls": 56,
+        "lf": 64,
+        "slack": 24,
+        "critical": false,
+        "sprint": 2,
+        "planned_start": 60,
+        "planned_finish": 68,
+        "descendants": 0
+      },
+      {
+        "task_id": "T-005",
+        "es": 8,
+        "ef": 16,
+        "ls": 52,
+        "lf": 60,
+        "slack": 44,
+        "critical": false,
+        "sprint": 2,
+        "planned_start": 60,
+        "planned_finish": 68,
+        "descendants": 1
+      },
+      {
+        "task_id": "T-006",
+        "es": 16,
+        "ef": 20,
+        "ls": 60,
+        "lf": 64,
+        "slack": 44,
+        "critical": false,
+        "sprint": 2,
+        "planned_start": 68,
+        "planned_finish": 72,
+        "descendants": 0
+      },
+      {
+        "task_id": "T-007",
+        "es": 0,
+        "ef": 8,
+        "ls": 24,
+        "lf": 32,
+        "slack": 24,
+        "critical": false,
+        "sprint": 1,
+        "planned_start": 0,
+        "planned_finish": 8,
+        "descendants": 6
+      },
+      {
+        "task_id": "T-008",
+        "es": 8,
+        "ef": 20,
+        "ls": 32,
+        "lf": 44,
+        "slack": 24,
+        "critical": false,
+        "sprint": 1,
+        "planned_start": 8,
+        "planned_finish": 20,
+        "descendants": 2
+      },
+      {
+        "task_id": "T-009",
+        "es": 20,
+        "ef": 32,
+        "ls": 44,
+        "lf": 56,
+        "slack": 24,
+        "critical": false,
+        "sprint": 1,
+        "planned_start": 20,
+        "planned_finish": 32,
+        "descendants": 1
+      },
+      {
+        "task_id": "T-010",
+        "es": 32,
+        "ef": 40,
+        "ls": 56,
+        "lf": 64,
+        "slack": 24,
+        "critical": false,
+        "sprint": 2,
+        "planned_start": 60,
+        "planned_finish": 68,
+        "descendants": 0
+      },
+      {
+        "task_id": "T-011",
+        "es": 0,
+        "ef": 8,
+        "ls": 24,
+        "lf": 32,
+        "slack": 24,
+        "critical": false,
+        "sprint": 1,
+        "planned_start": 0,
+        "planned_finish": 8,
+        "descendants": 3
+      },
+      {
+        "task_id": "T-012",
+        "es": 8,
+        "ef": 20,
+        "ls": 32,
+        "lf": 44,
+        "slack": 24,
+        "critical": false,
+        "sprint": 1,
+        "planned_start": 8,
+        "planned_finish": 20,
+        "descendants": 2
+      },
+      {
+        "task_id": "T-013",
+        "es": 20,
+        "ef": 32,
+        "ls": 44,
+        "lf": 56,
+        "slack": 24,
+        "critical": false,
+        "sprint": 1,
+        "planned_start": 20,
+        "planned_finish": 32,
+        "descendants": 1
+      },
+      {
+        "task_id": "T-014",
+        "es": 32,
+        "ef": 40,
+        "ls": 56,
+        "lf": 64,
+        "slack": 24,
+        "critical": false,
+        "sprint": 2,
+        "planned_start": 60,
+        "planned_finish": 68,
+        "descendants": 0
+      },
+      {
+        "task_id": "T-015",
+        "es": 0,
+        "ef": 32,
+        "ls": 0,
+        "lf": 32,
+        "slack": 0,
+        "critical": true,
+        "sprint": 1,
+        "planned_start": 0,
+        "planned_finish": 32,
+        "descendants": 4
+      },
+      {
+        "task_id": "T-016",
+        "es": 32,
+        "ef": 44,
+        "ls": 32,
+        "lf": 44,
+        "slack": 0,
+        "critical": true,
+        "sprint": 1,
+        "planned_start": 32,
+        "planned_finish": 44,
+        "descendants": 3
+      },
+      {
+        "task_id": "T-017",
+        "es": 44,
+        "ef": 56,
+        "ls": 52,
+        "lf": 64,
+        "slack": 8,
+        "critical": false,
+        "sprint": 1,
+        "planned_start": 44,
+        "planned_finish": 56,
+        "descendants": 0
+      },
+      {
+        "task_id": "T-018",
+        "es": 44,
+        "ef": 52,
+        "ls": 44,
+        "lf": 52,
+        "slack": 0,
+        "critical": true,
+        "sprint": 1,
+        "planned_start": 44,
+        "planned_finish": 52,
+        "descendants": 1
+      },
+      {
+        "task_id": "T-019",
+        "es": 52,
+        "ef": 64,
+        "ls": 52,
+        "lf": 64,
+        "slack": 0,
+        "critical": true,
+        "sprint": 2,
+        "planned_start": 60,
+        "planned_finish": 72,
+        "descendants": 0
+      }
+    ],
+    "sprints": [
+      {
+        "number": 1,
+        "load_points": 40,
+        "capacity_points": 40,
+        "utilisation": 1,
+        "task_ids": [
+          "T-015",
+          "T-016",
+          "T-018",
+          "T-017",
+          "T-007",
+          "T-001",
+          "T-011",
+          "T-002",
+          "T-008",
+          "T-012",
+          "T-003",
+          "T-009",
+          "T-013"
+        ]
+      },
+      {
+        "number": 2,
+        "load_points": 12,
+        "capacity_points": 40,
+        "utilisation": 0.3,
+        "task_ids": [
+          "T-019",
+          "T-004",
+          "T-010",
+          "T-014",
+          "T-005",
+          "T-006"
+        ]
+      }
+    ]
+  },
+  "signals": [
+    {
+      "id": "SG-01",
+      "kind": "critical_path_length",
+      "severity": "low",
+      "value": 0.2105,
+      "threshold": null,
+      "task_ids": [
+        "T-015",
+        "T-016",
+        "T-018",
+        "T-019"
+      ],
+      "message": "CPM duration is 64 h (10.5 working days); 4 of 19 tasks (21%) are critical."
+    },
+    {
+      "id": "SG-02",
+      "kind": "sprint_overload",
+      "severity": "medium",
+      "value": 1,
+      "threshold": 0.98,
+      "task_ids": [
+        "T-015",
+        "T-016",
+        "T-018"
+      ],
+      "message": "1 of 2 sprints is packed to at least 98% of capacity, so there is no buffer for estimation error."
+    },
+    {
+      "id": "SG-03",
+      "kind": "capacity_bound",
+      "severity": "medium",
+      "value": 1.875,
+      "threshold": 1.5,
+      "task_ids": [],
+      "message": "Capacity-feasible plan is 20 working days (2 sprints) against a CPM minimum of 10.5 working days: ratio 1.88x."
+    }
+  ],
+  "risks": [
+    {
+      "id": "RK-001",
+      "severity": "medium",
+      "title": "Sprint Overload and Lack of Buffer",
+      "description": "According to the capacity plan, 1 of 2 sprints is packed to at least 98% of capacity, leaving no buffer for estimation error.",
+      "mitigation": "Reallocate tasks out of the overloaded sprint or reduce scope to create a safer buffer for estimation errors.",
+      "signal_ids": [
+        "SG-02"
+      ],
+      "origin": "llm"
+    },
+    {
+      "id": "RK-002",
+      "severity": "medium",
+      "title": "Capacity Expansion Relative to Critical Path",
+      "description": "The capacity-feasible plan requires 20 working days across 2 sprints compared to a critical path minimum of 10.5 working days, resulting in a ratio of 1.88x.",
+      "mitigation": "Review resource allocation and task scheduling to bridge the gap between the critical path and the capacity-feasible plan duration.",
+      "signal_ids": [
+        "SG-03"
+      ],
+      "origin": "llm"
+    },
+    {
+      "id": "RK-003",
+      "severity": "low",
+      "title": "Critical Path Concentration",
+      "description": "The critical path duration is 64 hours (10.5 working days) where 4 of 19 tasks, or 21 percent, are critical.",
+      "mitigation": "Monitor the critical tasks closely and ensure sufficient resources are assigned to prevent any delays on the critical path.",
+      "signal_ids": [
+        "SG-01"
+      ],
+      "origin": "llm"
+    }
+  ],
+  "coverage": {
+    "requirements_total": 6,
+    "requirements_with_story": 6,
+    "requirements_with_task": 6,
+    "uncovered_requirement_ids": [],
+    "stories_without_tasks": []
+  },
+  "issues": []
+}

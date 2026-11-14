@@ -1,0 +1,13 @@
+idea_id,idea,repeat,run_id,status,failed_stage,failure_code,model_calls,calls_valid_first_try,repair_retries,llm_requests,calls_cut_off_by_provider,stages_run,stages_failed_validation,stages_stopped_by_quota,refs_proposed,refs_invalid,cycle_before_repair,requirements,requirements_with_task,coverage_pct,stories,tasks,tasks_per_story_mean,tasks_per_story_min,tasks_per_story_max,tasks_flagged_duplicate,edges,edges_per_task,cpm_hours,run_seconds,tokens_in,tokens_out
+1,Online food delivery app,1,9f401fa6-9d2f-48c2-946d-5e204d013a0b,succeeded,,,9,9,0,9,0,8,0,0,57,0,false,7,7,100,7,26,3.7143,3,4,0,24,0.9231,52,106.939,11933,5912
+2,Learning management system for a college,1,bccaf339-7048-4a71-80da-39cfdb7e2a05,failed,3,LLM_UNAVAILABLE,3,3,0,4,1,2,0,1,13,0,,,,,,,,,,,,,,36.6651,2798,2171
+3,Hospital appointment booking,1,30c97001-4c2b-424c-9328-5175dc7e4402,succeeded,,,8,8,0,8,0,8,0,0,53,0,false,9,9,100,9,25,2.7778,2,4,0,19,0.76,56,90.4314,11142,6021
+4,E-commerce store for handmade goods,1,08bd24f0-eb1c-44bb-bee6-2f880e70d4f3,succeeded,,,9,9,0,9,0,8,0,0,43,0,false,6,6,100,6,21,3.5,3,4,0,16,0.7619,72,71.4646,10800,4942
+5,Real-time chat app,1,98d42802-f6ae-4c88-8973-543b7591418c,succeeded,,,8,7,1,9,0,8,0,0,57,0,false,8,8,100,8,26,3.25,3,4,0,23,0.8846,60,78.2892,12105,6522
+6,Library management system,1,f630dd1b-d2f6-4c24-8cd4-87727942fc39,succeeded,,,9,9,0,9,0,8,0,0,49,0,false,7,7,100,7,22,3.1429,2,4,0,20,0.9091,48,67.39,10987,5221
+7,Personal expense tracker,1,65a52680-b670-4be0-892e-6a6cfe7d9a3b,succeeded,,,9,9,0,9,0,8,0,0,49,0,false,7,7,100,7,23,3.2857,2,4,0,19,0.8261,44,80.3444,11239,5569
+8,Event ticketing platform,1,8ada6803-68b2-4d1d-a8da-031e0b64404b,succeeded,,,8,8,0,8,0,8,0,0,58,0,false,8,8,100,8,26,3.25,2,4,0,24,0.9231,76,57.2384,10831,6251
+9,Smart-home IoT dashboard,1,1b469109-e133-48ff-99b8-81440ea6b27f,succeeded,,,8,7,1,9,0,8,0,0,64,0,false,10,10,100,10,30,3,2,4,0,24,0.8,60,82.8582,13112,8367
+10,An app to help farmers,1,704d6b1e-28fa-4e6d-9e36-adc21c8415e2,succeeded,,,9,9,0,9,0,8,0,0,54,0,false,7,7,100,7,26,3.7143,3,5,0,21,0.8077,52,78.4441,11634,5516
+1,Online food delivery app,2,e34140e9-3996-4c99-8cae-1b9ca760c457,succeeded,,,9,9,0,9,0,8,0,0,63,0,false,8,8,100,8,31,3.875,3,5,0,24,0.7742,84,94.8273,12303,6277
+1,Online food delivery app,3,a4889f89-2ea2-4a93-aba9-7acf84e291ce,succeeded,,,9,9,0,9,0,8,0,0,56,0,false,7,7,100,7,26,3.7143,3,5,0,23,0.8846,52,73.1784,11407,5811

@@ -33,7 +33,7 @@ export function createLlmClient(
           timeoutMs: config.GEMINI_TIMEOUT_MS,
           thinking: config.GEMINI_THINKING,
         }),
-        { minIntervalMs: config.LLM_MIN_INTERVAL_MS, logger },
+        { minIntervalMs: config.LLM_MIN_INTERVAL_MS, maxRetries: config.LLM_MAX_RETRIES, logger },
       );
     }
   }
