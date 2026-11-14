@@ -1,4 +1,4 @@
-/** stage_cache row (MASTER_PLAN C2): the validated LLM output, pre-stamping. */
+/** stage_cache row (design document C2): the validated LLM output, pre-stamping. */
 export interface StageCacheEntry {
   cacheKey: string;
   stage: number;

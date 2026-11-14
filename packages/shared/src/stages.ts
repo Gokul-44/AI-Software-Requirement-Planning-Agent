@@ -12,7 +12,7 @@ import {
 } from './ids.js';
 
 /**
- * Stage output schemas (MASTER_PLAN C4). Every object is strict (additionalProperties: false).
+ * Stage output schemas (design document C4). Every object is strict (additionalProperties: false).
  * The base schemas are context free and convert cleanly to JSON Schema. The `make*Schema`
  * factories add the context dependent rules ("id is in the stamped set").
  */

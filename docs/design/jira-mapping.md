@@ -1,6 +1,6 @@
 # Jira CSV mapping
 
-> **UNVERIFIED.** This mapping has not been imported into Jira yet. Everything below describes what `toJiraCsv(plan)` writes and what we _expect_ Jira Cloud to do with it. Treat each "expected" as an assumption until the import test at the end of this page has been run and its results recorded. See MASTER_PLAN B1 Issue 7.
+> **UNVERIFIED.** This mapping has not been imported into Jira yet. Everything below describes what `toJiraCsv(plan)` writes and what we _expect_ Jira Cloud to do with it. Treat each "expected" as an assumption until the import test at the end of this page has been run and its results recorded. See the design document, B1 Issue 7.
 
 The exporter lives in `packages/exporters/src/jira.ts`. The sample file `docs/samples/jira-sample.csv` is generated from the food-delivery fixture by `npm run fixture` and is checked against the exporter by a test, so it cannot drift.
 
@@ -41,7 +41,7 @@ The number of `Labels` columns is the largest label count of any row (five for t
 
 ## Injection protection
 
-Plan text is model-generated, so it is untrusted. Every text cell that starts with `=`, `+`, `-`, `@`, a tab or a carriage return is written with a leading apostrophe (`'=1+1`) so spreadsheet programs show it as text instead of running it (MASTER_PLAN N11). Fields containing commas, quotes or line breaks are quoted, and quotes are doubled. Jira will show the apostrophe as part of the text in those rare cases. Summaries start with our code (`T-001`), so they are never affected.
+Plan text is model-generated, so it is untrusted. Every text cell that starts with `=`, `+`, `-`, `@`, a tab or a carriage return is written with a leading apostrophe (`'=1+1`) so spreadsheet programs show it as text instead of running it (design document N11). Fields containing commas, quotes or line breaks are quoted, and quotes are doubled. Jira will show the apostrophe as part of the text in those rare cases. Summaries start with our code (`T-001`), so they are never affected.
 
 ## Import test (to do in Week 1, owner: BE)
 

@@ -1,4 +1,4 @@
-# Human scoring rubric (MASTER_PLAN E3)
+# Human scoring rubric (design document E3)
 
 The script `npm run eval` measures everything a program can measure. This rubric covers what only a person can judge. Each plan is scored 1 to 5 on five criteria by **two raters**. Neither rater may be the person who wrote the prompts. Scores are averaged per criterion, and the disagreement (the absolute difference between the two raters) is recorded.
 

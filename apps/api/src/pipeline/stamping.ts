@@ -2,7 +2,7 @@ import type { RequirementsOutput, StoriesOutput, TasksOutput } from '@spm/shared
 import type { EpicRow, RequirementRow, StoryRow, TaskRow } from '../db/repository.js';
 
 /**
- * ID stamping (MASTER_PLAN B3.3). The LLM never assigns ids: code numbers items in the order
+ * ID stamping (design document B3.3). The LLM never assigns ids: code numbers items in the order
  * they appear, so the same validated output always gives the same ids (deterministic).
  */
 export const makeCode = (prefix: string, n: number) => `${prefix}-${String(n).padStart(3, '0')}`;

@@ -2,7 +2,7 @@ import type { ZodType } from 'zod';
 import type { LlmStage } from '@spm/shared';
 
 /**
- * Provider abstraction (MASTER_PLAN B3.2). The harness talks only to this interface; a provider
+ * Provider abstraction (design document B3.2). The harness talks only to this interface; a provider
  * (gemini, mock, replay) is chosen by LLM_PROVIDER. Keys exist only on the server.
  */
 export type StopReason = 'end' | 'max_tokens' | 'refusal' | 'other';

@@ -27,7 +27,7 @@ export interface CacheKeyParts {
   input: unknown;
 }
 
-/** sha256(stage | prompt_version | provider | model | settings | canonical input), MASTER_PLAN B3.1. */
+/** sha256(stage | prompt_version | provider | model | settings | canonical input), design document B3.1. */
 export function buildCacheKey(p: CacheKeyParts): string {
   return createHash('sha256')
     .update(

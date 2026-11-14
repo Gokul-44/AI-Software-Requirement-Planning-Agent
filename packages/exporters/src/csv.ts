@@ -1,5 +1,5 @@
 /**
- * RFC 4180 writer with formula-injection protection (MASTER_PLAN N11).
+ * RFC 4180 writer with formula-injection protection (design document N11).
  * Pure string functions: safe to run in the browser.
  */
 

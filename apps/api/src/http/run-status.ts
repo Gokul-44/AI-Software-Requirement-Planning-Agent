@@ -25,7 +25,7 @@ function stageEntry(row: StageRow): RunStatus['stages'][number] {
   return entry;
 }
 
-/** The RunStatus the UI polls every 2 s (MASTER_PLAN C3). */
+/** The RunStatus the UI polls every 2 s (design document C3). */
 export async function buildRunStatus(repo: Repository, run: RunRow): Promise<RunStatus> {
   const [stages, issues] = await Promise.all([
     repo.getStages(run.id),

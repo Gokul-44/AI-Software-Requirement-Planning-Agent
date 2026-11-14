@@ -6,7 +6,7 @@ type ScheduleTask = Plan['schedule']['tasks'][number];
 
 /**
  * Escapes text from the plan (LLM generated, so untrusted) for Markdown: raw HTML is turned into
- * entities and link or code syntax is neutralised (MASTER_PLAN N11).
+ * entities and link or code syntax is neutralised (design document N11).
  */
 export function escapeMarkdown(text: string): string {
   return text

@@ -1,5 +1,5 @@
 /**
- * Chart and badge colours. Every value is a design token from src/index.css (docs/DESIGN.md):
+ * Chart and badge colours. Every value is a design token from src/index.css (docs/design/design-system.md):
  * no hex values live here. Purple (accent) is reserved for the critical path, so epic colours are
  * tints and shades of the forest green and the sand beige only.
  */

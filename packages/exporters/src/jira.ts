@@ -32,8 +32,8 @@ interface Row {
 }
 
 /**
- * Jira CSV (MASTER_PLAN B1 Issue 7). UNVERIFIED until imported into a Jira Cloud test project:
- * see docs/jira-mapping.md.
+ * Jira CSV (design document B1 Issue 7). UNVERIFIED until imported into a Jira Cloud test project:
+ * see docs/design/jira-mapping.md.
  *
  * Rows: all Epics, then all Stories, then all Sub-tasks, each in code order, so a parent always
  * comes before its children. `Issue Id` is a running number and `Parent Id` refers to it.

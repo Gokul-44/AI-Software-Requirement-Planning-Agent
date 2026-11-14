@@ -6,7 +6,7 @@ import { buttonClass } from './buttonClass';
 import type { ButtonSize } from './buttonClass';
 import { CRITICAL_COLOR } from './colors';
 
-/** Strict WCAG AA (docs/DESIGN.md): colour pairs are read from the real tokens in index.css. */
+/** Strict WCAG AA (docs/design/design-system.md): colour pairs are read from the real tokens in index.css. */
 
 function token(name: string): string {
   const m = new RegExp(String.raw`--color-${name}:\s*(#[0-9a-fA-F]{6})`).exec(css);

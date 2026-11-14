@@ -2,7 +2,7 @@ import type { RequirementsOutput, StoriesOutput, TasksOutput } from '@spm/shared
 import type { CoverageStoriesOutput } from './inputs.js';
 
 /**
- * Semantic validators (MASTER_PLAN B3.1): what Zod cannot see because it depends on the stage
+ * Semantic validators (design document B3.1): what Zod cannot see because it depends on the stage
  * input. Each returns a list of short error strings that the harness feeds back to the model.
  */
 

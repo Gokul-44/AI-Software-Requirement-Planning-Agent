@@ -35,7 +35,7 @@ export interface GanttLayout {
 }
 
 /**
- * Lays out the Gantt rows for one of the two timelines (MASTER_PLAN B1 Issue 4):
+ * Lays out the Gantt rows for one of the two timelines (design document B1 Issue 4):
  *  - "sprint": the capacity-feasible plan, bars at planned_start..planned_finish;
  *  - "cpm": the dependency-limited minimum with unlimited people, bars at es..ef.
  * Both use the same x scale and the same sprint bands; rows are sorted by start, then id.

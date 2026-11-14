@@ -29,7 +29,7 @@ const brief = (t: TaskRow, stories: Map<string, StoryRow>) => ({
 });
 
 /**
- * Stage 4 (MASTER_PLAN B3.3): exactly one estimate per task. Unknown ids are dropped and logged,
+ * Stage 4 (design document B3.3): exactly one estimate per task. Unknown ids are dropped and logged,
  * missing tasks get one targeted retry, and a task that is still missing gets a default estimate
  * with a warning. Hours always come from `config.points_to_hours`, never from the model.
  */

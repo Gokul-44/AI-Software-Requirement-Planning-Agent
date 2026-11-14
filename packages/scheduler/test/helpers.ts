@@ -1,7 +1,7 @@
 import type { Config } from '@spm/shared';
 import type { Edge, PlanCore, TaskInput } from '../src/index.js';
 
-/** The hand-built 6-task graph from MASTER_PLAN E1 (points to hours at 4 h/point). */
+/** The hand-built 6-task graph from design document E1 (points to hours at 4 h/point). */
 export const E1_TASKS: (TaskInput & { points: 1 | 2 | 3 | 5 | 8 | 13 })[] = [
   { id: 'A', points: 2, hours: 8 },
   { id: 'B', points: 3, hours: 12 },

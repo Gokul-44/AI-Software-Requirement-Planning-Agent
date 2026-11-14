@@ -1,13 +1,13 @@
-# AI Software Requirement & Planning Agent: Master Plan
+# AI Software Requirement & Planning Agent: Design Document
 
 **Team (IIIT Vadodara, International Campus Diu):** Akshay Kumar Tapraniya · Gokul Faleja · Saransh Sarang Naik · Shreya Tiwari
-**Document status:** DRAFT v0.1 (2026-11-14). Analysis and plan only, waiting for team approval. No application code has been written.
+**Document status:** Version 1.0 (2026-11-14). Approved design, implemented in this repository. What was built, measured and changed is recorded in [`docs/development-log.md`](../development-log.md); the implementation uses Google Gemini through the provider abstraction in B3.2.
 
 **Labels used throughout**
 
 | Tag | Meaning |
 |---|---|
-| **[DECK]** | Original design, taken from `planning-agent-intro.pdf` / `planning-agent-slides.pdf` or the project brief |
+| **[DECK]** | Original design, taken from `docs/reference/planning-agent-intro.pdf` / `docs/reference/planning-agent-slides.pdf` or the project brief |
 | **[FIX]** | A correction to a defect or gap in the original design. Recommended for v1. |
 | **[EXTRA]** | Optional improvement. Do it only if time allows. |
 | **(est.)** | An estimate, not a measurement. Replace it with measured values once Phase 1 runs. |
@@ -173,7 +173,7 @@ Issue Id,Parent Id,Issue Type,Summary,Description,Priority,Story Points,Labels,L
 | N1 | **Packing over-serialises dependency chains.** The deck's rule `s ← 1 + max sprint(pred)` forces every predecessor into a **strictly earlier** sprint. A chain of 10 small dependent tasks (2 points each, 20 points in total) therefore needs **10 sprints**, about 20 weeks, even though it fits in one sprint's capacity of 40. Real teams finish dependent tasks inside the same sprint. | **High.** The schedules would look absurd for typical plans. | slides p.14 | **Relaxed packing** (B4.4): a task may share a sprint with its predecessors, provided the chain of hours inside that sprint fits within the sprint's working hours `H_sprint`. Keep the strict rule as a selectable mode so the two can be compared in the report. |
 | N2 | **Backward-pass boundary is unspecified.** If each sink node's LF is set to its own EF, every sink appears critical. | Medium | slides p.13 | `LF(sink) = project duration = max EF` for **all** sinks. Unit-test it with an isolated task (expected slack = duration − d). |
 | N3 | **CPM units are unspecified** ("47 days", hours, points). Floating-point day values make the test `slack == 0` fragile. | Medium | slides p.13, p.15 | Do all scheduling arithmetic in **integer hours** (one developer per task). Display days = hours ÷ focus_hours_per_day, rounded to 0.5. `critical ⇔ slack === 0`, exactly. |
-| N4 | **Temperature 0–0.3 is not available on current Claude models.** Claude Opus 5.5 removed sampling parameters. Claude Sonnet 5.5 and Haiku 5.5 return 400 for non-default values. API version 2026-10-21 rejects `temperature` on every model. | Medium (if we choose Claude) | slides p.14 vs provider docs (Anthropic model table cached 2026-11-03) | The provider abstraction maps a generic `mode: "extract"` to provider settings: temperature 0–0.3 where supported, low/medium effort plus structured outputs on Claude. **Reproducibility comes from the cache, not from temperature.** Even temperature 0 is not guaranteed to be deterministic. |
+| N4 | **Temperature 0–0.3 is not available on every current model.** Several recent LLM APIs restrict or reject sampling parameters such as `temperature`, and reasoning-style models steer output with a thinking or effort setting instead. | Medium | slides p.14 vs provider docs | The provider abstraction maps a generic `mode: "extract"` to provider settings: temperature 0–0.3 where supported, otherwise a low thinking level plus structured outputs. **Reproducibility comes from the cache, not from temperature.** Even temperature 0 is not guaranteed to be deterministic. |
 | N5 | **Risk "evidence" is free text.** `Risk(…, evidence)` cannot be checked by code. | Medium | slides p.10 | Use structured citations: a `risk_evidence(risk_code, signal_code)` join table. Every risk needs at least one valid signal ID, otherwise it is rejected. |
 | N6 | **Risk severity is decided by the LLM.** That contradicts "algorithms verify". | Low–Med | slides p.15 | Code computes severity from the cited signals (the maximum signal severity). The LLM writes only title, description and mitigation. |
 | N7 | **No run or version entity.** Re-running from a stage, or changing the config, overwrites the plan or mixes two of them. IDs such as T-001 are only unique within one generation. | High (data model) | slides p.10 | Add a `runs` table. All plan entities are keyed by `(run_id, code)`. A re-run creates a new run that reuses cached stage outputs. |
@@ -204,7 +204,7 @@ callStage(stageId, input) →
   fail stage with VALIDATION_FAILED (errors attached)
 Network / 429 / 5xx: separate budget, exponential backoff 1s/4s/10s, max 3, outside the repair loop.
 ```
-- **Structured output method:** use the provider's native JSON-schema structured output where available. On Claude that is `output_config.format`, a JSON schema. On other providers it is their JSON-schema or tool-calling mode. The JSON schema is generated from the Zod schema, so there is a single source of truth. **Zod still validates after parsing**, because some constraints (counts, regex, cross-field rules) may not be enforced by the provider.
+- **Structured output method:** use the provider's native JSON-schema structured output where available. On Gemini that is `responseMimeType: "application/json"` with `responseJsonSchema`. A provider without a JSON-schema mode would use its tool-calling mode. The JSON schema is generated from the Zod schema, so there is a single source of truth. **Zod still validates after parsing**, because some constraints (counts, regex, cross-field rules) may not be enforced by the provider.
 - **Error feedback:** retries send back the Zod issue paths and messages, trimmed to 20 issues. They do not send the whole previous output when the output was very large.
 - **Context minimisation [DECK]:** each stage receives only the fields listed in B3.3.
 - **Prompt versioning:** prompts live in `apps/api/src/prompts/stage<N>.v<k>.md`. The version is part of the cache key and is recorded in `plan.json`, so evaluation results can be attributed to a prompt version.
@@ -225,7 +225,7 @@ interface LlmClient {
                model: string; latencyMs: number }>;
 }
 ```
-- Implementations: `anthropic`, `openai` or `gemini` (whichever the team picks; only one is needed for v1), plus **`replay`**. The replay client serves recorded responses from `stage_cache` or fixture files. CI, E2E tests, offline development and the demo fallback all use it.
+- Implementations: **`gemini`** (Google Gemini, free tier), **`mock`** (deterministic, offline, no key) and **`replay`**. The replay client serves recorded responses from `stage_cache` or fixture files. CI, E2E tests, offline development and the demo fallback use `mock` or `replay`. Another provider only needs a new class that implements the interface.
 - Selected by env: `LLM_PROVIDER`, `LLM_MODEL`, `LLM_API_KEY`. **Keys exist only on the server.** The frontend never calls the LLM.
 
 #### B3.3 Per-stage contracts (inputs and outputs)
@@ -256,15 +256,9 @@ Token estimate for a mid-size plan (~8 epics, ~30 stories, ~100 tasks), **not ye
 | Retries (+20%) | 4.5k | 4.6k |
 | **Total** | **≈27k** | **≈28k** |
 
-Anthropic list prices (from the Claude API model table cached 2026-11-03; **verify before budgeting**). Thinking tokens are billed as output, so a range is shown:
+Money cost: the demo runs on Google Gemini's **free tier**, so a run costs nothing in money. The binding constraints are the provider's request quotas (per minute and per day), which is why the API spaces calls (`LLM_MIN_INTERVAL_MS`), limits runs per IP and per day, and falls back to recorded sample plans. The price table in config (`LLM_PRICE_IN_PER_M`, `LLM_PRICE_OUT_PER_M`) lets a paid model be costed with the same token counts if one is configured later; thinking tokens are billed as output on most providers.
 
-| Model | $/1M in | $/1M out | Est. cost per run (no thinking → with ~2× output for thinking) |
-|---|---|---|---|
-| Claude Haiku 5.5 (`claude-haiku-5-5`) | 0.10 | 0.50 | ≈ $0.02 → $0.03 |
-| Claude Sonnet 5.5 (`claude-sonnet-5-5`) | 2.00 | 10.00 | ≈ $0.33 → $0.61 |
-| Claude Opus 5.5 (`claude-opus-5-5`) | 4.00 | 20.00 | ≈ $0.67 → $1.23 |
-
-If the team picks OpenAI or Gemini, look up current prices; I have not verified them. **Recommendation:** develop against the replay provider and a low-cost model. Run the evaluation (Section E) on two or three models and **choose the demo model from measured quality per dollar**. The model comparison table is also good report material.
+**Recommendation:** develop against the mock and replay providers, run the evaluation (Section E) on the real model, and **choose the demo model from measured quality and quota headroom**. Measured results are in `eval/results`.
 
 #### B3.5 Latency per full run (est.)
 Stages 1, 2, 4, 5 and 7 run one after another; stage 3 runs in parallel per epic. With ~28k output tokens across 6 sequential steps, a fresh run is **roughly 1–4 minutes (est.)**, depending heavily on model output speed and thinking settings. Measure it in Phase 1 and record it in the evaluation table. Cached re-runs of stages 6–8 take well under 1 second, because they are pure code plus one stage-7 call. This is why runs are asynchronous with a progress view.
@@ -411,7 +405,7 @@ Example of what the risk agent receives (format; values are illustrative): `SG-0
 │  └─ api/                 # Node + Express + TS
 │     ├─ src/routes/       # projects, runs, exports, health, demo
 │     ├─ src/pipeline/     # orchestrator, stages/stage1..8, stamping, validation, coverage
-│     ├─ src/llm/          # anthropic|openai|gemini client, replay client, price table
+│     ├─ src/llm/          # gemini client, mock client, replay client, price table
 │     ├─ src/prompts/      # stage1.v1.md …  (versioned)
 │     ├─ src/db/           # pg pool, repositories, plan assembler
 │     └─ migrations/       # 001_init.sql …
@@ -777,7 +771,7 @@ Semantics: every `x` in `depends_on` creates an edge `x → task_id`. Tasks with
   "project": { "id": "uuid", "idea_text": "…", "created_at": "ISO-8601" },
   "run": {
     "id": "uuid", "status": "succeeded", "created_at": "…", "finished_at": "…",
-    "llm": { "provider": "anthropic", "model": "…", "prompt_versions": { "1": "v3", "2": "v2", "3": "v2", "4": "v1", "5": "v2", "7": "v1" } },
+    "llm": { "provider": "gemini", "model": "…", "prompt_versions": { "1": "v3", "2": "v2", "3": "v2", "4": "v1", "5": "v2", "7": "v1" } },
     "config": { "team_size": 4, "velocity_points_per_person": 10, "sprint_length_days": 10,
                 "focus_hours_per_day": 6, "points_to_hours": { "1": 4, "2": 8, "3": 12, "5": 20, "8": 32, "13": 52 },
                 "pack_mode": "relaxed" },
@@ -903,7 +897,7 @@ Contract rules:
 - **PRs:** one approving review from another member (two for `packages/shared`), CI green, squash merge, Conventional Commit titles (`feat(scheduler): add tarjan scc`). The PR template has a checklist: tests added, contracts changed?, screenshots for UI changes.
 - **CI (`ci.yml`) on every PR:** `npm ci` → lint → `tsc -b` (typecheck) → `vitest run` (unit and contract tests, **LLM via replay, no network**) → build both apps.
 - **CD (`deploy.yml`) on merge to `main`:** run migrations against Neon (`DATABASE_URL` secret) → trigger the Render deploy hook. Vercel deploys `apps/web` through its Git integration.
-- **Authorship:** every commit is made under the member's own name and email (`git config user.name/user.email` per machine). **No AI co-author trailers or AI session trailers in commits or PRs.** [EXTRA] A `commit-msg` hook rejects messages containing `Co-Authored-By:` lines that name an AI tool.
+- **Authorship:** every commit is made under the member's own name and email (`git config user.name/user.email` per machine). Commits and pull requests carry the author's own identity only.
 - `.env` is never committed; `.env.example` is committed. Secrets live in the GitHub, Render and Vercel settings.
 
 ---
@@ -1085,13 +1079,13 @@ The results tables go directly into the final report. **No result is reported wi
 
 ## Appendix: decisions log and open questions
 
-Decisions proposed in this plan and awaiting approval:
+Decisions taken in this design (see also the locked decisions D-01 to D-14 in the development log):
 
 | ID | Decision | Recommendation |
 |---|---|---|
 | D-01 | Duration and hours | 12 weeks × 10 h/week (to confirm) |
 | D-02 | Role ↔ person mapping | to be assigned |
-| D-03 | LLM provider, model and budget | Evaluate 2–3 models and pick the demo model by measured quality per $ |
+| D-03 | LLM provider, model and budget | Google Gemini free tier behind a provider abstraction (mock and replay for tests); pick the demo model by measured quality and quota headroom |
 | D-04 | Language | TypeScript monorepo (npm workspaces) |
 | D-05 | Sprint packing rule | Relaxed by default, strict kept for comparison |
 | D-06 | Gantt timeline | Capacity-feasible as primary, CPM as a toggle/overlay, both labelled |

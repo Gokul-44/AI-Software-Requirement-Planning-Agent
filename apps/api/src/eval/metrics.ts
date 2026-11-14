@@ -2,7 +2,7 @@ import { findDuplicateTitles } from '@spm/scheduler';
 import type { Plan } from '@spm/shared';
 
 /**
- * Evaluation metrics (MASTER_PLAN E3). Everything here is computed from what a run actually did:
+ * Evaluation metrics (design document E3). Everything here is computed from what a run actually did:
  * the harness calls recorded by `RecordingHarness` and the plan and issues the run stored. Nothing
  * is estimated, and a metric with no data behind it is `null` (never 0).
  */

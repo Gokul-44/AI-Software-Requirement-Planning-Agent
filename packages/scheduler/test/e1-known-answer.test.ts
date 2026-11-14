@@ -567,7 +567,7 @@ describe('E1: schedulePlan end to end', () => {
 });
 
 describe('known limitation: greedy packing anomaly (strict can beat relaxed)', () => {
-  // MASTER_PLAN E1 lists "strict sprint count >= relaxed sprint count" as an invariant. It is
+  // design document E1 lists "strict sprint count >= relaxed sprint count" as an invariant. It is
   // not a theorem: first-fit in a fixed order has bin-packing anomalies. Found by property
   // testing; about 1.4% of random DAGs show it. This pins the smallest case so the
   // behaviour is documented and any change to packing is noticed.

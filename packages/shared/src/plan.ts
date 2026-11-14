@@ -16,7 +16,7 @@ import {
   TaskId,
 } from './ids.js';
 
-/** plan.json contract, version 1.0 (MASTER_PLAN C5). */
+/** plan.json contract, version 1.0 (design document C5). */
 export const PLAN_SCHEMA_VERSION = '1.0';
 
 export const RunStatusValue = z.enum([

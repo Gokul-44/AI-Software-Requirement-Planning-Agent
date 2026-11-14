@@ -82,7 +82,7 @@ export interface AssembleInput {
 }
 
 /**
- * Stage 8 (MASTER_PLAN C5): builds plan.json from the persisted stage results, then validates it
+ * Stage 8 (design document C5): builds plan.json from the persisted stage results, then validates it
  * with PlanSchema and assertPlanIntegrity. Throws when the plan is not sound.
  */
 export function assemblePlan(input: AssembleInput): Plan {

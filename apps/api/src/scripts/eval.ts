@@ -15,7 +15,7 @@ import { createHarness } from '../llm/harness.js';
 import { PROMPT_VERSIONS } from '../prompts/index.js';
 
 /**
- * LLM evaluation (MASTER_PLAN E3): runs the fixed ideas in eval/ideas.json through the real
+ * LLM evaluation (design document E3): runs the fixed ideas in eval/ideas.json through the real
  * pipeline with the configured provider (cache off) and writes eval/results/<date>_<model>.csv
  * and .md with every automatic metric. Usage:
  *   npm run eval -- --limit 5 --repeat-first 3

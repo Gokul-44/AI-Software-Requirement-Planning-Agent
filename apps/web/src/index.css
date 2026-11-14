@@ -3,7 +3,7 @@
 @import '@xyflow/react/dist/style.css';
 
 /*
- * Design tokens. Every colour in the app is defined here, once (docs/DESIGN.md explains the rules).
+ * Design tokens. Every colour in the app is defined here, once (docs/design/design-system.md explains the rules).
  *
  *   Forest Green  #1F3D2B  brand-green-900  brand and dark surfaces (header, hero, footer)
  *   Sand Beige    #E8DCC4  sand-300         warm light surfaces (page, cards, sections)

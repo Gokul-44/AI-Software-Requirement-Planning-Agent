@@ -67,7 +67,7 @@ export interface HarnessOptions {
   llm: LlmClient;
   cache: StageCacheStore;
   logger?: Logger;
-  /** 1 call plus up to 2 repair retries (MASTER_PLAN B3.1). */
+  /** 1 call plus up to 2 repair retries (design document B3.1). */
   maxAttempts?: number;
   /** Ceiling when a truncated response makes the harness raise maxOutputTokens once. */
   maxOutputTokensCeiling?: number;

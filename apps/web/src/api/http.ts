@@ -17,7 +17,7 @@ import type {
 import { exportPlanLocally } from '../lib/exporters';
 
 /**
- * Backend that talks to the real API (MASTER_PLAN C3). The recorded golden plans that ship with
+ * Backend that talks to the real API (design document C3). The recorded golden plans that ship with
  * the web app are a fallback: the demo list also shows them, and opening one never needs the server.
  */
 export function createHttpApi(baseUrl: string): PlanApi {

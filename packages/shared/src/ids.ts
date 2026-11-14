@@ -1,6 +1,6 @@
 import { z } from 'zod';
 
-/** ID patterns from MASTER_PLAN C4/C5. IDs are stamped by code, never by the LLM. */
+/** ID patterns from design document C4/C5. IDs are stamped by code, never by the LLM. */
 export const ID_PATTERNS = {
   requirement: /^R-[0-9]{3}$/,
   epic: /^E-[0-9]{3}$/,

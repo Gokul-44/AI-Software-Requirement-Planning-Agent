@@ -2,7 +2,7 @@ import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
 import { api } from './client';
 import type { CreateProjectRequest, RerunRequest, ResolveCycleRequest } from './types';
 
-/** Run polling interval, MASTER_PLAN D-11. */
+/** Run polling interval, design document D-11. */
 export const POLL_INTERVAL_MS = 2000;
 
 export const useGolden = () => useQuery({ queryKey: ['golden'], queryFn: () => api.listGolden() });

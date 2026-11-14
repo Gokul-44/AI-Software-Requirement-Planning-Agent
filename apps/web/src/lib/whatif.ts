@@ -3,7 +3,7 @@ import type { Schedule } from '@spm/scheduler';
 import { resolveConfig } from '@spm/shared';
 import type { Config, Plan } from '../api/types';
 
-/** The three knobs of the what-if panel (MASTER_PLAN B6 row 7). */
+/** The three knobs of the what-if panel (design document B6 row 7). */
 export interface WhatIfSettings {
   team_size: number;
   velocity_points_per_person: number;

@@ -13,7 +13,7 @@ import type {
 } from '@spm/shared';
 import type { StageCacheStore } from '../llm/cache.js';
 
-/** Number of stages tracked per run (MASTER_PLAN C2: stage_executions.stage 1..8). */
+/** Number of stages tracked per run (design document C2: stage_executions.stage 1..8). */
 export const STAGE_COUNT = 8;
 
 export type RunStatusValue = 'queued' | 'running' | 'needs_resolution' | 'succeeded' | 'failed';

@@ -67,7 +67,7 @@ function Delta({ before, after, unit }: { before: number; after: number; unit: s
 }
 
 /**
- * Client-side what-if (MASTER_PLAN B6 row 7): the same pure scheduler that runs on the server
+ * Client-side what-if (design document B6 row 7): the same pure scheduler that runs on the server
  * re-packs the sprints in the browser every time a slider moves.
  */
 export function WhatIfPanel() {

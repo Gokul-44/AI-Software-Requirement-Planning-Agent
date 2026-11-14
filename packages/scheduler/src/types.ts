@@ -1,7 +1,7 @@
 import type { Config, Plan, PlanRequirement } from '@spm/shared';
 
 /**
- * Finish-to-Start edge: `from` must finish before `to` can start (MASTER_PLAN B1, Issue 6).
+ * Finish-to-Start edge: `from` must finish before `to` can start (design document B1, Issue 6).
  * Extra fields (type, source, reason) pass through the validators untouched.
  */
 export interface Edge {

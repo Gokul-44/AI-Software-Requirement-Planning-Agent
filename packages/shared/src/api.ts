@@ -3,7 +3,7 @@ import { ConfigPatchSchema } from './config.js';
 import { RunStatusValue } from './plan.js';
 import { TaskId } from './ids.js';
 
-/** API DTOs and error model (MASTER_PLAN C3). */
+/** API DTOs and error model (design document C3). */
 
 // ------------------------------------------------------------ Error model
 export const API_ERROR_CODES = [

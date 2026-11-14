@@ -7,7 +7,7 @@ export interface QueueOptions {
   minIntervalMs: number;
   /** Retries after the first attempt for 429/5xx/network errors. */
   maxRetries?: number;
-  /** Fallback delays when the server gives no retry hint (MASTER_PLAN B3.1: 1 s, 4 s, 10 s). */
+  /** Fallback delays when the server gives no retry hint (design document B3.1: 1 s, 4 s, 10 s). */
   backoffMs?: readonly number[];
   /** A server retry hint above this is treated as an exhausted quota, not waited out. */
   maxServerDelayMs?: number;
@@ -22,7 +22,7 @@ const realSleep = (ms: number) => new Promise<void>((resolve) => setTimeout(reso
 /**
  * Wraps a client with a concurrency-1 queue, a minimum gap between calls and 429/5xx backoff
  * that honours the server's retry delay. This is the only place that retries transport errors
- * (outside the harness's repair loop, MASTER_PLAN B3.1).
+ * (outside the harness's repair loop, design document B3.1).
  */
 export class QueuedLlmClient implements LlmClient {
   private tail: Promise<unknown> = Promise.resolve();

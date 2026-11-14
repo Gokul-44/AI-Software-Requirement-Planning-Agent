@@ -13,7 +13,7 @@ import type {
 } from '../pipeline/inputs.js';
 
 /**
- * Versioned prompt files (MASTER_PLAN B3.1): `stage<N>.v<k>.md`. The version is part of the cache
+ * Versioned prompt files (design document B3.1): `stage<N>.v<k>.md`. The version is part of the cache
  * key and of runs.prompt_versions. A prompt change means a new file (v2) and a new version here.
  * The files are read from `src/prompts` whether the code runs from `src` or from `dist`.
  */

@@ -1,5 +1,5 @@
 -- Up Migration
--- 001: MASTER_PLAN C2 DDL, plus runs.plan (assembled plan snapshot). Additive only.
+-- 001: design document C2 DDL, plus runs.plan (assembled plan snapshot). Additive only.
 CREATE EXTENSION IF NOT EXISTS pgcrypto;
 
 CREATE TABLE projects (

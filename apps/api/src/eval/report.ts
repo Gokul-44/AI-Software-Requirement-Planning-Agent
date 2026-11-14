@@ -92,7 +92,7 @@ export function toMarkdown(results: readonly EvalRunResult[], ctx: ReportContext
     `- Prompt versions: ${Object.entries(ctx.promptVersions)
       .map(([k, v]) => `stage ${k} ${v}`)
       .join(', ')}.`,
-    `- Protocol (MASTER_PLAN E3): cache disabled, one fresh run per idea, default team settings.`,
+    `- Protocol (design document E3): cache disabled, one fresh run per idea, default team settings.`,
     ctx.requested
       ? `- Requested: \`--limit ${ctx.requested.limit} --repeat-first ${ctx.requested.repeatFirst}\`. Runs measured: ${agg.runsMeasured} (${agg.runsSucceeded} succeeded).`
       : `- Runs measured: ${agg.runsMeasured} (${agg.runsSucceeded} succeeded), merged from several result files.`,

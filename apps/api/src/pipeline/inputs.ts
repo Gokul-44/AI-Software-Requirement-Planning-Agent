@@ -14,7 +14,7 @@ import {
 } from '@spm/shared';
 
 /**
- * Exact inputs of the LLM stages (MASTER_PLAN B3.3: each stage receives only these fields).
+ * Exact inputs of the LLM stages (design document B3.3: each stage receives only these fields).
  * They are hashed into the cache key and read by the mock provider.
  */
 export const Stage1InputSchema = z.object({

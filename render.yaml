@@ -1,6 +1,6 @@
 # Render Blueprint for the API (apps/api). The website (apps/web) is hosted on Vercel.
 # Secret values are NOT stored here: variables marked `sync: false` are entered by hand in the
-# Render dashboard. Docs: docs/DEPLOYMENT.md.
+# Render dashboard. Docs: docs/guides/deployment.md.
 services:
   - type: web
     name: spm-planning-agent-api
@@ -31,7 +31,7 @@ services:
         value: '1'
       - key: LOG_LEVEL
         value: info
-      # Entered by hand in the dashboard (see docs/DEPLOYMENT.md):
+      # Entered by hand in the dashboard (see docs/guides/deployment.md):
       - key: DATABASE_URL
         sync: false
       - key: GEMINI_API_KEY
