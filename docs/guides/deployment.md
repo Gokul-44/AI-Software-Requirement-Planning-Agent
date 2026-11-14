@@ -4,7 +4,7 @@ The project runs as three free-tier services plus GitHub Actions:
 
 | Part                           | Service        | Config in the repo                           |
 | ------------------------------ | -------------- | -------------------------------------------- |
-| Website (React, `apps/web`)    | Vercel         | `vercel.json`                                |
+| Website (React, `apps/web`)    | Vercel         | `apps/web/vercel.json`                       |
 | API (Express, `apps/api`)      | Render         | `render.yaml`                                |
 | Database (PostgreSQL)          | Neon           | `neon.ts`, `apps/api/migrations/*.sql`       |
 | Checks, migration, API deploy  | GitHub Actions | `.github/workflows/ci.yml`, `deploy.yml`     |
@@ -60,12 +60,13 @@ These are already set to safe values by `render.yaml`: `NODE_ENV=production`, `L
 
 ### 3. Vercel (the website)
 
-1. Vercel → **Add New** → **Project** → import the repository.
-2. Settings (they come from `vercel.json`; check they match):
-   - **Root Directory:** the repository root (leave empty)
-   - **Install Command:** `npm ci`
-   - **Build Command:** `npm run build -w @spm/web`
-   - **Output Directory:** `apps/web/dist`
+1. Vercel → **Add New** → **Project** → import the repository. Vercel says "Multiple applications detected":
+   click **Import single project** next to **web** (Vite). Do not import `api`; the API runs on Render.
+2. Settings (check they match; the single-page-app rewrite comes from `apps/web/vercel.json`):
+   - **Root Directory:** `apps/web`
+   - **Framework Preset:** Vite
+   - **Build Command:** `npm run build` (default)
+   - **Output Directory:** `dist` (default)
 3. **Environment Variables** → add `VITE_API_BASE_URL` = the Render URL **plus `/api`**, for example
    `https://spm-planning-agent-api.onrender.com/api`. (Leave `VITE_USE_FIXTURE` unset.)
 4. Deploy. Copy the Vercel URL, then go back to Render and set `CORS_ORIGIN` to it.
