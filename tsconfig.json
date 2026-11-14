@@ -32,7 +32,7 @@
       "path": "apps/web"
     },
     {
-      "path": "e2e"
+      "path": "tests/e2e"
     }
   ]
 }

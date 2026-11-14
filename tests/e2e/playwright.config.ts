@@ -3,7 +3,7 @@ import { defineConfig } from '@playwright/test';
 import { API_PORT, WEB_PORT } from './ports.js';
 
 /**
- * End-to-end smoke test (MASTER_PLAN E4). It starts the whole stack itself with `npm run dev:mock`:
+ * End-to-end smoke test (design document E4). It starts the whole stack itself with `npm run dev:mock`:
  * mock model and an in-memory store, so no real model is called and nothing touches the database.
  * Ports differ from the normal dev ports so a running dev server is never reused by mistake.
  * Not part of CI: run it with `npm run e2e`.
@@ -18,7 +18,7 @@ export default defineConfig({
   workers: 1,
   retries: 0,
   reporter: [['list']],
-  outputDir: path.resolve(import.meta.dirname, '..', 'test-results'),
+  outputDir: path.resolve(import.meta.dirname, '..', '..', 'test-results'),
   use: {
     baseURL: `http://localhost:${WEB_PORT}`,
     acceptDownloads: true,
@@ -31,7 +31,7 @@ export default defineConfig({
   },
   webServer: {
     command: 'npm run dev:mock',
-    cwd: path.resolve(import.meta.dirname, '..'),
+    cwd: path.resolve(import.meta.dirname, '..', '..'),
     url: `http://localhost:${API_PORT}/api/health`,
     timeout: 180_000,
     reuseExistingServer: false,

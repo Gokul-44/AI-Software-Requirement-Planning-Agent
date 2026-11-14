@@ -69,9 +69,6 @@ import {
 import { StageFailure, Tally, bestEffort, tracked } from './support.js';
 import type { StageContext } from './support.js';
 
-/** Eight stages (MASTER_PLAN A2): 1-5 call the model, 6 and 8 are code, 7 calls it for risks. */
-export const LAST_STAGE = 8;
-
 export const STAGE_BOUNDS = { min_requirements: 5, max_requirements: 25 } as const;
 
 const MAX_OUTPUT_TOKENS = {
@@ -129,7 +126,7 @@ const storyBrief = (s: StoryRow) => ({
 });
 
 /**
- * Asynchronous run orchestrator (MASTER_PLAN N13). `launch` returns at once; the stages run in
+ * Asynchronous run orchestrator (design document N13). `launch` returns at once; the stages run in
  * the background and write their progress to the repository, which the API polls.
  */
 export class Pipeline {

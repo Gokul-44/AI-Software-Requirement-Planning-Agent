@@ -13,5 +13,12 @@
   },
   "dependencies": {
     "zod": "^4.6.7"
+  },
+  "scripts": {
+    "build": "tsc -b",
+    "typecheck": "tsc -b tsconfig.test.json",
+    "test": "vitest run --root ../.. packages/shared",
+    "lint": "eslint .",
+    "format": "prettier --write ."
   }
 }
