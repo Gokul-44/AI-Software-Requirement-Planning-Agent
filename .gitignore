@@ -16,3 +16,6 @@ Thumbs.db
 .cl[a]ude/
 .local/
 .playwright-mcp/
+
+# Local presentation material (never published)
+presentation/

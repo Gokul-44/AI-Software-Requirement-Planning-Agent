@@ -1,6 +1,6 @@
 # AI Software Requirement & Planning Agent: Design Document
 
-**Team (IIIT Vadodara, International Campus Diu):** Akshay Kumar Tapraniya · Gokul Faleja · Saransh Sarang Naik · Shreya Tiwari
+**Team (IIIT Vadodara, International Campus Diu):** Akshay Kumar Tapraniya · Gokul Faleja · Saransh Naik · Shreya Tiwari
 **Document status:** Version 1.0 (2026-11-14). Approved design, implemented in this repository. What was built, measured and changed is recorded in [`docs/development-log.md`](../development-log.md); the implementation uses Google Gemini through the provider abstraction in B3.2.
 
 **Labels used throughout**

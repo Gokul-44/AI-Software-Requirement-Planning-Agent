@@ -8,12 +8,7 @@ import { ToastProvider } from './Toast';
 import { buttonClass } from '../lib/buttonClass';
 import { Badge } from './ui';
 
-const TEAM = [
-  'Akshay Kumar Tapraniya',
-  'Gokul Faleja',
-  'Saransh Sarang Naik',
-  'Shreya Tiwari',
-] as const;
+const TEAM = ['Akshay Kumar Tapraniya', 'Gokul Faleja', 'Saransh Naik', 'Shreya Tiwari'] as const;
 
 /** The team repository on GitHub. */
 export const GITHUB_URL = 'https://github.com/Gokul-44/AI-Software-Requirement-Planning-Agent';

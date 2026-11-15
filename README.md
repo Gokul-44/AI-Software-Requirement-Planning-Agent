@@ -166,13 +166,6 @@ Every workspace also has its own `build`, `test`, `typecheck` and `lint` scripts
 
 CI never calls a real model: it runs lint, typecheck, tests and build with the `replay` provider.
 
-## Evaluation
-
-Ten fixed ideas were run through the real pipeline (gemini-3.5-flash-lite, 13 runs): **98.1%** of model calls were valid
-on the first try, **0** stage failures, **0** invalid references, **0** cycles and **100%** requirement coverage, with an
-average run time of about 80 seconds. See the [evaluation summary](docs/evaluation/README.md) and the
-[full results](eval/results/2026-11-15_gemini-3.5-flash-lite.md).
-
 ## Deployment
 
 The website runs on **Vercel**, the API on **Render** and the database on **Neon**, all on free tiers. A push to `main`
@@ -196,18 +189,12 @@ runs the checks, applies migrations and triggers the API deploy through GitHub A
 
 All four members worked together on every part of the project: planning, design, development, testing, deployment and documentation.
 
-| Avatar                                                                                                                                  | Name                   | GitHub                                                                         |
-| --------------------------------------------------------------------------------------------------------------------------------------- | ---------------------- | ------------------------------------------------------------------------------ |
-| <a href="https://github.com/add-username"><img src="https://github.com/add-username.png" width="80"></a> <!-- TODO: GitHub username --> | Akshay Kumar Tapraniya | [add-username](https://github.com/add-username) <!-- TODO: GitHub username --> |
-| <a href="https://github.com/Gokul-44"><img src="https://github.com/Gokul-44.png" width="80"></a>                                        | Gokul Faleja           | [Gokul-44](https://github.com/Gokul-44)                                        |
-| <a href="https://github.com/add-username"><img src="https://github.com/add-username.png" width="80"></a> <!-- TODO: GitHub username --> | Saransh Sarang Naik    | [add-username](https://github.com/add-username) <!-- TODO: GitHub username --> |
-| <a href="https://github.com/Shreya-1511-tiwari"><img src="https://github.com/Shreya-1511-tiwari.png" width="80"></a>                    | Shreya Tiwari          | [Shreya-1511-tiwari](https://github.com/Shreya-1511-tiwari)                    |
-
-## Academic note
-
-Final-year project, IIIT Vadodara, International Campus Diu.
-
-Supervisor: <!-- TODO: guide name --> to be added.
+| Avatar                                                                                                                   | Name                   | GitHub                                                          |
+| ------------------------------------------------------------------------------------------------------------------------ | ---------------------- | --------------------------------------------------------------- |
+| <a href="https://github.com/akshaykumartapraniya"><img src="https://github.com/akshaykumartapraniya.png" width="80"></a> | Akshay Kumar Tapraniya | [akshaykumartapraniya](https://github.com/akshaykumartapraniya) |
+| <a href="https://github.com/Gokul-44"><img src="https://github.com/Gokul-44.png" width="80"></a>                         | Gokul Faleja           | [Gokul-44](https://github.com/Gokul-44)                         |
+| <a href="https://github.com/saranshnaik"><img src="https://github.com/saranshnaik.png" width="80"></a>                   | Saransh Naik           | [saranshnaik](https://github.com/saranshnaik)                   |
+| <a href="https://github.com/Shreya-1511-tiwari"><img src="https://github.com/Shreya-1511-tiwari.png" width="80"></a>     | Shreya Tiwari          | [Shreya-1511-tiwari](https://github.com/Shreya-1511-tiwari)     |
 
 ## Contributing
 
